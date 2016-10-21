@@ -54,6 +54,7 @@
 #define MAIN					"Main"
 #define FUNCTIONS				"Functions"
 #define mESP					"ESP"
+#define NOFLASH					"NoFlash"
 
 #define MAIN_PATH				"\\Settings\\Main.ini"
 #define VISUALS_PATH			"\\Settings\\Visuals.ini"
@@ -63,12 +64,12 @@
 #define MAIN_RELOAD_KEY			"|Reload.Key"
 
 #define FUNCTIONS_ESP			"|ESP"
+#define FUNCTIONS_NOFLASH		"|NoFlash"
 
 #define ESP_ENABLE				"|ESP.Enable"
 #define ESP_PLAYER				"|ESP.Player"
 #define ESP_PLAYER_VISIBLE_ONLY	"|ESP.Player.VisibleOnly"
 #define ESP_PLAYER_BOX			"|ESP.Player.Box"
-#define ESP_PLAYER_BOX_3D		"|ESP.Player.Box.3D"
 #define ESP_PLAYER_BOX_OUTLINE	"|ESP.Player.Box.OutLine"
 #define ESP_PLAYER_BOX_LW		"|ESP.Player.Box.LineWidth"
 #define ESP_PLAYER_BOX_T_VIS	"|ESP.Player.Box.T.Vis"
@@ -88,6 +89,11 @@
 #define ESP_SOUND_FADE_TIME		"|ESP.Sound.FadeTime"
 #define ESP_SOUND_COLOR			"|ESP.Sound.Color"
 
+#define NOFLASH_ENABLE			"|NoFlash.Enable"
+#define NOFLASH_FADELIMIT		"|NoFlash.FadeLimit"
+#define NOFLASH_SHOWPERCENTAGE	"|NoFlash.ShowPercentage"
+#define NOFLASH_FONT_OUTLINE	"|NoFlash.Font.OutLine"
+
 #define TERRORIST_UMSG			"TERRORIST"
 #define CT_UMSG					"CT"
 
@@ -96,6 +102,9 @@
 #define TEAM_INFO				"TeamInfo"
 #define CUR_WEAPON				"CurWeapon"
 #define DEATH_MSG				"DeathMsg"
+
+#define FLASHED					"Flashed: %d"
+#define DONTSEE					"You are don't see."
 
 #define SEQUENCE_RELOADING		"reloading"
 #define SEQUENCE_PLANTING		"planting c4"
@@ -289,9 +298,9 @@
 		return to_convent;}
 
 #define WEAPON_PARS(name) {\
-	Engine::g_Drawing.DrawBox(EntityScreen[0] - 2, EntityScreen[1], 6, 6, 1, 0, 0, 0, 255);\
-	Engine::g_Drawing.FillArea(EntityScreen[0] - 1, EntityScreen[1] + 1, 4, 4, 255, 100, 0, 255);\
-	Engine::g_Verdana.Print(EntityScreen[0], EntityScreen[1] + 15, Files::g_IniRead.esp.font_color[0], Files::g_IniRead.esp.font_color[1], Files::g_IniRead.esp.font_color[2], 255, Files::g_IniRead.esp.font_outline ? FL_CENTER | FL_OUTLINE : FL_CENTER, name);}
+	Renderer::g_Drawing.DrawBox((int)EntityScreen[0] - 2, (int)EntityScreen[1], 6, 6, 1, 0, 0, 0, 255);\
+	Renderer::g_Drawing.FillArea((int)EntityScreen[0] - 1, (int)EntityScreen[1] + 1, 4, 4, 255, 100, 0, 255);\
+	Renderer::g_Verdana.Print(EntityScreen[0], EntityScreen[1] + 15, Files::g_IniRead.esp.font_color[0], Files::g_IniRead.esp.font_color[1], Files::g_IniRead.esp.font_color[2], 255, Files::g_IniRead.esp.font_outline ? FL_CENTER | FL_OUTLINE : FL_CENTER, name);}
 
 #define INIREAD_INT(var, path, section, key) g_IniRead.path.var = atoi(g_File.IniRead((char*)path.c_str(), section, key, "0"))
 #define INIREAD_FLOAT(var, path, section, key) g_IniRead.path.var = atof(g_File.IniRead((char*)path.c_str(), section, key, "0"))

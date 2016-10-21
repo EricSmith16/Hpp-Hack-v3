@@ -12,6 +12,7 @@ namespace Engine
 	cl_clientfunc_t *g_pClient = nullptr;
 	cl_enginefunc_t *g_pEngine = nullptr;
 	engine_studio_api_t *g_pStudio = nullptr;
+	screenfade_t *g_pScreenFade = nullptr;
 
 	cl_clientfunc_t g_Client;
 	cl_enginefunc_t g_Engine;

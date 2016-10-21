@@ -4,6 +4,17 @@
 
 namespace Files
 {
+	struct noflash_s
+	{
+		int show_percentage;
+
+		int fade_limit;
+
+		bool enable;
+
+		bool font_outline;
+	};
+
 	struct esp_s
 	{
 		char* t_vis_color_string;
@@ -58,15 +69,18 @@ namespace Files
 	struct function_s
 	{
 		bool esp;
+		bool noflash;
 	};
 
 	class IniRead
 	{
 	public:
+		noflash_s noflash;
 		esp_s esp;
 		main_s main;
 		function_s function;
 
+		void NoFlash ( );
 		void ESP ( );
 		void Main ( );
 		void Functions ( );

@@ -5,6 +5,16 @@
 
 namespace Files
 {
+	void IniRead::NoFlash ( )
+	{
+		std::string noflash = g_File.DirFile ( VISUALS_PATH ).c_str ( );
+
+		INIREAD_INT ( enable, noflash, NOFLASH, NOFLASH_ENABLE );
+		INIREAD_INT ( fade_limit, noflash, NOFLASH, NOFLASH_FADELIMIT );
+		INIREAD_INT ( show_percentage, noflash, NOFLASH, NOFLASH_SHOWPERCENTAGE );
+		INIREAD_INT ( font_outline, noflash, NOFLASH, NOFLASH_FONT_OUTLINE );
+	}
+
 	void IniRead::ESP ( )
 	{
 		std::string esp = g_File.DirFile ( VISUALS_PATH ).c_str ( );
@@ -60,6 +70,7 @@ namespace Files
 		std::string function = g_File.DirFile ( FUNCTIONS_PATH ).c_str ( );
 
 		INIREAD_INT ( esp, function, FUNCTIONS, FUNCTIONS_ESP );
+		INIREAD_INT ( noflash, function, FUNCTIONS, FUNCTIONS_NOFLASH );
 	}
 
 	IniRead g_IniRead;

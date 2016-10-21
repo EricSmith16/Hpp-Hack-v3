@@ -18,7 +18,7 @@ namespace Engine
 		return ( Entity->curstate.maxs[2] - Entity->curstate.mins[2] ) < 54;
 	}
 
-	bool PlayerInfo::ScanPlayerVisibility ( int Index )
+	bool _fastcall PlayerInfo::ScanPlayerVisibility ( int Index )
 	{
 		BYTE HitBoxCheckVisible[8] = { 0, 2, 6, 7, 8, 9, 11, 19 };
 

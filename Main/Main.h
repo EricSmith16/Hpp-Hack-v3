@@ -143,12 +143,14 @@ typedef struct sizebuf_s
 #include "File.h"
 #include "IniRead.h"
 #include "ESP.h"
+#include "NoFlash.h"
 
 namespace Engine
 {
 	extern cl_clientfunc_t *g_pClient;
 	extern cl_enginefunc_t *g_pEngine;
 	extern engine_studio_api_t *g_pStudio;
+	extern screenfade_t *g_pScreenFade;
 
 	extern cl_clientfunc_t g_Client;
 	extern cl_enginefunc_t g_Engine;

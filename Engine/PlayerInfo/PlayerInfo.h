@@ -8,13 +8,13 @@ namespace Engine
 	{
 	private:
 		//Check the player is alive or not
-		__inline static bool isAliveEntity ( struct cl_entity_s *Entity );
+		inline static bool isAliveEntity ( struct cl_entity_s *Entity );
 		//Check the player is valid or not
-		__inline static bool isValidEntity ( struct cl_entity_s *Entity, struct cl_entity_s *Local );
+		inline static bool isValidEntity ( struct cl_entity_s *Entity, struct cl_entity_s *Local );
 		//Check the player is ducked or not
-		__inline static bool isDuckedEntity ( struct cl_entity_s *Entity );
+		inline static bool isDuckedEntity ( struct cl_entity_s *Entity );
 		//Scanning the player on the visibility
-		__inline static bool ScanPlayerVisibility ( int Index );
+		static bool _fastcall ScanPlayerVisibility ( int Index );
 
 	public:		
 		//Update information about local player

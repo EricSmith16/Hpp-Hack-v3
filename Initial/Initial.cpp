@@ -6,10 +6,7 @@ Init g_Init;
 
 void Init::InitHack ( )
 {
-	if ( !Engine::g_Engine.Con_IsVisible ( ) )
-	{
-		Engine::g_Engine.pfnClientCmd ( "toggleconsole" );
-	}
+	Engine::g_Engine.pfnClientCmd ( "toggleconsole" );
 
 	if ( Files::g_IniRead.main.language )
 	{
@@ -89,6 +86,11 @@ void Init::LoadSettings ( )
 		{
 			Files::g_IniRead.ESP ( );
 		}
+
+		if ( Files::g_IniRead.function.noflash )
+		{
+			Files::g_IniRead.NoFlash ( );
+		}
 	}
 }
 
@@ -99,6 +101,11 @@ void Init::ReloadSettings ( )
 		if ( Files::g_IniRead.function.esp )
 		{
 			Files::g_IniRead.ESP ( );
+		}
+
+		if ( Files::g_IniRead.function.noflash )
+		{
+			Files::g_IniRead.NoFlash ( );
 		}
 	}
 }

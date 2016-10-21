@@ -87,28 +87,28 @@ namespace Functions
 
 			if ( Files::g_IniRead.esp.player_box )
 			{
+				GetColorPlayerBox ( Index );
+
 				float x = ScreenTop[0] - ( height * 0.25f );
 
 				float width = height * 0.5f;
 
 				float linewidth = Files::g_IniRead.esp.player_box_linewidth;
 
-				GetColorPlayerBox ( Index );
-
 				Files::g_IniRead.esp.player_box_outline ?
 
 					Renderer::g_Drawing.DrawShadowBox ( ( int )x, ( int )ScreenTop[1], ( int )width, ( int )height,
 						linewidth, player_box.color[0], player_box.color[1], player_box.color[2], 255 ) :
 
-					Renderer::g_Drawing.DrawBox ( x, ScreenTop[1], width, height, linewidth,
+					Renderer::g_Drawing.DrawBox ( ( int )x, ( int )ScreenTop[1], ( int )width, ( int )height, linewidth,
 						player_box.color[0], player_box.color[1], player_box.color[2], 255 );
 			}
 
 			if ( Files::g_IniRead.esp.player_name )
 			{
-				float y = height - 5 + ScreenTop[1];
-
 				GetColorFont ( );
+
+				float y = height - 5 + ScreenTop[1];
 
 				Renderer::g_Verdana.Print ( ScreenTop[0], y, font.color[0], font.color[1], font.color[2], 255,
 					Files::g_IniRead.esp.font_outline ? FL_CENTER | FL_OUTLINE : FL_CENTER, Engine::g_Player[Index].Info.name );
@@ -116,10 +116,10 @@ namespace Functions
 
 			if ( Files::g_IniRead.esp.player_weapon )
 			{
+				GetColorFont ( );
+
 				float y = Files::g_IniRead.esp.player_distance ? ScreenBot[1] + ( 24 - ( ScreenBot[1] - ScreenTop[1] ) ) :
 					ScreenBot[1] + ( 12 - ( ScreenBot[1] - ScreenTop[1] ) );
-
-				GetColorFont ( );
 
 				int SequenceInfo[] =
 				{
@@ -170,9 +170,9 @@ namespace Functions
 
 			if ( Files::g_IniRead.esp.player_distance )
 			{
-				float y = ScreenBot[1] + ( 12 - ( ScreenBot[1] - ScreenTop[1] ) );
-
 				GetColorFont ( );
+
+				float y = ScreenBot[1] + ( 12 - ( ScreenBot[1] - ScreenTop[1] ) );
 
 				switch ( Files::g_IniRead.esp.player_distance )
 				{

@@ -18,6 +18,13 @@ namespace Client
 			Engine::g_pUserMsgBase = ( PUserMsg )Engine::g_Offset.FindUserMsgBase ( );
 			Engine::g_pEngineMsgBase = ( PEngineMsg )Engine::g_Offset.FindSVCMessages ( );
 
+			Engine::g_pScreenFade = *( screenfade_t** )( ( DWORD )Engine::g_Engine.pfnSetScreenFade + 0x17 );
+
+			if ( IsBadReadPtr ( Engine::g_pScreenFade, sizeof ( screenfade_t ) ) )
+			{
+				Engine::g_pScreenFade = *( screenfade_t** )( ( DWORD )Engine::g_Engine.pfnSetScreenFade + 0x18 );
+			}
+
 			HookUserMessages ( );
 			HookEngineMessages ( );
 
@@ -69,6 +76,11 @@ namespace Client
 			{
 				Functions::g_ESP.DrawSound ( );
 			}
+		}
+
+		if ( Files::g_IniRead.function.noflash && Files::g_IniRead.noflash.enable )
+		{
+			Functions::g_NoFlash.HUD_Redraw ( );
 		}
 	}
 
