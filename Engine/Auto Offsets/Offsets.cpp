@@ -9,7 +9,9 @@ namespace Engine
 		va_list argumentPtr;
 
 		va_start ( argumentPtr, Message );
+
 		vsprintf_s ( Text, Message, argumentPtr );
+
 		va_end ( argumentPtr );
 
 		MessageBox ( 0, Text, ERROR_HEADER, MB_OK | MB_ICONERROR );
@@ -139,14 +141,7 @@ namespace Engine
 
 	DWORD Offset::FindPushString ( DWORD Start, DWORD End, DWORD Address )
 	{
-		char Pattern[5] =
-		{
-			0x68,
-			0x00,
-			0x00,
-			0x00,
-			0x00
-		};
+		char Pattern[5] = { 0x68, 0x00, 0x00, 0x00, 0x00 };
 
 		*( PDWORD )&Pattern[1] = Address;
 
@@ -162,11 +157,7 @@ namespace Engine
 	{
 		DWORD ClientPattern = FindString ( CLIENT_PATTERN, HwBase, HwEnd, 0 );
 
-		BYTE ClientOffset[2] =
-		{
-			0x10,
-			0x13
-		};
+		BYTE ClientOffset[2] = { 0x10, 0x13 };
 
 		if ( ClientPattern )
 		{
@@ -174,8 +165,7 @@ namespace Engine
 			{
 				DWORD ClientTablePtr = *( PDWORD )( FindPushString ( HwBase, HwEnd, ClientPattern ) + ClientOffset[i] );
 
-				if ( !FarProc ( ClientTablePtr, HwBase, HwEnd ) &&
-					!IsBadReadPtr ( ( PVOID )ClientTablePtr, sizeof ( cl_clientfunc_t ) ) )
+				if ( !FarProc ( ClientTablePtr, HwBase, HwEnd ) && !IsBadReadPtr ( ( PVOID )ClientTablePtr, sizeof ( cl_clientfunc_t ) ) )
 				{
 					return ClientTablePtr;
 				}
@@ -187,23 +177,14 @@ namespace Engine
 
 	DWORD Offset::FindEngineTable ( )
 	{
-		BYTE EngineOffset[7] =
-		{
-			0x22,
-			0x23,
-			0x1C,
-			0x1D,
-			0x37,
-			0x2D,
-			0x0E
-		};
+		BYTE EngineOffset[7] = { 0x22, 0x23, 0x1C, 0x1D, 0x37, 0x2D, 0x0E };
 
 		for ( BYTE Offset = 0; Offset < sizeof ( EngineOffset ); ++Offset )
 		{
 			PVOID EnginePtr = ( cl_enginefunc_t* )*( PDWORD )( ( DWORD )g_pClient->Initialize + EngineOffset[Offset] );
 
-			if ( FarProc ( ( DWORD )EnginePtr, HwBase, HwEnd ) &&
-				FarProc ( ( DWORD )EnginePtr, HlBase, HlEnd ) && !FarProc ( ( DWORD )EnginePtr, ClBase, ClEnd ) )
+			if ( FarProc ( ( DWORD )EnginePtr, HwBase, HwEnd ) && FarProc ( ( DWORD )EnginePtr, HlBase, HlEnd ) &&
+				!FarProc ( ( DWORD )EnginePtr, ClBase, ClEnd ) )
 			{
 				return ( DWORD )EnginePtr;
 			}
@@ -236,8 +217,7 @@ namespace Engine
 
 		DWORD StudioTablePtr = *( DWORD* )( ( DWORD )g_pClient->HUD_GetStudioModelInterface + 0x30 );
 
-		if ( FarProc ( StudioTablePtr, HwBase, HwEnd ) && FarProc ( StudioTablePtr, HlBase, HlEnd ) &&
-			FarProc ( StudioTablePtr, ClBase, ClEnd ) )
+		if ( FarProc ( StudioTablePtr, HwBase, HwEnd ) && FarProc ( StudioTablePtr, HlBase, HlEnd ) && FarProc ( StudioTablePtr, ClBase, ClEnd ) )
 		{
 			StudioTablePtr = *( DWORD* )( ( DWORD )g_pClient->HUD_GetStudioModelInterface + 0x1A );
 
@@ -312,7 +292,9 @@ namespace Engine
 		DWORD Address = ( DWORD )cmd->function;
 
 		GameInfo->GameName = *( PCHAR* )( UINT ( Address ) + 1 );
+
 		GameInfo->GameVersion = *( PCHAR* )( UINT ( Address ) + 6 );
+
 		GameInfo->Protocol = *( PBYTE )( UINT ( Address ) + 11 );
 
 		Address = Absolute ( UINT ( Address ) + 23 );
@@ -384,11 +366,7 @@ namespace Engine
 	{
 		DWORD UserMsgPattern = FindString ( USERMSG_PATTERN, HwBase, HwEnd, 0 );
 
-		BYTE Offset_UserMsgBase[2] = 
-		{ 
-			0x16,
-			0x18 
-		};
+		BYTE Offset_UserMsgBase[2] = { 0x16, 0x18 };
 
 		if ( !UserMsgPattern )
 		{
@@ -438,28 +416,20 @@ namespace Engine
 
 		PEngineMsg pEngineMsgBase = ( PEngineMsg )( FindAddress - sizeof ( DWORD ) );
 
-		BYTE Offset_ReadCoord[5] = 
-		{ 
-			0x13,
-			0x15,
-			0x17, 
-			0x0E, 
-			0x0B 
-		};
+		BYTE Offset_ReadCoord[5] = { 0x13, 0x15, 0x17, 0x0E, 0x0B };
 
-		BYTE Offset_SVC_SoundBase[3] = 
-		{
-			0x0E,
-			0x0C,
-			0x16 
-		};
+		BYTE Offset_SVC_SoundBase[3] = { 0x0E, 0x0C, 0x16 };
 
 		if ( pEngineMsgBase )
 		{
 			MSG_ReadByte = ( HL_MSG_ReadByte )Absolute ( ( ( DWORD )pEngineMsgBase[SVC_CDTRACK].pfn ) + 1 );
+
 			MSG_ReadShort = ( HL_MSG_ReadShort )Absolute ( ( ( DWORD )pEngineMsgBase[SVC_STOPSOUND].pfn ) + 1 );
+
 			MSG_ReadLong = ( HL_MSG_ReadLong )Absolute ( ( ( DWORD )pEngineMsgBase[SVC_VERSION].pfn ) + 1 );
+
 			MSG_ReadFloat = ( HL_MSG_ReadFloat )Absolute ( ( ( DWORD )pEngineMsgBase[SVC_TIMESCALE].pfn ) + 1 );
+
 			MSG_ReadString = ( HL_MSG_ReadString )Absolute ( ( ( DWORD )pEngineMsgBase[SVC_PRINT].pfn ) + 1 );
 
 			DWORD CallMSG_ReadCoord = Absolute ( ( DWORD )( pEngineMsgBase[SVC_PARTICLE].pfn ) + 1 );
@@ -479,7 +449,9 @@ namespace Engine
 		NextFind1:
 
 			MSG_ReadCount = *( PINT* )( ( INT )( MSG_ReadByte )+1 );
+
 			MSG_CurrentSize = *( PINT* )( ( INT )( MSG_ReadByte )+7 );
+
 			MSG_BadRead = *( PINT* )( ( INT )( MSG_ReadByte )+20 );
 
 			DWORD SVC_SoundBase = ( DWORD )pEngineMsgBase[SVC_SOUND].pfn;
@@ -489,7 +461,9 @@ namespace Engine
 				if ( *( PBYTE )( SVC_SoundBase + Offset_SVC_SoundBase[Offset] ) == 0xE8 )
 				{
 					MSG_Buffer = ( sizebuf_t * )( *( PDWORD )( SVC_SoundBase + Offset_SVC_SoundBase[Offset] - 4 ) );
+
 					MSG_StartBitReading = ( HL_MSG_StartBitReading )Absolute ( SVC_SoundBase + Offset_SVC_SoundBase[Offset] + 1 );
+
 					MSG_ReadBits = ( HL_MSG_ReadBits )Absolute ( SVC_SoundBase + Offset_SVC_SoundBase[Offset] + 8 );
 
 					goto NextFind2;
@@ -503,16 +477,19 @@ namespace Engine
 			if ( *( PBYTE )( SVC_SoundBase + 0xD6 ) == 0xE8 )
 			{
 				MSG_EndBitReading = ( HL_MSG_EndBitReading )Absolute ( SVC_SoundBase + 0xD7 );
+
 				MSG_ReadBitVec3Coord = ( HL_MSG_ReadBitVec3Coord )Absolute ( SVC_SoundBase + 0xAF );
 			}
 			else if ( *( PBYTE )( SVC_SoundBase + 0xE2 ) == 0xE8 )
 			{
 				MSG_EndBitReading = ( HL_MSG_EndBitReading )Absolute ( SVC_SoundBase + 0xE3 );
+
 				MSG_ReadBitVec3Coord = ( HL_MSG_ReadBitVec3Coord )Absolute ( SVC_SoundBase + 0xBE );
 			}
 			else if ( *( PBYTE )( SVC_SoundBase + 0xDD ) == 0xE8 )
 			{
 				MSG_EndBitReading = ( HL_MSG_EndBitReading )Absolute ( SVC_SoundBase + 0xDE );
+
 				MSG_ReadBitVec3Coord = ( HL_MSG_ReadBitVec3Coord )Absolute ( SVC_SoundBase + 0xB9 );
 			}
 			else

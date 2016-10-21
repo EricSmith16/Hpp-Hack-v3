@@ -9,8 +9,7 @@ namespace Engine
 
 	bool PlayerInfo::isValidEntity ( struct cl_entity_s *Entity, struct cl_entity_s *Local )
 	{
-		return Local->index != Entity->index && isAliveEntity ( Entity ) &&
-			!( Entity->curstate.messagenum < Local->curstate.messagenum ) &&
+		return Local->index != Entity->index && isAliveEntity ( Entity ) && !( Entity->curstate.messagenum < Local->curstate.messagenum ) &&
 			!( Local->curstate.iuser1 == 4 && Local->curstate.iuser2 == Entity->index );
 	}
 

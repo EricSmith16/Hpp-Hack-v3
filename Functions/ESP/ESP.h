@@ -10,15 +10,17 @@ namespace Functions
 		int EntityIndex, SoundIndex;
 
 		//Get distance to player
-		__inline static float GetPlayerDistance ( struct cl_entity_s *Entity, struct cl_entity_s *Local, bool Meters );
+		inline static float GetPlayerDistance ( struct cl_entity_s *Entity, struct cl_entity_s *Local, bool Meters );
 		//Get player box color
-		__inline static void GetColorPlayerBox ( int Index );
+		inline static void GetColorPlayerBox ( int Index );
+		//Get font color
+		inline static void GetColorFont ( );
 		//Add entity
-		__inline static void AddEntity ( char* Name, int Important, Vector Origin, BYTE Type );
+		inline static void AddEntity ( char* Name, int Important, Vector Origin, BYTE Type );
 		//Clear all entities
-		__inline static void ClearEntity ( );
+		inline static void ClearEntity ( );
 		//Clear all sounds
-		__inline static void ClearSound ( );
+		inline static void ClearSound ( );
 
 	public:
 		//Drawing player esp
@@ -26,7 +28,7 @@ namespace Functions
 		//Drawing world esp
 		static void DrawWorld ( );
 		//Drawing sound esp
-		static void DrawSound ( );	
+		static void DrawSound ( );
 		//Add sound
 		static void AddSound ( DWORD Time, Vector Origin );
 
@@ -59,4 +61,11 @@ namespace Functions
 	};
 
 	extern player_box_s player_box;
+
+	struct font_s
+	{
+		BYTE color[3];
+	};
+
+	extern font_s font;
 }

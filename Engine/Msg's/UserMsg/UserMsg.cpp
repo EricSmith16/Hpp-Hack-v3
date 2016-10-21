@@ -24,10 +24,10 @@ namespace Engine
 	{
 		BEGIN_READ ( pbuf, iSize );
 
+		struct cl_entity_s *Local = g_Engine.GetLocalPlayer ( );
+
 		int Index = READ_BYTE( );
 		char *Team = READ_STRING ( );
-
-		struct cl_entity_s *Local = g_Engine.GetLocalPlayer ( );
 
 		if ( !strcmp ( Team, TERRORIST_UMSG ) )
 		{

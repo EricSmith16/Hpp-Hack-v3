@@ -1,5 +1,7 @@
 #include "Main.h"
 
+#pragma warning (disable: 4100)
+
 namespace Engine
 {
 	PColor24 Console_TextColor;
@@ -16,6 +18,8 @@ namespace Engine
 	engine_studio_api_t g_Studio;
 
 	char* BaseDir;
+
+	bool FirstFrame = false;
 }
 
 DWORD WINAPI ProcessReload ( LPVOID lpThreadParameter );
@@ -91,10 +95,10 @@ StartHook:
 
 						if ( Engine::g_Studio.StudioSetupSkin )
 						{
-							while ( !FirstFrame )
-							{
-								HookStudio ( );
-								HookFunction ( );
+							while ( !Engine::FirstFrame )
+							{						
+								Client::g_Hpp.HookFunction ( );
+								Client::g_Hpp.HookStudio ( );
 
 								Sleep ( 100 );
 							}
@@ -138,11 +142,11 @@ DWORD WINAPI ProcessReload ( LPVOID lpThreadParameter )
 {
 	while ( true )
 	{
-		if ( FirstFrame )
+		if ( Engine::FirstFrame )
 		{
 			if ( !Engine::g_Offset.GetModuleInfo ( ) )
 			{
-				FirstFrame = false;
+				Engine::FirstFrame = false;
 			}
 		}
 		else
@@ -150,7 +154,7 @@ DWORD WINAPI ProcessReload ( LPVOID lpThreadParameter )
 			CreateThread ( 0, 0, CheatEntry, 0, 0, 0 );
 		}
 
-		Sleep ( 50 );
+		Sleep ( 100 );
 	}
 
 	return 0;

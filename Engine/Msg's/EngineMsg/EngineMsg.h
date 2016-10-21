@@ -4,6 +4,24 @@
 
 namespace Engine
 {
+	class EngineMsg
+	{
+	public:
+		static void MSG_SaveReadCount ( );
+		static void MSG_RestoreReadCount ( );
+
+		static void SVC_Sound ( );
+		static void SVC_SpawnStaticSound ( );
+		static void SVC_NewUserMsg ( );
+		static void SVC_UpdateUserInfo ( );
+		static void SVC_StuffText ( );
+		static void SVC_SendCvarValue ( );
+		static void SVC_SendCvarValue2 ( );
+		static void SVC_Director ( );
+	};
+
+	extern EngineMsg g_EngineMsg;
+
 	typedef byte ( *HL_MSG_ReadByte )( );
 	typedef short ( *HL_MSG_ReadShort )( );
 	typedef int ( *HL_MSG_ReadLong )( );
@@ -42,16 +60,4 @@ namespace Engine
 	extern pfnEngineMsgHook pSVC_SendCvarValue;
 	extern pfnEngineMsgHook pSVC_SendCvarValue2;
 	extern pfnEngineMsgHook pSVC_Director;
-
-	void MSG_SaveReadCount ( );
-	void MSG_RestoreReadCount ( );
-
-	void SVC_Sound ( );
-	void SVC_SpawnStaticSound ( );
-	void SVC_NewUserMsg ( );
-	void SVC_UpdateUserInfo ( );
-	void SVC_StuffText ( );
-	void SVC_SendCvarValue ( );
-	void SVC_SendCvarValue2 ( );
-	void SVC_Director ( );
 }

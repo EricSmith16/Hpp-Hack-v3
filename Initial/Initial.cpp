@@ -1,5 +1,7 @@
 #include "Initial.h"
 
+#pragma warning (disable: 4244)
+
 Init g_Init;
 
 void Init::InitHack ( )
@@ -15,13 +17,13 @@ void Init::InitHack ( )
 
 		g_Util.ConsolePrintColor ( 255, 240, 0, "Information about game:\n" );
 		g_Util.ConsolePrintColor ( 0, 230, 230, "\t\tName: " );
-		g_Util.ConsolePrintColor ( 255, 200, 0, BuildInfo.GameName );
+		g_Util.ConsolePrintColor ( 255, 200, 0, Client::BuildInfo.GameName );
 		g_Util.ConsolePrintColor ( 0, 230, 230, "\n\t\tVersion: " );
-		g_Util.ConsolePrintColor ( 255, 200, 0, BuildInfo.GameVersion );
+		g_Util.ConsolePrintColor ( 255, 200, 0, Client::BuildInfo.GameVersion );
 		g_Util.ConsolePrintColor ( 0, 230, 230, "\n\t\tProtocol: " );
-		g_Util.ConsolePrintColor ( 255, 200, 0, BuildInfo.Protocol );
+		g_Util.ConsolePrintColor ( 255, 200, 0, Client::BuildInfo.Protocol );
 		g_Util.ConsolePrintColor ( 0, 230, 230, "\n\t\tBuild: " );
-		g_Util.ConsolePrintColor ( 255, 200, 0, BuildInfo.Build );
+		g_Util.ConsolePrintColor ( 255, 200, 0, Client::BuildInfo.Build );
 		g_Util.ConsolePrintColor ( 0, 230, 230, "\n\t\tRender: " );
 		g_Util.ConsolePrintColor ( 255, 200, 0, g_Util.ConvertTypeToRenderString ( Engine::g_Offset.HLType ) );
 
@@ -40,13 +42,13 @@ void Init::InitHack ( )
 
 		g_Util.ConsolePrintColor ( 255, 240, 0, "Информация о игре:\n" );
 		g_Util.ConsolePrintColor ( 0, 230, 230, "\t\tНазвание:: " );
-		g_Util.ConsolePrintColor ( 255, 200, 0, BuildInfo.GameName );
+		g_Util.ConsolePrintColor ( 255, 200, 0, Client::BuildInfo.GameName );
 		g_Util.ConsolePrintColor ( 0, 230, 230, "\n\t\tВерсия: " );
-		g_Util.ConsolePrintColor ( 255, 200, 0, BuildInfo.GameVersion );
+		g_Util.ConsolePrintColor ( 255, 200, 0, Client::BuildInfo.GameVersion );
 		g_Util.ConsolePrintColor ( 0, 230, 230, "\n\t\tПротокол: " );
-		g_Util.ConsolePrintColor ( 255, 200, 0, BuildInfo.Protocol );
+		g_Util.ConsolePrintColor ( 255, 200, 0, Client::BuildInfo.Protocol );
 		g_Util.ConsolePrintColor ( 0, 230, 230, "\n\t\tПостроение: " );
-		g_Util.ConsolePrintColor ( 255, 200, 0, BuildInfo.Build );
+		g_Util.ConsolePrintColor ( 255, 200, 0, Client::BuildInfo.Build );
 		g_Util.ConsolePrintColor ( 0, 230, 230, "\n\t\tРендер: " );
 		g_Util.ConsolePrintColor ( 255, 200, 0, g_Util.ConvertTypeToRenderString ( Engine::g_Offset.HLType ) );
 
@@ -63,8 +65,9 @@ void Init::InitHack ( )
 
 void Init::LoadSettings ( )
 {
-	Engine::g_Font.InitText ( LUCIDA_CONSOLE, 12, 9 );
-	Engine::g_Verdana.InitText ( VERDANA, 13, 6 );
+	Renderer::g_Font.InitText ( LUCIDA_CONSOLE, 12, 9 );
+
+	Renderer::g_Verdana.InitText ( VERDANA, 13, 6 );
 
 	if ( Files::g_File.FileExists ( Files::g_File.DirFile ( FUNCTIONS_PATH ).c_str ( ) ) )
 	{

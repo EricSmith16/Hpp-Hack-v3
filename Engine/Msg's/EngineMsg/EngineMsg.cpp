@@ -30,17 +30,17 @@ namespace Engine
 	pfnEngineMsgHook pSVC_SendCvarValue2;
 	pfnEngineMsgHook pSVC_Director;
 
-	void MSG_SaveReadCount ( )
+	void EngineMsg::MSG_SaveReadCount ( )
 	{
 		MSG_SavedReadCount = *MSG_ReadCount;
 	}
 
-	void MSG_RestoreReadCount ( )
+	void EngineMsg::MSG_RestoreReadCount ( )
 	{
 		*MSG_ReadCount = MSG_SavedReadCount;
 	}
 
-	void SVC_Sound ( )
+	void EngineMsg::SVC_Sound ( )
 	{
 		MSG_SaveReadCount ( );
 
@@ -99,10 +99,11 @@ namespace Engine
 		}
 
 		MSG_RestoreReadCount ( );
+
 		pSVC_sound ( );
 	}
 
-	void SVC_SpawnStaticSound ( )
+	void EngineMsg::SVC_SpawnStaticSound ( )
 	{
 		MSG_SaveReadCount ( );
 
@@ -137,18 +138,20 @@ namespace Engine
 		MSG_EndBitReading ( MSG_Buffer );
 
 		MSG_RestoreReadCount ( );
+
 		pSVC_SpawnStaticSound ( );
 	}
 
-	void SVC_NewUserMsg ( )
+	void EngineMsg::SVC_NewUserMsg ( )
 	{
 		MSG_SaveReadCount ( );
 
 		MSG_RestoreReadCount ( );
+
 		pSVC_NewUserMsg ( );
 	}
 
-	void SVC_UpdateUserInfo ( )
+	void EngineMsg::SVC_UpdateUserInfo ( )
 	{
 		MSG_SaveReadCount ( );
 
@@ -160,38 +163,45 @@ namespace Engine
 		}
 
 		MSG_RestoreReadCount ( );
+
 		pSVC_UpdateUserInfo ( );
 	}
 
-	void SVC_StuffText ( )
+	void EngineMsg::SVC_StuffText ( )
 	{
 		MSG_SaveReadCount ( );
 
 		MSG_RestoreReadCount ( );
+
 		pSVC_StuffText ( );
 	}
 
-	void SVC_SendCvarValue ( )
+	void EngineMsg::SVC_SendCvarValue ( )
 	{
 		MSG_SaveReadCount ( );
 
 		MSG_RestoreReadCount ( );
+
 		pSVC_SendCvarValue ( );
 	}
 
-	void SVC_SendCvarValue2 ( )
+	void EngineMsg::SVC_SendCvarValue2 ( )
 	{
 		MSG_SaveReadCount ( );
 
 		MSG_RestoreReadCount ( );
+
 		pSVC_SendCvarValue2 ( );
 	}
 
-	void SVC_Director ( )
+	void EngineMsg::SVC_Director ( )
 	{
 		MSG_SaveReadCount ( );
 
 		MSG_RestoreReadCount ( );
+
 		pSVC_Director ( );
 	}
+
+	EngineMsg g_EngineMsg;
 }

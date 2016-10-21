@@ -1,6 +1,7 @@
 #include "IniRead.h"
 
-#pragma warning(disable: 4800)
+#pragma warning (disable: 4800)
+#pragma warning (disable: 4458)
 
 namespace Files
 {
@@ -14,7 +15,6 @@ namespace Files
 		INIREAD_INT ( player_visible_only, esp, mESP, ESP_PLAYER_VISIBLE_ONLY );
 
 		INIREAD_INT ( player_box, esp, mESP, ESP_PLAYER_BOX );
-		INIREAD_INT ( player_box_3d, esp, mESP, ESP_PLAYER_BOX_3D );
 		INIREAD_INT ( player_box_outline, esp, mESP, ESP_PLAYER_BOX_OUTLINE );
 		INIREAD_INT ( player_box_linewidth, esp, mESP, ESP_PLAYER_BOX_LW );
 		INIREAD ( t_vis_color_string, esp, mESP, ESP_PLAYER_BOX_T_VIS );

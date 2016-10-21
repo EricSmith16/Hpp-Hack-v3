@@ -1,10 +1,10 @@
 #include "Font.h"
 
-namespace Engine
+namespace Renderer
 {
 	void Font::InitText ( char* Font, int Height, int Width )
 	{
-		if ( g_Offset.HLType != RENDERTYPE_HARDWARE )
+		if ( Engine::g_Offset.HLType != RENDERTYPE_HARDWARE )
 		{
 			return;
 		}
@@ -17,7 +17,7 @@ namespace Engine
 		hDC = wglGetCurrentDC ( );
 		g_FontListID = glGenLists ( 256 );
 
-		hFont = CreateFont ( Height, Width, 0, 0, FW_NORMAL, FALSE, FALSE, FALSE, ANSI_CHARSET,
+		hFont = CreateFont ( Height, Width, 0, 0, FW_NORMAL, FALSE, FALSE, FALSE, RUSSIAN_CHARSET,
 			OUT_CHARACTER_PRECIS, CLIP_CHARACTER_PRECIS, CLEARTYPE_NATURAL_QUALITY, FF_DONTCARE | VARIABLE_PITCH, Font );
 
 		hOldFont = ( HFONT )SelectObject ( hDC, hFont );

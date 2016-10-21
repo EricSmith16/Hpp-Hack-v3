@@ -13,13 +13,13 @@ namespace Files
 		char* font_color_string;
 		char* sound_color_string;
 
-		short sound_fade_time;
+		int sound_fade_time;
 
-		BYTE player;
+		int player;
 
-		BYTE player_box_linewidth;
+		int player_box_linewidth;
 
-		BYTE player_distance;
+		int player_distance;
 
 		BYTE t_vis_color[3];
 		BYTE t_hide_color[3];
@@ -33,7 +33,6 @@ namespace Files
 		bool player_visible_only;
 
 		bool player_box;
-		bool player_box_3d;
 		bool player_box_outline;
 
 		bool player_name;

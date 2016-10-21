@@ -2,7 +2,7 @@
 
 #include "Main.h"
 
-namespace Engine
+namespace Renderer
 {
 	class Font
 	{

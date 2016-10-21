@@ -160,4 +160,6 @@ namespace Engine
 	extern PEngineMsg g_pEngineMsgBase;
 
 	extern char* BaseDir;
+
+	extern bool FirstFrame;
 }
