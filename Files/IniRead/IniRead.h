@@ -6,12 +6,15 @@ namespace Files
 {
 	struct noflash_s
 	{
-		int show_percentage;
+		char* fade_color_string;
 
+		int show_percentage;
 		int fade_limit;
 
-		bool enable;
+		BYTE fade_color[3];
 
+		bool enable;
+		bool fade_color_random;
 		bool font_outline;
 	};
 
@@ -27,10 +30,10 @@ namespace Files
 		int sound_fade_time;
 
 		int player;
-
 		int player_box_linewidth;
-
 		int player_distance;
+
+		int panic_key;
 
 		BYTE t_vis_color[3];
 		BYTE t_hide_color[3];
@@ -42,10 +45,8 @@ namespace Files
 		bool enable;
 
 		bool player_visible_only;
-
 		bool player_box;
 		bool player_box_outline;
-
 		bool player_name;
 		bool player_weapon;
 
@@ -55,13 +56,13 @@ namespace Files
 		bool world_sprites;
 
 		bool font_outline;
-
 		bool sound;
 	};
 
 	struct main_s
 	{
 		int reload_key;
+		int panic_key;
 
 		bool language;
 	};

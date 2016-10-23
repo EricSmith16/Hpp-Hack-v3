@@ -11,8 +11,12 @@ namespace Files
 
 		INIREAD_INT ( enable, noflash, NOFLASH, NOFLASH_ENABLE );
 		INIREAD_INT ( fade_limit, noflash, NOFLASH, NOFLASH_FADELIMIT );
+		INIREAD ( fade_color_string, noflash, NOFLASH, NOFLASH_FADECOLOR );
+		INIREAD_INT ( fade_color_random, noflash, NOFLASH, NOFLASH_FADECOLORRANDOM );
 		INIREAD_INT ( show_percentage, noflash, NOFLASH, NOFLASH_SHOWPERCENTAGE );
 		INIREAD_INT ( font_outline, noflash, NOFLASH, NOFLASH_FONT_OUTLINE );
+
+		g_Util.Parse ( 3, g_IniRead.noflash.fade_color_string, g_IniRead.noflash.fade_color );
 	}
 
 	void IniRead::ESP ( )
@@ -48,6 +52,8 @@ namespace Files
 		INIREAD_INT ( sound_fade_time, esp, mESP, ESP_SOUND_FADE_TIME );
 		INIREAD ( sound_color_string, esp, mESP, ESP_SOUND_COLOR );
 
+		INIREAD_STRING ( panic_key, esp, mESP, ESP_PANIC_KEY );
+
 		g_Util.Parse ( 3, g_IniRead.esp.t_vis_color_string, g_IniRead.esp.t_vis_color );
 		g_Util.Parse ( 3, g_IniRead.esp.t_hide_color_string, g_IniRead.esp.t_hide_color );
 		g_Util.Parse ( 3, g_IniRead.esp.ct_vis_color_string, g_IniRead.esp.ct_vis_color );
@@ -63,6 +69,7 @@ namespace Files
 		INIREAD_STRING ( language, main, MAIN, MAIN_LANGUAGE );
 
 		INIREAD_STRING ( reload_key, main, MAIN, MAIN_RELOAD_KEY );
+		INIREAD_STRING ( panic_key, main, MAIN, MAIN_PANIC_KEY );
 	}
 
 	void IniRead::Functions ( )

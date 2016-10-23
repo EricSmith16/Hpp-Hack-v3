@@ -15,6 +15,8 @@ namespace Functions
 		inline static void GetColorPlayerBox ( int Index );
 		//Get font color
 		inline static void GetColorFont ( );
+		//Get sound color
+		inline static void GetColorSound ( );
 		//Add entity
 		inline static void AddEntity ( char* Name, int Important, Vector Origin, BYTE Type );
 		//Clear all entities
@@ -22,7 +24,11 @@ namespace Functions
 		//Clear all sounds
 		inline static void ClearSound ( );
 
+		inline static void Panic ( bool enabled );
+
 	public:
+		static bool PanicEnabled;
+
 		//Drawing player esp
 		static void DrawPlayer ( struct cl_entity_s *Entity, struct cl_entity_s *Local, int Index );
 		//Drawing world esp
@@ -31,6 +37,8 @@ namespace Functions
 		static void DrawSound ( );
 		//Add sound
 		static void AddSound ( DWORD Time, Vector Origin );
+
+		static void PanicKey ( int keynum );
 
 		static void HUD_AddEntity ( struct cl_entity_s *Entity );
 	};
@@ -68,4 +76,11 @@ namespace Functions
 	};
 
 	extern font_s font;
+
+	struct sound_clr_s
+	{
+		BYTE color[3];
+	};
+
+	extern sound_clr_s clr_sound;
 }

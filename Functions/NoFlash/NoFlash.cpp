@@ -165,7 +165,14 @@ namespace Functions
 			Flashed = 0;
 		}
 
-		SetFadeColorRandom ( Flashed );
+		if ( Files::g_IniRead.noflash.fade_color_random )
+		{
+			SetFadeColorRandom ( Flashed );
+		}
+		else
+		{
+			SetFadeColor ( );
+		}
 
 		float Percentage = ( Flashed / 255 ) * 100;
 

@@ -2,13 +2,24 @@
 
 #include "Main.h"
 
-class Init
+namespace Initial
 {
-public:
-	void InitHack ( );
+	class Init
+	{
+	private:
+		static bool PanicEnabled;
 
-	void LoadSettings ( );
-	void ReloadSettings ( );
-};
+		inline void ReloadSettings ( );
+		inline void Panic ( bool enabled );
 
-extern Init g_Init;
+	public:
+		void InitHack ( );
+
+		void LoadSettings ( );
+
+		void ReloadKey ( int keynum );
+		void PanicKey ( int keynum );
+	};
+
+	extern Init g_Init;
+}

@@ -28,8 +28,8 @@ namespace Client
 			HookUserMessages ( );
 			HookEngineMessages ( );
 
-			g_Init.LoadSettings ( );
-			g_Init.InitHack ( );
+			Initial::g_Init.LoadSettings ( );
+			Initial::g_Init.InitHack ( );
 
 			Engine::FirstFrame = true;
 		}
@@ -100,29 +100,22 @@ namespace Client
 
 	int Hpp::HUD_AddEntity ( int type, struct cl_entity_s *ent, const char *modelname )
 	{
-		Functions::g_ESP.HUD_AddEntity ( ent );
+		if ( Files::g_IniRead.function.esp && Files::g_IniRead.esp.enable && Files::g_IniRead.esp.world )
+		{
+			Functions::g_ESP.HUD_AddEntity ( ent );
+		}
 
 		return Engine::g_Client.HUD_AddEntity ( type, ent, modelname );
 	}
 
 	int Hpp::HUD_Key_Event ( int down, int keynum, const char *pszCurrentBinding )
 	{
-		if ( keynum == Files::g_IniRead.main.reload_key )
+		Initial::g_Init.ReloadKey ( keynum );
+		Initial::g_Init.PanicKey ( keynum );
+
+		if ( Files::g_IniRead.function.esp )
 		{
-			g_Init.ReloadSettings ( );
-
-			if ( Files::g_IniRead.main.language )
-			{
-				g_Util.ConsolePrintColor ( 100, 255, 200, HPP );
-				g_Util.ConsolePrintColor ( 200, 255, 200, SETTINGS_RELOADED_ENG );
-			}
-			else
-			{
-				g_Util.ConsolePrintColor ( 100, 255, 200, HPP );
-				g_Util.ConsolePrintColor ( 200, 255, 200, SETTINGS_RELOADED_RUS );
-			}
-
-			Engine::g_Engine.pfnPlaySoundByName ( "vox/ok.wav", 1 );
+			Functions::g_ESP.PanicKey ( keynum );
 		}
 
 		return Engine::g_Client.HUD_Key_Event ( down, keynum, pszCurrentBinding );
