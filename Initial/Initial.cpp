@@ -144,7 +144,7 @@ namespace Initial
 		{
 			if ( Files::g_IniRead.function.esp )
 			{
-				Files::g_IniRead.esp.enable = false;
+				Files::g_IniRead.esp.enable = 0;
 				Files::g_IniRead.esp.panic_key = 0;
 
 				Functions::g_ESP.PanicEnabled = false;

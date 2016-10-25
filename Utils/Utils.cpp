@@ -193,9 +193,9 @@ void __fastcall Util::ConsolePrintColor ( BYTE R, BYTE G, BYTE B, float String )
 
 char* Util::ConvertTypeToRenderString ( BYTE Type )
 {
-	char* RenderTypeGL = "opengl";
-	char* RenderTypeD3 = "d3d";
-	char* RenderTypeSF = "software";
+	char* RenderTypeGL = "OpenGL";
+	char* RenderTypeD3 = "D3D";
+	char* RenderTypeSF = "Software";
 
 	switch ( Type )
 	{
@@ -323,4 +323,34 @@ float __fastcall Util::Interp ( float s1, float s2, float s3, float f1, float f3
 	}
 
 	return f1 + ( ( s2 - s1 ) / ( s3 - s1 ) )*( ( f3 - f1 ) );
+}
+
+char itoa_buffer[INT_DIGITS + 2];
+
+PCHAR __fastcall Util::itoa ( int i )
+{
+	char *p = itoa_buffer + INT_DIGITS + 1;
+
+	if ( i >= 0 )
+	{
+		do
+		{
+			*--p = '0' + ( i % 10 );
+			i /= 10;
+		} while ( i != 0 );
+
+		return p;
+	}
+	else
+	{
+		do
+		{
+			*--p = '0' - ( i % 10 );
+			i /= 10;
+		} while ( i != 0 );
+
+		*--p = '-';
+	}
+
+	return p;
 }

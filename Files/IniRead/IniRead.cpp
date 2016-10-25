@@ -14,7 +14,6 @@ namespace Files
 		INIREAD ( fade_color_string, noflash, NOFLASH, NOFLASH_FADECOLOR );
 		INIREAD_INT ( fade_color_random, noflash, NOFLASH, NOFLASH_FADECOLORRANDOM );
 		INIREAD_INT ( show_percentage, noflash, NOFLASH, NOFLASH_SHOWPERCENTAGE );
-		INIREAD_INT ( font_outline, noflash, NOFLASH, NOFLASH_FONT_OUTLINE );
 
 		g_Util.Parse ( 3, g_IniRead.noflash.fade_color_string, g_IniRead.noflash.fade_color );
 	}
@@ -31,10 +30,6 @@ namespace Files
 		INIREAD_INT ( player_box, esp, mESP, ESP_PLAYER_BOX );
 		INIREAD_INT ( player_box_outline, esp, mESP, ESP_PLAYER_BOX_OUTLINE );
 		INIREAD_INT ( player_box_linewidth, esp, mESP, ESP_PLAYER_BOX_LW );
-		INIREAD ( t_vis_color_string, esp, mESP, ESP_PLAYER_BOX_T_VIS );
-		INIREAD ( t_hide_color_string, esp, mESP, ESP_PLAYER_BOX_T_HIDE );
-		INIREAD ( ct_vis_color_string, esp, mESP, ESP_PLAYER_BOX_CT_VIS );
-		INIREAD ( ct_hide_color_string, esp, mESP, ESP_PLAYER_BOX_CT_HIDE );
 
 		INIREAD_INT ( player_name, esp, mESP, ESP_PLAYER_NAME );
 		INIREAD_INT ( player_weapon, esp, mESP, ESP_PLAYER_WEAPON );
@@ -45,21 +40,10 @@ namespace Files
 		INIREAD_INT ( world_sprites, esp, mESP, ESP_WORLD_SPRITES );
 		INIREAD_INT ( world_nades, esp, mESP, ESP_WORLD_NADES );
 
-		INIREAD_INT ( font_outline, esp, mESP, ESP_FONT_OUTLINE );
-		INIREAD ( font_color_string, esp, mESP, ESP_FONT_COLOR );
-
 		INIREAD_INT ( sound, esp, mESP, ESP_SOUND );
 		INIREAD_INT ( sound_fade_time, esp, mESP, ESP_SOUND_FADE_TIME );
-		INIREAD ( sound_color_string, esp, mESP, ESP_SOUND_COLOR );
 
 		INIREAD_STRING ( panic_key, esp, mESP, ESP_PANIC_KEY );
-
-		g_Util.Parse ( 3, g_IniRead.esp.t_vis_color_string, g_IniRead.esp.t_vis_color );
-		g_Util.Parse ( 3, g_IniRead.esp.t_hide_color_string, g_IniRead.esp.t_hide_color );
-		g_Util.Parse ( 3, g_IniRead.esp.ct_vis_color_string, g_IniRead.esp.ct_vis_color );
-		g_Util.Parse ( 3, g_IniRead.esp.ct_hide_color_string, g_IniRead.esp.ct_hide_color );
-		g_Util.Parse ( 3, g_IniRead.esp.font_color_string, g_IniRead.esp.font_color );
-		g_Util.Parse ( 3, g_IniRead.esp.sound_color_string, g_IniRead.esp.sound_color );
 	}
 
 	void IniRead::Main ( )

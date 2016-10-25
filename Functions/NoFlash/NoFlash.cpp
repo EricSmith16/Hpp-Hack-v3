@@ -99,13 +99,12 @@ namespace Functions
 		float x = Engine::g_Screen.iWidth / 2;
 		float y = Engine::g_Screen.iHeight / 6;
 
-		Renderer::g_Font.Print ( ( int )x, ( int )y, noflash.color[0], noflash.color[1], 0, 255,
-			Files::g_IniRead.noflash.font_outline ? FL_CENTER | FL_OUTLINE : FL_CENTER, FLASHED, Percentage );
+		Renderer::g_Font.Print ( ( int )x, ( int )y, noflash.color[0], 
+			noflash.color[1], 0, 255, FL_CENTER, FLASHED, Percentage );
 
 		if ( Percentage > 80 )
 		{
-			Renderer::g_Font.Print ( ( int )x, ( int )y + 13, 255, 0, 0, 255,
-				Files::g_IniRead.noflash.font_outline ? FL_CENTER | FL_OUTLINE : FL_CENTER, DONTSEE );
+			Renderer::g_Font.Print ( ( int )x, ( int )y + 13, 255, 0, 0, 255, FL_CENTER, DONTSEE );
 		}
 	}
 
@@ -118,13 +117,11 @@ namespace Functions
 
 		Renderer::g_Drawing.FillArea ( ( int )x - 100, ( int )y - 8, 200, 16, noflash.color[0], noflash.color[1], 0, 200 );
 
-		Renderer::g_Font.Print ( ( int )x, ( int )y + 4, 255, 255, 255, 255, Files::g_IniRead.noflash.font_outline ?
-			FL_CENTER | FL_OUTLINE : FL_CENTER, FLASHED, ( int )Percentage );
+		Renderer::g_Font.Print ( ( int )x, ( int )y + 4, 255, 255, 255, 255, FL_CENTER | FL_OUTLINE, FLASHED, ( int )Percentage );
 
 		if ( Percentage > 80 )
 		{
-			Renderer::g_Font.Print ( ( int )x, ( int )y + 23, 255, 0, 0,
-				255, Files::g_IniRead.noflash.font_outline ? FL_CENTER | FL_OUTLINE : FL_CENTER, DONTSEE );
+			Renderer::g_Font.Print ( ( int )x, ( int )y + 23, 255, 0, 0, 255, FL_CENTER | FL_OUTLINE, DONTSEE );
 		}
 	}
 

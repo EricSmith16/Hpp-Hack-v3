@@ -8,55 +8,38 @@ namespace Files
 	{
 		char* fade_color_string;
 
-		int show_percentage;
+		int fade_color[3];
+
+		int enable;
+
+		int fade_color_random;
 		int fade_limit;
 
-		BYTE fade_color[3];
-
-		bool enable;
-		bool fade_color_random;
-		bool font_outline;
+		int show_percentage;	
 	};
 
 	struct esp_s
 	{
-		char* t_vis_color_string;
-		char* t_hide_color_string;
-		char* ct_vis_color_string;
-		char* ct_hide_color_string;
-		char* font_color_string;
-		char* sound_color_string;
-
-		int sound_fade_time;
+		int enable;
 
 		int player;
+		int player_visible_only;
+		int player_box;
+		int player_box_outline;
 		int player_box_linewidth;
+		int player_name;
+		int player_weapon;
 		int player_distance;
 
+		int world;
+		int world_weapons;
+		int world_nades;
+		int world_sprites;
+
+		int sound;
+		int sound_fade_time;
+
 		int panic_key;
-
-		BYTE t_vis_color[3];
-		BYTE t_hide_color[3];
-		BYTE ct_vis_color[3];
-		BYTE ct_hide_color[3];
-		BYTE font_color[3];
-		BYTE sound_color[3];
-
-		bool enable;
-
-		bool player_visible_only;
-		bool player_box;
-		bool player_box_outline;
-		bool player_name;
-		bool player_weapon;
-
-		bool world;
-		bool world_weapons;
-		bool world_nades;
-		bool world_sprites;
-
-		bool font_outline;
-		bool sound;
 	};
 
 	struct main_s

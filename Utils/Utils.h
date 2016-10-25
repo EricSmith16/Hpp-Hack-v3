@@ -9,6 +9,8 @@ pfnEngineMsgHook HookEngineMsg ( char *MsgName, pfnEngineMsgHook pfn );
 class Util
 {
 public:
+	PCHAR __fastcall Util::itoa ( int i );
+
 	char* ConvertTypeToRenderString ( BYTE Type );
 
 	char* __fastcall native_strstr ( char *in, char *str );
@@ -35,3 +37,5 @@ public:
 };
 
 extern Util g_Util;
+
+extern char itoa_buffer[INT_DIGITS + 2];

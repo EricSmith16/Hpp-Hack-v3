@@ -82,6 +82,8 @@ namespace Client
 		{
 			Functions::g_NoFlash.HUD_Redraw ( );
 		}
+
+		Renderer::g_Menu.Draw ( Engine::g_Screen.iWidth / 8, Engine::g_Screen.iHeight / 6 );
 	}
 
 	void Hpp::StudioEntityLight ( struct alight_s *plight )
@@ -110,6 +112,8 @@ namespace Client
 
 	int Hpp::HUD_Key_Event ( int down, int keynum, const char *pszCurrentBinding )
 	{
+		Renderer::g_Menu.KeyEvent ( keynum );
+
 		Initial::g_Init.ReloadKey ( keynum );
 		Initial::g_Init.PanicKey ( keynum );
 

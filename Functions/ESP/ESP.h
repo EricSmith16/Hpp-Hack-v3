@@ -13,10 +13,6 @@ namespace Functions
 		inline static float GetPlayerDistance ( struct cl_entity_s *Entity, struct cl_entity_s *Local, bool Meters );
 		//Get player box color
 		inline static void GetColorPlayerBox ( int Index );
-		//Get font color
-		inline static void GetColorFont ( );
-		//Get sound color
-		inline static void GetColorSound ( );
 		//Add entity
 		inline static void AddEntity ( char* Name, int Important, Vector Origin, BYTE Type );
 		//Clear all entities
@@ -69,18 +65,4 @@ namespace Functions
 	};
 
 	extern player_box_s player_box;
-
-	struct font_s
-	{
-		BYTE color[3];
-	};
-
-	extern font_s font;
-
-	struct sound_clr_s
-	{
-		BYTE color[3];
-	};
-
-	extern sound_clr_s clr_sound;
 }
