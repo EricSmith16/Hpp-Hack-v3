@@ -7,36 +7,30 @@ namespace Functions
 	class ESP
 	{
 	private:
-		int EntityIndex, SoundIndex;
+		static int EntityIndex, SoundIndex;
 
-		//Get distance to player
-		inline static float GetPlayerDistance ( struct cl_entity_s *Entity, struct cl_entity_s *Local, bool Meters );
-		//Get player box color
+		inline static float GetPlayerDistance ( int Index, bool Meters );
 		inline static void GetColorPlayerBox ( int Index );
-		//Add entity
-		inline static void AddEntity ( char* Name, int Important, Vector Origin, BYTE Type );
-		//Clear all entities
-		inline static void ClearEntity ( );
-		//Clear all sounds
-		inline static void ClearSound ( );
+
+		static void _fastcall AddEntity ( char* Name, int Important, Vector Origin, BYTE Type );
+
+		static void _fastcall ClearEntity ( );
+		static void _fastcall ClearSound ( );
 
 		inline static void Panic ( bool enabled );
 
 	public:
 		static bool PanicEnabled;
 
-		//Drawing player esp
-		static void DrawPlayer ( struct cl_entity_s *Entity, struct cl_entity_s *Local, int Index );
-		//Drawing world esp
-		static void DrawWorld ( );
-		//Drawing sound esp
-		static void DrawSound ( );
-		//Add sound
-		static void AddSound ( DWORD Time, Vector Origin );
+		static void _fastcall DrawPlayer ( int Index );
+		static void _fastcall DrawWorld ( );
+		static void _fastcall DrawSound ( );
+
+		static void _fastcall AddSound ( DWORD Time, Vector Origin );
 
 		static void PanicKey ( int keynum );
 
-		static void HUD_AddEntity ( struct cl_entity_s *Entity );
+		static void _fastcall HUD_AddEntity ( struct cl_entity_s *Entity );
 	};
 
 	extern ESP g_ESP;
@@ -47,7 +41,7 @@ namespace Functions
 		DWORD Time;
 	};
 
-	extern sound_s sound[MAX_SOUNDS];
+	extern sound_s Sound[MAX_SOUNDS];
 
 	struct entity_s
 	{
@@ -57,7 +51,7 @@ namespace Functions
 		BYTE Type;
 	};
 
-	extern entity_s entity[MAX_ENTITY];
+	extern entity_s Entity[MAX_ENTITY];
 
 	struct player_box_s
 	{

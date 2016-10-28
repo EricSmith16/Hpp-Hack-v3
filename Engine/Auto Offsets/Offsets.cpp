@@ -7,11 +7,8 @@ namespace Engine
 		char Text[256];
 
 		va_list argumentPtr;
-
 		va_start ( argumentPtr, Message );
-
 		vsprintf_s ( Text, Message, argumentPtr );
-
 		va_end ( argumentPtr );
 
 		MessageBox ( 0, Text, ERROR_HEADER, MB_OK | MB_ICONERROR );
@@ -83,7 +80,7 @@ namespace Engine
 		return ( HwBase && ClBase && VgBase );
 	}
 
-	DWORD Offset::FindString ( PCHAR String, DWORD Start, DWORD End, DWORD Offset )
+	DWORD _fastcall Offset::FindString ( PCHAR String, DWORD Start, DWORD End, DWORD Offset )
 	{
 		DWORD PtLen = lstrlen ( String );
 
@@ -112,7 +109,7 @@ namespace Engine
 		return 0;
 	}
 
-	DWORD Offset::FindPattern ( PCHAR Pattern, DWORD PtLen, DWORD Start, DWORD End, DWORD Offset )
+	DWORD _fastcall Offset::FindPattern ( PCHAR Pattern, DWORD PtLen, DWORD Start, DWORD End, DWORD Offset )
 	{
 		bool Found = false;
 
@@ -292,9 +289,7 @@ namespace Engine
 		DWORD Address = ( DWORD )cmd->function;
 
 		GameInfo->GameName = *( PCHAR* )( UINT ( Address ) + 1 );
-
 		GameInfo->GameVersion = *( PCHAR* )( UINT ( Address ) + 6 );
-
 		GameInfo->Protocol = *( PBYTE )( UINT ( Address ) + 11 );
 
 		Address = Absolute ( UINT ( Address ) + 23 );
@@ -309,7 +304,7 @@ namespace Engine
 		GameInfo->Build = GetBuild ( );
 	}
 
-	BOOL Offset::__comparemem ( const UCHAR *Buff1, const UCHAR *Buff2, UINT Size )
+	BOOL _fastcall Offset::__comparemem ( const UCHAR *Buff1, const UCHAR *Buff2, UINT Size )
 	{
 		for ( UINT i = 0; i < Size; ++i, ++Buff1, ++Buff2 )
 		{
@@ -322,7 +317,7 @@ namespace Engine
 		return TRUE;
 	}
 
-	ULONG Offset::__findmemoryclone ( const ULONG Start, const ULONG End, const ULONG Clone, UINT Size )
+	ULONG _fastcall Offset::__findmemoryclone ( const ULONG Start, const ULONG End, const ULONG Clone, UINT Size )
 	{
 		for ( ULONG ul = Start; ( ul + Size ) < End; ++ul )
 		{
@@ -417,19 +412,14 @@ namespace Engine
 		PEngineMsg pEngineMsgBase = ( PEngineMsg )( FindAddress - sizeof ( DWORD ) );
 
 		BYTE Offset_ReadCoord[5] = { 0x13, 0x15, 0x17, 0x0E, 0x0B };
-
 		BYTE Offset_SVC_SoundBase[3] = { 0x0E, 0x0C, 0x16 };
 
 		if ( pEngineMsgBase )
 		{
 			MSG_ReadByte = ( HL_MSG_ReadByte )Absolute ( ( ( DWORD )pEngineMsgBase[SVC_CDTRACK].pfn ) + 1 );
-
 			MSG_ReadShort = ( HL_MSG_ReadShort )Absolute ( ( ( DWORD )pEngineMsgBase[SVC_STOPSOUND].pfn ) + 1 );
-
 			MSG_ReadLong = ( HL_MSG_ReadLong )Absolute ( ( ( DWORD )pEngineMsgBase[SVC_VERSION].pfn ) + 1 );
-
 			MSG_ReadFloat = ( HL_MSG_ReadFloat )Absolute ( ( ( DWORD )pEngineMsgBase[SVC_TIMESCALE].pfn ) + 1 );
-
 			MSG_ReadString = ( HL_MSG_ReadString )Absolute ( ( ( DWORD )pEngineMsgBase[SVC_PRINT].pfn ) + 1 );
 
 			DWORD CallMSG_ReadCoord = Absolute ( ( DWORD )( pEngineMsgBase[SVC_PARTICLE].pfn ) + 1 );
@@ -449,9 +439,7 @@ namespace Engine
 		NextFind1:
 
 			MSG_ReadCount = *( PINT* )( ( INT )( MSG_ReadByte )+1 );
-
 			MSG_CurrentSize = *( PINT* )( ( INT )( MSG_ReadByte )+7 );
-
 			MSG_BadRead = *( PINT* )( ( INT )( MSG_ReadByte )+20 );
 
 			DWORD SVC_SoundBase = ( DWORD )pEngineMsgBase[SVC_SOUND].pfn;
@@ -461,9 +449,7 @@ namespace Engine
 				if ( *( PBYTE )( SVC_SoundBase + Offset_SVC_SoundBase[Offset] ) == 0xE8 )
 				{
 					MSG_Buffer = ( sizebuf_t * )( *( PDWORD )( SVC_SoundBase + Offset_SVC_SoundBase[Offset] - 4 ) );
-
 					MSG_StartBitReading = ( HL_MSG_StartBitReading )Absolute ( SVC_SoundBase + Offset_SVC_SoundBase[Offset] + 1 );
-
 					MSG_ReadBits = ( HL_MSG_ReadBits )Absolute ( SVC_SoundBase + Offset_SVC_SoundBase[Offset] + 8 );
 
 					goto NextFind2;
@@ -477,19 +463,16 @@ namespace Engine
 			if ( *( PBYTE )( SVC_SoundBase + 0xD6 ) == 0xE8 )
 			{
 				MSG_EndBitReading = ( HL_MSG_EndBitReading )Absolute ( SVC_SoundBase + 0xD7 );
-
 				MSG_ReadBitVec3Coord = ( HL_MSG_ReadBitVec3Coord )Absolute ( SVC_SoundBase + 0xAF );
 			}
 			else if ( *( PBYTE )( SVC_SoundBase + 0xE2 ) == 0xE8 )
 			{
 				MSG_EndBitReading = ( HL_MSG_EndBitReading )Absolute ( SVC_SoundBase + 0xE3 );
-
 				MSG_ReadBitVec3Coord = ( HL_MSG_ReadBitVec3Coord )Absolute ( SVC_SoundBase + 0xBE );
 			}
 			else if ( *( PBYTE )( SVC_SoundBase + 0xDD ) == 0xE8 )
 			{
 				MSG_EndBitReading = ( HL_MSG_EndBitReading )Absolute ( SVC_SoundBase + 0xDE );
-
 				MSG_ReadBitVec3Coord = ( HL_MSG_ReadBitVec3Coord )Absolute ( SVC_SoundBase + 0xB9 );
 			}
 			else

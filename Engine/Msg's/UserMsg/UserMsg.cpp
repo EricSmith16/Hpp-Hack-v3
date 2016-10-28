@@ -8,8 +8,6 @@ namespace Engine
 	pfnUserMsgHook pCurWeapon = nullptr;
 	pfnUserMsgHook pDeathMsg = nullptr;
 
-	int PlayerTeam[33];
-
 	int UserMsg::ResetHUD ( const char *pszName, int iSize, void *pbuf )
 	{
 		return pResetHUD ( pszName, iSize, pbuf );
@@ -24,36 +22,36 @@ namespace Engine
 	{
 		BEGIN_READ ( pbuf, iSize );
 
-		struct cl_entity_s *Local = g_Engine.GetLocalPlayer ( );
+		struct cl_entity_s *Entity = g_Engine.GetLocalPlayer ( );
 
 		int Index = READ_BYTE( );
 		char *Team = READ_STRING ( );
 
 		if ( !strcmp ( Team, TERRORIST_UMSG ) )
 		{
-			PlayerTeam[Index] = TERRORIST;
+			Information::g_Player[Index].Team = TERRORIST;
 
-			if ( Index == Local->index )
+			if ( Index == Entity->index )
 			{
-				Engine::g_Local.Team = TERRORIST;
+				Information::g_Local.Team = TERRORIST;
 			}
 		}
 		else if ( !strcmp ( Team, CT_UMSG ) )
 		{
-			PlayerTeam[Index] = CT;
+			Information::g_Player[Index].Team = CT;
 
-			if ( Index == Local->index )
+			if ( Index == Entity->index )
 			{
-				Engine::g_Local.Team = CT;
+				Information::g_Local.Team = CT;
 			}
 		}
 		else
 		{
-			PlayerTeam[Index] = SPECTATOR;
+			Information::g_Player[Index].Team = SPECTATOR;
 
-			if ( Index == Local->index )
+			if ( Index == Entity->index )
 			{
-				Engine::g_Local.Team = SPECTATOR;
+				Information::g_Local.Team = SPECTATOR;
 			}
 		}
 

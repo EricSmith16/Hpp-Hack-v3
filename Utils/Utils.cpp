@@ -1,9 +1,6 @@
 #include "Utils.h"
 
 #pragma warning (disable: 4996)
-#pragma warning (disable: 4244)
-
-Util g_Util;
 
 pcmd_t CommandByName ( char* szName )
 {
@@ -121,7 +118,7 @@ void Util::MemorySet ( void *Buffer, DWORD Len, DWORD Sym )
 }
 
 
-void __fastcall Util::ConsolePrintColor ( BYTE R, BYTE G, BYTE B, char* String )
+void _fastcall Util::ConsolePrintColor ( BYTE R, BYTE G, BYTE B, char* String )
 {
 	PColor24 Ptr = Engine::Console_TextColor;
 	TColor24 DefaultColor = *Ptr;
@@ -135,7 +132,7 @@ void __fastcall Util::ConsolePrintColor ( BYTE R, BYTE G, BYTE B, char* String )
 	*Ptr = DefaultColor;
 }
 
-void __fastcall Util::ConsolePrintColor ( BYTE R, BYTE G, BYTE B, DWORD String )
+void _fastcall Util::ConsolePrintColor ( BYTE R, BYTE G, BYTE B, DWORD String )
 {
 	PColor24 Ptr = Engine::Console_TextColor;
 	TColor24 DefaultColor = *Ptr;
@@ -149,7 +146,7 @@ void __fastcall Util::ConsolePrintColor ( BYTE R, BYTE G, BYTE B, DWORD String )
 	*Ptr = DefaultColor;
 }
 
-void __fastcall Util::ConsolePrintColor ( BYTE R, BYTE G, BYTE B, BYTE String )
+void _fastcall Util::ConsolePrintColor ( BYTE R, BYTE G, BYTE B, BYTE String )
 {
 	PColor24 Ptr = Engine::Console_TextColor;
 	TColor24 DefaultColor = *Ptr;
@@ -163,7 +160,7 @@ void __fastcall Util::ConsolePrintColor ( BYTE R, BYTE G, BYTE B, BYTE String )
 	*Ptr = DefaultColor;
 }
 
-void __fastcall Util::ConsolePrintColor ( BYTE R, BYTE G, BYTE B, int String )
+void _fastcall Util::ConsolePrintColor ( BYTE R, BYTE G, BYTE B, int String )
 {
 	PColor24 Ptr = Engine::Console_TextColor;
 	TColor24 DefaultColor = *Ptr;
@@ -177,7 +174,7 @@ void __fastcall Util::ConsolePrintColor ( BYTE R, BYTE G, BYTE B, int String )
 	*Ptr = DefaultColor;
 }
 
-void __fastcall Util::ConsolePrintColor ( BYTE R, BYTE G, BYTE B, float String )
+void _fastcall Util::ConsolePrintColor ( BYTE R, BYTE G, BYTE B, float String )
 {
 	PColor24 Ptr = Engine::Console_TextColor;
 	TColor24 DefaultColor = *Ptr;
@@ -210,7 +207,7 @@ char* Util::ConvertTypeToRenderString ( BYTE Type )
 	}
 }
 
-bool __fastcall Util::CalcScreen ( float *pflOrigin, float *pflVecScreen )
+bool _fastcall Util::CalcScreen ( float *pflOrigin, float *pflVecScreen )
 {
 	int Result = Engine::g_Engine.pTriAPI->WorldToScreen ( pflOrigin, pflVecScreen );
 
@@ -225,9 +222,9 @@ bool __fastcall Util::CalcScreen ( float *pflOrigin, float *pflVecScreen )
 	return false;
 }
 
-bool __fastcall Util::PathFree ( Vector Input )
+bool _fastcall Util::PathFree ( Vector Input )
 {
-	pmtrace_t *Trace = Engine::g_Engine.PM_TraceLine ( Engine::g_Local.ViewOrg, Input, 0, 2, -1 );
+	pmtrace_t *Trace = Engine::g_Engine.PM_TraceLine ( Information::g_Local.ViewOrg, Input, 0, 2, -1 );
 
 	return ( Trace->fraction >= 1.0f );
 }
@@ -260,7 +257,7 @@ void Util::Parse ( BYTE MaxArray, char *String, BYTE Number[] )
 	}
 }
 
-int __fastcall Util::native_strcmp ( char const* _Str1, char const* _Str2, size_t MaxCount )
+int _fastcall Util::native_strcmp ( char const* _Str1, char const* _Str2, size_t MaxCount )
 {
 	if ( !MaxCount )
 	{
@@ -276,7 +273,7 @@ int __fastcall Util::native_strcmp ( char const* _Str1, char const* _Str2, size_
 	return *( BYTE * )_Str1 - *( BYTE * )_Str2;
 }
 
-char* __fastcall Util::native_strstr ( char *in, char *str )
+char* _fastcall Util::native_strstr ( char *in, char *str )
 {
 	char c = *str++;
 
@@ -285,7 +282,7 @@ char* __fastcall Util::native_strstr ( char *in, char *str )
 		return ( char * )in;
 	}
 
-	size_t len = lstrlenA ( str );
+	size_t len = lstrlen ( str );
 
 	do
 	{
@@ -305,7 +302,7 @@ char* __fastcall Util::native_strstr ( char *in, char *str )
 	return ( char * )( in - 1 );
 }
 
-float __fastcall Util::Interp ( float s1, float s2, float s3, float f1, float f3 )
+float _fastcall Util::Interp ( float s1, float s2, float s3, float f1, float f3 )
 {
 	if ( s2 == s1 )
 	{
@@ -327,7 +324,7 @@ float __fastcall Util::Interp ( float s1, float s2, float s3, float f1, float f3
 
 char itoa_buffer[INT_DIGITS + 2];
 
-PCHAR __fastcall Util::itoa ( int i )
+PCHAR _fastcall Util::itoa ( int i )
 {
 	char *p = itoa_buffer + INT_DIGITS + 1;
 
@@ -354,3 +351,5 @@ PCHAR __fastcall Util::itoa ( int i )
 
 	return p;
 }
+
+Util g_Util;

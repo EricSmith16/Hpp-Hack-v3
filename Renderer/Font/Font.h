@@ -7,17 +7,16 @@ namespace Renderer
 	class Font
 	{
 	private:
-		int iheight, height, width;
-		int cheight, cwidth[255];
+		static GLuint g_FontListID;
 
-		__inline void Render ( float x, float y, BYTE r, BYTE g, BYTE b, BYTE a, char *String );
+		static int cHeight, cWidth[255];
+
+		static void _fastcall Render ( float x, float y, BYTE r, BYTE g, BYTE b, BYTE a, char *String );
 
 	public:
-		GLuint g_FontListID;
+		static void InitText ( char* Font, int Height, int Width );
 
-		void InitText ( char* Font, int Height, int Width );
-
-		void Print ( float x, float y, BYTE r, BYTE g, BYTE b, BYTE a, BYTE Flags, char *String, ... );
+		static void _fastcall Print ( float x, float y, BYTE r, BYTE g, BYTE b, BYTE a, BYTE Flags, char *String, ... );
 	};
 
 	extern Font g_Font, g_Verdana;

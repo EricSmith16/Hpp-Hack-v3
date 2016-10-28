@@ -127,6 +127,8 @@ namespace Engine
 		Pitch = MSG_ReadByte ( );
 		Flags = MSG_ReadByte ( );
 
+		MSG_EndBitReading ( MSG_Buffer );
+
 		if ( Files::g_IniRead.function.esp && Files::g_IniRead.esp.enable && Files::g_IniRead.esp.sound )
 		{
 			if ( Entity != Engine::g_Engine.GetLocalPlayer ( )->index )
@@ -134,8 +136,6 @@ namespace Engine
 				Functions::g_ESP.AddSound ( GetTickCount ( ), Position );
 			}
 		}
-
-		MSG_EndBitReading ( MSG_Buffer );
 
 		MSG_RestoreReadCount ( );
 

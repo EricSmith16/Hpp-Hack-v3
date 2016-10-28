@@ -2,7 +2,7 @@
 
 namespace Renderer
 {
-	void Drawing::FillArea ( float x, float y, float width, float height, BYTE r, BYTE g, BYTE b, BYTE a )
+	void _fastcall Drawing::Fill ( float x, float y, float width, float height, BYTE r, BYTE g, BYTE b, BYTE a )
 	{
 		if ( Engine::g_Offset.HLType != RENDERTYPE_HARDWARE )
 		{
@@ -28,22 +28,22 @@ namespace Renderer
 		}
 	}
 
-	void Drawing::DrawBox ( float x, float y, float width, float height, float linewidth, BYTE r, BYTE g, BYTE b, BYTE a )
+	void _fastcall Drawing::Box ( float x, float y, float width, float height, float linewidth, BYTE r, BYTE g, BYTE b, BYTE a )
 	{
-		FillArea ( x, y, width, linewidth, r, g, b, a );
-		FillArea ( x + width - linewidth, y + linewidth, linewidth, height - linewidth, r, g, b, a );
-		FillArea ( x, y + linewidth, linewidth, height - linewidth, r, g, b, a );
-		FillArea ( x + linewidth, y + height - linewidth, width - linewidth * 2, linewidth, r, g, b, a );
+		Fill ( x, y, width, linewidth, r, g, b, a );
+		Fill ( x + width - linewidth, y + linewidth, linewidth, height - linewidth, r, g, b, a );
+		Fill ( x, y + linewidth, linewidth, height - linewidth, r, g, b, a );
+		Fill ( x + linewidth, y + height - linewidth, width - linewidth * 2, linewidth, r, g, b, a );
 	}
 
-	void Drawing::DrawShadowBox ( float x, float y, float width, float height, float linewidth, BYTE r, BYTE g, BYTE b, BYTE a )
+	void Drawing::BoxWithOutLine ( float x, float y, float width, float height, float linewidth, BYTE r, BYTE g, BYTE b, BYTE a )
 	{
-		DrawBox ( x, y, width, height, linewidth, r, g, b, a );
-		DrawBox ( x - 1, y - 1, width + 2, height + 2, 1, 0, 0, 0, a );
-		DrawBox ( x + linewidth, y + linewidth, width - linewidth * 2, height - linewidth * 2, 1, 0, 0, 0, a );
+		Box ( x, y, width, height, linewidth, r, g, b, a );
+		Box ( x - 1, y - 1, width + 2, height + 2, 1, 0, 0, 0, a );
+		Box ( x + linewidth, y + linewidth, width - linewidth * 2, height - linewidth * 2, 1, 0, 0, 0, a );
 	}
 
-	void Drawing::DrawCircle ( float x, float y, float rad, int AmountSegments, float linewidth, BYTE r, BYTE g, BYTE b, BYTE a )
+	void Drawing::Circle ( float x, float y, float rad, int AmountSegments, float linewidth, BYTE r, BYTE g, BYTE b, BYTE a )
 	{
 		glDisable ( GL_TEXTURE_2D );
 		glEnable ( GL_BLEND );

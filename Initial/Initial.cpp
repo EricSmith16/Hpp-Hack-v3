@@ -1,13 +1,13 @@
 #include "Initial.h"
 
-#pragma warning (disable: 4244)
-
 namespace Initial
 {
 	bool Init::PanicEnabled = false;
 
 	void Init::InitHack ( )
 	{
+		LoadSettings ( );
+
 		Engine::g_Engine.pfnClientCmd ( "toggleconsole" );
 
 		if ( Files::g_IniRead.main.language )
@@ -124,7 +124,7 @@ namespace Initial
 
 	void Init::ReloadSettings ( )
 	{
-		if ( Files::g_File.FileExists ( Files::g_File.DirFile ( VISUALS_PATH ).c_str ( ) ) )
+		if ( Files::g_File.FileExists ( Files::g_File.DirFile ( MAIN_PATH ).c_str ( ) ) )
 		{
 			if ( Files::g_IniRead.function.esp )
 			{
@@ -135,6 +135,11 @@ namespace Initial
 			{
 				Files::g_IniRead.NoFlash ( );
 			}
+		}
+
+		if ( Files::g_File.FileExists ( Files::g_File.DirFile ( VISUALS_PATH ).c_str ( ) ) )
+		{
+			Files::g_IniRead.Main ( );
 		}
 	}
 

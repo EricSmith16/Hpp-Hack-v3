@@ -2,6 +2,10 @@
 
 namespace Renderer
 {
+	GLuint Font::g_FontListID;
+
+	int Font::cHeight, Font::cWidth[255];
+
 	void Font::InitText ( char* Font, int Height, int Width )
 	{
 		if ( Engine::g_Offset.HLType != RENDERTYPE_HARDWARE )
@@ -10,10 +14,8 @@ namespace Renderer
 		}
 
 		HDC hDC;
-
 		HFONT hFont, hOldFont;
 
-		iheight = Height;
 		hDC = wglGetCurrentDC ( );
 		g_FontListID = glGenLists ( 256 );
 
@@ -22,10 +24,7 @@ namespace Renderer
 
 		hOldFont = ( HFONT )SelectObject ( hDC, hFont );
 
-		if ( !wglUseFontBitmaps ( hDC, 0, 255, g_FontListID ) )
-		{
-			wglUseFontBitmaps ( hDC, 0, 255, g_FontListID );
-		}
+		wglUseFontBitmaps ( hDC, 0, 255, g_FontListID );
 
 		for ( int i = 0; i < 255; ++i )
 		{
@@ -35,22 +34,21 @@ namespace Renderer
 
 			GetTextExtentPoint ( hDC, line, 1, &s );
 
-			cwidth[i] = s.cx;
-			cheight = s.cy;
+			cWidth[i] = s.cx;
+			cHeight = s.cy;
 		}
 
 		SelectObject ( hDC, hOldFont );
 		DeleteObject ( hFont );
 	}
 
-	void Font::Render ( float x, float y, BYTE r, BYTE g, BYTE b, BYTE a, char *String )
+	void _fastcall Font::Render ( float x, float y, BYTE r, BYTE g, BYTE b, BYTE a, char *String )
 	{
 		int i = 0;
 
-		while ( x < 0 )
+		for ( int i = 0; x < 0; ++i )
 		{
-			x += cwidth[String[i]];
-			++i;
+			x += cWidth[String[i]];
 
 			if ( !String[i] )
 			{
@@ -60,7 +58,6 @@ namespace Renderer
 
 		glColor4ub ( r, g, b, a );
 		glRasterPos2f ( x, y );
-
 		glHint ( GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST );
 		glPushAttrib ( GL_LIST_BIT );
 		glListBase ( g_FontListID );
@@ -68,12 +65,11 @@ namespace Renderer
 		glPopAttrib ( );
 	}
 
-	void Font::Print ( float x, float y, BYTE r, BYTE g, BYTE b, BYTE a, BYTE Flags, char *String, ... )
+	void _fastcall Font::Print ( float x, float y, BYTE r, BYTE g, BYTE b, BYTE a, BYTE Flags, char *String, ... )
 	{
 		char Text[256];
 
 		va_list argumentPtr;
-
 		va_start ( argumentPtr, String );
 		vsprintf_s ( Text, String, argumentPtr );
 		va_end ( argumentPtr );
@@ -82,42 +78,21 @@ namespace Renderer
 		glEnable ( GL_BLEND );
 		glBlendFunc ( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
 
-		int drawlen = 0;
+		int DrawLen = 0;
 
 		for ( char *p = Text; *p; ++p )
 		{
-			drawlen += cwidth[*p];
+			DrawLen += cWidth[*p];
 		}
 
 		if ( Flags & FL_CENTER )
 		{
-			x -= ( drawlen / 2 );
+			x -= ( DrawLen / 2 );
 		}
 
 		if ( Flags & FL_OUTLINE )
 		{
-			Render ( x, y - 1, 0, 0, 0, 200, Text );
-			Render ( x, y + 1, 0, 0, 0, 200, Text );
-			Render ( x - 1, y, 0, 0, 0, 200, Text );
-			Render ( x + 1, y, 0, 0, 0, 200, Text );
-
-			Render ( x - 1, y - 1, 0, 0, 0, 200, Text );
-			Render ( x + 1, y - 1, 0, 0, 0, 200, Text );
-			Render ( x - 1, y + 1, 0, 0, 0, 200, Text );
-			Render ( x + 1, y + 1, 0, 0, 0, 200, Text );
-		}
-
-		if ( Flags & FL_BACKDROP )
-		{
-			Render ( x, y - 1, 0, 0, 0, 255, Text );
-			Render ( x, y - 1, 0, 0, 0, 255, Text );
-			Render ( x - 1, y, 0, 0, 0, 255, Text );
-			Render ( x - 1, y, 0, 0, 0, 255, Text );
-
-			Render ( x - 1, y - 1, 0, 0, 0, 255, Text );
-			Render ( x, y - 1, 0, 0, 0, 255, Text );
-			Render ( x - 1, y - 1, 0, 0, 0, 255, Text );
-			Render ( x, y - 1, 0, 0, 0, 255, Text );
+			Render ( x + 1, y + 1, 0, 0, 0, 255, Text );
 		}
 
 		Render ( x, y, r, g, b, a, Text );

@@ -40,13 +40,11 @@ namespace Files
 
 	int File::CharToKey ( char* Key )
 	{
-		//Language
 		PARS_STRING ( "RU", "ru", RUSSIAN );
 		PARS_STRING ( "RUSSIAN", "russian", RUSSIAN );
 		PARS_STRING ( "EN", "en", ENGLISH );
 		PARS_STRING ( "ENGLISH", "english", ENGLISH );
 
-		//Keyboard keys
 		PARS_STRING ( "UP", "up", TRUE );
 		PARS_STRING ( "DOWN", "down", FALSE );
 
@@ -128,7 +126,6 @@ namespace Files
 		PARS_STRING ( "SHIFT", "shift", K_SHIFT );
 		PARS_STRING ( "CTRL", "ctrl", K_CTRL );
 
-		//Mouse keys
 		PARS_STRING ( "MWHEELDOWN", "mwheeldown", K_MWHEELDOWN );
 		PARS_STRING ( "MWHEELUP", "mwheelup", K_MWHEELUP );
 
@@ -138,7 +135,6 @@ namespace Files
 		PARS_STRING ( "MOUSE4", "mouse4", K_MOUSE4 );
 		PARS_STRING ( "MOUSE5", "mouse5", K_MOUSE5 );
 
-		//Other
 		PARS_STRING ( "TRUE", "true", TRUE );
 		PARS_STRING ( "FALSE", "false", FALSE );
 

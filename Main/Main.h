@@ -136,12 +136,13 @@ typedef struct sizebuf_s
 #include "Offsets.h"
 #include "Utils.h"
 #include "Client.h"
-#include "PlayerInfo.h"
+#include "Player.h"
 #include "Initial.h"
 #include "Font.h"
 #include "Drawing.h"
 #include "File.h"
 #include "IniRead.h"
+#include "Menu.h"
 #include "ESP.h"
 #include "NoFlash.h"
 
@@ -162,6 +163,4 @@ namespace Engine
 	extern PEngineMsg g_pEngineMsgBase;
 
 	extern char* BaseDir;
-
-	extern bool FirstFrame;
 }

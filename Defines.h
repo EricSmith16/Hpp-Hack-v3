@@ -29,7 +29,7 @@
 #define USERMSG_ERROR_1			"Error #0010. Couldn't find UserMsgBase pointer."
 #define USERMSG_ERROR_2			"Error #0011. Couldn't find UserMsgBase pointer."
 
-#define USERMSG_ERROR			"Error #0012. Couldn't find %s.\nNote: Cheat can't support this game.\nSupported Games: Half-Life, Counter-Strike, Counter-Strike: Condition Zero, Counter-Strike: Condition Zero Deleted Scenes."
+#define USERMSG_ERROR			"Error #0012. Couldn't find %s.\nNote: Cheat can't support this game.\nSupported Games: Counter-Strike, Counter-Strike: Condition Zero, Counter-Strike: Condition Zero Deleted Scenes."
 
 #define SVC_MSG_ERROR_1			"Error #0013. Couldn't find SvcBase pointer."
 #define SVC_MSG_ERROR_2			"Error #0014. Couldn't find SvcBase pointer."
@@ -40,6 +40,10 @@
 #define MSG_STR_READING			"Error #0017. MSG_StartBitReading.\nNote: If you inject Hpp Hack with another cheat, it is likely that they are not compatible."
 #define MSG_END_READING			"Error #0018. MSG_EndBitReading.\nNote: If you inject Hpp Hack with another cheat, it is likely that they are not compatible."
 #define ENGINE_MSG_BASE			"Error #0019. EngineMsgBase."
+
+#define FE_FUNCTIONS_ERROR		"Error #0020. Couldn't find file \"\\Settings\\Functions.ini\".\n"
+#define FE_MAIN_ERROR			"Error #0021. Couldn't find file \"\\Settings\\Main.ini\".\n"
+#define FE_VISUALS_ERROR		"Error #0022. Couldn't find file \"\\Settings\\Visuals.ini\".\n"
 
 #define HPP						"[Hpp] "
 #define SETTINGS_RELOADED_ENG	"Settings successfully reloaded.\n"
@@ -62,20 +66,17 @@
 
 #define MAIN_LANGUAGE			"|Language"
 #define MAIN_RELOAD_KEY			"|Reload.Key"
+#define MAIN_PANIC_KEY			"|Panic.Key"
+#define MAIN_SCAN_VISIBILITY	"|Scan.Visibility"
 
 #define FUNCTIONS_ESP			"|ESP"
 #define FUNCTIONS_NOFLASH		"|NoFlash"
+#define FUNCTIONS_MENU			"|Menu"
 
 #define ESP_ENABLE				"|ESP.Enable"
 #define ESP_PLAYER				"|ESP.Player"
 #define ESP_PLAYER_VISIBLE_ONLY	"|ESP.Player.VisibleOnly"
 #define ESP_PLAYER_BOX			"|ESP.Player.Box"
-#define ESP_PLAYER_BOX_OUTLINE	"|ESP.Player.Box.OutLine"
-#define ESP_PLAYER_BOX_LW		"|ESP.Player.Box.LineWidth"
-#define ESP_PLAYER_BOX_T_VIS	"|ESP.Player.Box.T.Vis"
-#define ESP_PLAYER_BOX_T_HIDE	"|ESP.Player.Box.T.Hide"
-#define ESP_PLAYER_BOX_CT_VIS	"|ESP.Player.Box.CT.Vis"
-#define ESP_PLAYER_BOX_CT_HIDE	"|ESP.Player.Box.CT.Hide"
 #define ESP_PLAYER_NAME			"|ESP.Player.Name"
 #define ESP_PLAYER_WEAPON		"|ESP.Player.Weapon"
 #define ESP_PLAYER_DISTANCE		"|ESP.Player.Distance"
@@ -83,14 +84,14 @@
 #define ESP_WORLD_WEAPONS		"|ESP.World.Weapons"
 #define ESP_WORLD_SPRITES		"|ESP.World.Sprites"
 #define ESP_WORLD_NADES			"|ESP.World.Nades"
-#define ESP_FONT_OUTLINE		"|ESP.Font.OutLine"
-#define ESP_FONT_COLOR			"|ESP.Font.Color"
 #define ESP_SOUND				"|ESP.Sound"
 #define ESP_SOUND_FADE_TIME		"|ESP.Sound.FadeTime"
-#define ESP_SOUND_COLOR			"|ESP.Sound.Color"
+#define ESP_PANIC_KEY			"|ESP.Panic.Key"
 
 #define NOFLASH_ENABLE			"|NoFlash.Enable"
-#define NOFLASH_FADELIMIT		"|NoFlash.FadeLimit"
+#define NOFLASH_FADELIMIT		"|NoFlash.Fade.Limit"
+#define NOFLASH_FADECOLOR		"|NoFlash.Fade.Color"
+#define NOFLASH_FADECOLORRANDOM	"|NoFlash.Fade.Color.Random"
 #define NOFLASH_SHOWPERCENTAGE	"|NoFlash.ShowPercentage"
 #define NOFLASH_FONT_OUTLINE	"|NoFlash.Font.OutLine"
 
@@ -150,6 +151,54 @@
 #define SEND_CVAR_VALUE2		"svc_sendcvarvalue2"
 #define DIRECTOR				"svc_director"
 
+#define HPP_MESSAGE						"Hpp Hack v3.0 (dev version)"
+
+#define MENU_ESP_SETTINGS				"ESP"
+#define MENU_NOFLASH_SETTINGS			"NoFlash"
+
+#define MENU_ESP_ENABLE					"Enable"
+#define MENU_ESP_PLAYER					"Player"
+#define MENU_ESP_PLAYER_VISIBLE_ONLY	"Player.VisibleOnly"
+#define MENU_ESP_PLAYER_BOX				"Player.Box"
+#define MENU_ESP_PLAYER_NAME			"Player.Name"
+#define MENU_ESP_PLAYER_WEAPON			"Player.Weapon"
+#define MENU_ESP_PLAYER_DISTANCE		"Player.Distance"
+#define MENU_ESP_WORLD					"World"
+#define MENU_ESP_WORLD_WEAPONS			"World.Weapons"
+#define MENU_ESP_WORLD_SPRITES			"World.Sprites"
+#define MENU_ESP_WORLD_NADES			"World.Nades"
+#define MENU_ESP_SOUND					"Sound"
+#define MENU_ESP_SOUND_FADE_TIME		"Sound.FadeTime"
+
+#define MENU_NOFLASH_ENABLE				"Enable"
+#define MENU_NOFLASH_FADELIMIT			"Fade.Limit"
+#define MENU_NOFLASH_FADECOLOR_R		"Fade.Color.R"
+#define MENU_NOFLASH_FADECOLOR_G		"Fade.Color.G"
+#define MENU_NOFLASH_FADECOLOR_B		"Fade.Color.B"
+#define MENU_NOFLASH_FADECOLORRANDOM	"Fade.Color.Random"
+#define MENU_NOFLASH_SHOWPERCENTAGE		"ShowPercentage"
+
+#define MENU_ESP_ENABLE_HELP					"enable/disable esp"
+#define MENU_ESP_PLAYER_HELP					"off - disable, 1 - only enemies, 2 - all players"
+#define MENU_ESP_PLAYER_VISIBLE_ONLY_HELP		"shows player esp only when the player is visible"
+#define MENU_ESP_PLAYER_BOX_HELP				"off - disable, 1 - without out line, 2 - with out line"
+#define MENU_ESP_PLAYER_NAME_HELP				"enable/disable display name of the player."
+#define MENU_ESP_PLAYER_WEAPON_HELP				"enable/disable display weapon of the player."
+#define MENU_ESP_PLAYER_DISTANCE_HELP			"off - disable, 1 - in units, 2 - in meters"
+#define MENU_ESP_WORLD_HELP						"enable/disable world esp"
+#define MENU_ESP_WORLD_WEAPONS_HELP				"enable/disable display of weapons in the world"
+#define MENU_ESP_WORLD_SPRITES_HELP				"enable/disable display of sprites in the world"
+#define MENU_ESP_WORLD_NADES_HELP				"enable/disable display of grenades in the world"
+#define MENU_ESP_FONT_OUTLINE_HELP				"enable/disable out line for font"
+#define MENU_ESP_SOUND_HELP						"enable/disable sound esp"
+#define MENU_ESP_SOUND_FADE_TIME_HELP			"time after which the sound is not valid"
+
+#define MENU_NOFLASH_ENABLE_HELP				"enable/disable noflash"
+#define MENU_NOFLASH_FADELIMIT_HELP				"screen fade limit"
+#define MENU_NOFLASH_FADECOLOR_HELP				"rgb color of fade screen"
+#define MENU_NOFLASH_FADECOLORRANDOM_HELP		"enable/disable random fade color"
+#define MENU_NOFLASH_SHOWPERCENTAGE_HELP		"off - disable, 1 - colored text, 2 - colored text in box"
+
 #define CompareMemory(Buff1, Buff2, Size) __comparemem((const UCHAR *)Buff1, (const UCHAR *)Buff2, (UINT)Size)
 #define FindMemoryClone(Start, End, Clone, Size) __findmemoryclone((const ULONG)Start, (const ULONG)End, (const ULONG)Clone, (UINT)Size)
 #define FindReference(Start, End, Address)  __findreference((const ULONG)Start, (const ULONG)End, (const ULONG)Address)
@@ -159,6 +208,25 @@
 #define VectorLengthSquared(v) ((v)[0]*(v)[0]+(v)[1]*(v)[1]+(v)[2]*(v)[2])
 #define VectorTransform(a,b,c){(c)[0]=DotProduct((a),(b)[0])+(b)[0][3];(c)[1]=DotProduct((a),(b)[1])+(b)[1][3];(c)[2]=DotProduct((a),(b)[2])+(b)[2][3];}
 #define VectorDistance(a,b) sqrt(POW((a)[0]-(b)[0])+POW((a)[1]-(b)[1])+POW((a)[2]-(b)[2]))
+
+#define MAX_MENU_COUNT			7
+#define MAX_SUB_MENU_COUNT		25
+
+#define INT_DIGITS				19
+
+#define MENU_ENTRY_KEY			0x5B15E
+#define SUBM_ENTRY_KEY			0x1DC42
+
+#define SUBM_ENTRY_WIDTH		185
+#define SUBM_PADDING_LEFT		2
+#define SUBM_VALUE_PADDING		35
+
+#define MENU_ENTRY_WIDTH		110
+#define MENU_PADDING_TOP		2
+
+#define TEXT_PADDING_LEFT		3
+
+#define ENTRY_HEIGHT			13
 
 #define	SVC_BAD					0
 #define	SVC_NOP                 1
@@ -244,10 +312,8 @@
 #define SPECTATOR				0
 
 #define FL_NONE					0
-#define FL_OUTLINE				2
-#define FL_BACKDROP				4
-#define FL_CENTER				8
-#define FL_ALL					255
+#define FL_OUTLINE				1
+#define FL_CENTER				2
 
 #define RUSSIAN					0
 #define ENGLISH					1
@@ -298,9 +364,14 @@
 		return to_convent;}
 
 #define WEAPON_PARS(name) {\
-	Renderer::g_Drawing.DrawBox((int)EntityScreen[0] - 2, (int)EntityScreen[1], 6, 6, 1, 0, 0, 0, 255);\
-	Renderer::g_Drawing.FillArea((int)EntityScreen[0] - 1, (int)EntityScreen[1] + 1, 4, 4, 255, 100, 0, 255);\
-	Renderer::g_Verdana.Print(EntityScreen[0], EntityScreen[1] + 15, Files::g_IniRead.esp.font_color[0], Files::g_IniRead.esp.font_color[1], Files::g_IniRead.esp.font_color[2], 255, Files::g_IniRead.esp.font_outline ? FL_CENTER | FL_OUTLINE : FL_CENTER, name);}
+	Renderer::g_Drawing.Box((int)EntityScreen[0] - 2, (int)EntityScreen[1], 6, 6, 1, 0, 0, 0, 255);\
+	Renderer::g_Drawing.Fill((int)EntityScreen[0] - 1, (int)EntityScreen[1] + 1, 4, 4, 255, 120, 50, 255);\
+	Renderer::g_Verdana.Print((int)EntityScreen[0], (int)EntityScreen[1] + 15, 255, 255, 255, 255, FL_CENTER | FL_OUTLINE, name);}
+
+#define WEAPON_PARS_C4(name) {\
+	Renderer::g_Drawing.Box((int)EntityScreen[0] - 2, (int)EntityScreen[1], 6, 6, 1, 0, 0, 0, 255);\
+	Renderer::g_Drawing.Fill((int)EntityScreen[0] - 1, (int)EntityScreen[1] + 1, 4, 4, 255, 0, 0, 255);\
+	Renderer::g_Verdana.Print((int)EntityScreen[0], (int)EntityScreen[1] + 15, 255, 255, 255, 255, FL_CENTER | FL_OUTLINE, name);}
 
 #define INIREAD_INT(var, path, section, key) g_IniRead.path.var = atoi(g_File.IniRead((char*)path.c_str(), section, key, "0"))
 #define INIREAD_FLOAT(var, path, section, key) g_IniRead.path.var = atof(g_File.IniRead((char*)path.c_str(), section, key, "0"))

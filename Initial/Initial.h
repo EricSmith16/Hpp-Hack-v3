@@ -9,16 +9,15 @@ namespace Initial
 	private:
 		static bool PanicEnabled;
 
-		inline void ReloadSettings ( );
-		inline void Panic ( bool enabled );
+		inline static void ReloadSettings ( );
+		inline static void Panic ( bool enabled );
 
 	public:
-		void InitHack ( );
+		static void InitHack ( );
+		static void LoadSettings ( );
 
-		void LoadSettings ( );
-
-		void ReloadKey ( int keynum );
-		void PanicKey ( int keynum );
+		static void ReloadKey ( int keynum );
+		static void PanicKey ( int keynum );
 	};
 
 	extern Init g_Init;

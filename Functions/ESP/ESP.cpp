@@ -4,49 +4,53 @@
 
 namespace Functions
 {
+	int ESP::EntityIndex, ESP::SoundIndex;
+
 	bool ESP::PanicEnabled = false;
 
-	float ESP::GetPlayerDistance ( struct cl_entity_s *Entity, struct cl_entity_s *Local, bool Meters )
+	float ESP::GetPlayerDistance ( int Index, bool Meters )
 	{
 		if ( Meters )
 		{
-			return floor ( sqrt ( POW ( abs ( Entity->origin.x - Local->origin.x ) ) + POW ( abs ( Entity->origin.y - Local->origin.y ) ) +
-				POW ( abs ( Entity->origin.z - Local->origin.z ) ) ) - 32 ) * 0.025f;
+			return floor ( sqrt ( POW ( abs ( Information::g_Player[Index].Entity->origin.x - Information::g_Local.Entity->origin.x ) ) +
+				POW ( abs ( Information::g_Player[Index].Entity->origin.y - Information::g_Local.Entity->origin.y ) ) +
+				POW ( abs ( Information::g_Player[Index].Entity->origin.z - Information::g_Local.Entity->origin.z ) ) ) - 32 ) * 0.025f;
 		}
 		else
 		{
-			return floor ( sqrt ( POW ( abs ( Entity->origin.x - Local->origin.x ) ) + POW ( abs ( Entity->origin.y - Local->origin.y ) ) +
-				POW ( abs ( Entity->origin.z - Local->origin.z ) ) ) - 32 );
+			return floor ( sqrt ( POW ( abs ( Information::g_Player[Index].Entity->origin.x - Information::g_Local.Entity->origin.x ) ) +
+				POW ( abs ( Information::g_Player[Index].Entity->origin.y - Information::g_Local.Entity->origin.y ) ) +
+				POW ( abs ( Information::g_Player[Index].Entity->origin.z - Information::g_Local.Entity->origin.z ) ) ) - 32 );
 		}
 	}
 
 	void ESP::GetColorPlayerBox ( int Index )
 	{
-		if ( Engine::PlayerTeam[Index] == TERRORIST && Engine::g_Player[Index].Visible )
+		if ( Information::g_Player[Index].Team == TERRORIST && Information::g_Player[Index].Visible )
 		{
 			player_box.color[0] = 255;
 			player_box.color[1] = 255;
 			player_box.color[2] = 0;
 		}
-		else if ( Engine::PlayerTeam[Index] == TERRORIST )
+		else if ( Information::g_Player[Index].Team == TERRORIST )
 		{
 			player_box.color[0] = 255;
 			player_box.color[1] = 0;
 			player_box.color[2] = 0;
 		}
-		else if ( Engine::PlayerTeam[Index] == CT && Engine::g_Player[Index].Visible )
+		else if ( Information::g_Player[Index].Team == CT && Information::g_Player[Index].Visible )
 		{
 			player_box.color[0] = 0;
 			player_box.color[1] = 255;
 			player_box.color[2] = 255;
 		}
-		else if ( Engine::PlayerTeam[Index] == CT )
+		else if ( Information::g_Player[Index].Team == CT )
 		{
 			player_box.color[0] = 0;
 			player_box.color[1] = 0;
 			player_box.color[2] = 255;
 		}
-		else if ( Engine::g_Player[Index].Visible )
+		else if ( Information::g_Player[Index].Visible )
 		{
 			player_box.color[0] = 255;
 			player_box.color[1] = 255;
@@ -60,25 +64,26 @@ namespace Functions
 		}
 	}
 
-	void ESP::DrawPlayer ( struct cl_entity_s *Entity, struct cl_entity_s *Local, int Index )
+	void _fastcall ESP::DrawPlayer ( int Index )
 	{
-		if ( Engine::g_Local.Alive )
+		if ( Information::g_Local.Alive && ( Files::g_IniRead.esp.player == 1 && Information::g_Player[Index].Team == Information::g_Local.Team ) ||
+			( Files::g_IniRead.esp.player_visible_only && !Information::g_Player[Index].Visible ) )
 		{
-			if ( ( Files::g_IniRead.esp.player == 1 && Engine::PlayerTeam[Index] == Engine::g_Local.Team ) ||
-				( Files::g_IniRead.esp.player_visible_only && !Engine::g_Player[Index].Visible ) )
-			{
-				return;
-			}
+			return;
 		}
 
-		Vector Top = Vector ( Entity->origin.x, Entity->origin.y, Entity->origin.z + Entity->curstate.mins.z );
-		Vector Bot = Vector ( Entity->origin.x, Entity->origin.y, Entity->origin.z + Entity->curstate.maxs.z );
+		Vector Top = Vector ( Information::g_Player[Index].Entity->origin.x, Information::g_Player[Index].Entity->origin.y,
+			Information::g_Player[Index].Entity->origin.z + Information::g_Player[Index].Entity->curstate.mins.z );
+
+		Vector Bot = Vector ( Information::g_Player[Index].Entity->origin.x, Information::g_Player[Index].Entity->origin.y,
+			Information::g_Player[Index].Entity->origin.z + Information::g_Player[Index].Entity->curstate.maxs.z );
 
 		float ScreenTop[2], ScreenBot[2];
 
 		if ( g_Util.CalcScreen ( Top, ScreenTop ) && g_Util.CalcScreen ( Bot, ScreenBot ) )
 		{
-			float height = Engine::g_Player[Index].Ducked ? ScreenBot[1] - ScreenTop[1] : ( ScreenBot[1] - ScreenTop[1] ) * 0.9f;
+			float _h = ScreenBot[1] - ScreenTop[1];
+			float height = Information::g_Player[Index].Ducked ? _h : _h * 0.9f;
 
 			if ( Files::g_IniRead.esp.player_box )
 			{
@@ -88,15 +93,20 @@ namespace Functions
 
 				float width = height * 0.5f;
 
-				float linewidth = Files::g_IniRead.esp.player_box_linewidth;
+				switch ( Files::g_IniRead.esp.player_box )
+				{
+				case 1:
+					Renderer::g_Drawing.Box ( ( int )x, ( int )ScreenTop[1], ( int )width, ( int )height, 1,
+						player_box.color[0], player_box.color[1], player_box.color[2], 255 );
 
-				Files::g_IniRead.esp.player_box_outline ?
+					break;
 
-					Renderer::g_Drawing.DrawShadowBox ( ( int )x, ( int )ScreenTop[1], ( int )width,
-					( int )height, linewidth, player_box.color[0], player_box.color[1], player_box.color[2], 255 ) :
+				case 2:
+					Renderer::g_Drawing.BoxWithOutLine ( ( int )x, ( int )ScreenTop[1], ( int )width, ( int )height,
+						1, player_box.color[0], player_box.color[1], player_box.color[2], 255 );
 
-					Renderer::g_Drawing.DrawBox ( ( int )x, ( int )ScreenTop[1], ( int )width, ( int )height, 
-						linewidth, player_box.color[0], player_box.color[1], player_box.color[2], 255 );
+					break;
+				}
 			}
 
 			if ( Files::g_IniRead.esp.player_name )
@@ -104,12 +114,15 @@ namespace Functions
 				float y = height - 5 + ScreenTop[1];
 
 				Renderer::g_Verdana.Print ( ( int )ScreenTop[0], ( int )y, 255, 255,
-					255, 255, FL_CENTER | FL_OUTLINE, Engine::g_Player[Index].Info.name );
+					255, 255, FL_CENTER | FL_OUTLINE, Information::g_Player[Index].Info.name );
 			}
 
 			if ( Files::g_IniRead.esp.player_weapon )
 			{
-				float y = Files::g_IniRead.esp.player_distance ? ScreenBot[1] + ( 24 - ( ScreenBot[1] - ScreenTop[1] ) ) :
+				float y = Files::g_IniRead.esp.player_distance ?
+
+					ScreenBot[1] + ( 24 - ( ScreenBot[1] - ScreenTop[1] ) ) :
+
 					ScreenBot[1] + ( 12 - ( ScreenBot[1] - ScreenTop[1] ) );
 
 				int SequenceInfo[] =
@@ -127,35 +140,32 @@ namespace Functions
 					3
 				};
 
-				switch ( SequenceInfo[Entity->curstate.sequence] )
+				switch ( SequenceInfo[Information::g_Player[Index].Entity->curstate.sequence] )
 				{
 				case 2:
-					Renderer::g_Verdana.Print ( ( int )ScreenTop[0], ( int )y + 12, 
-						255, 90, 90, 255, FL_CENTER | FL_OUTLINE, SEQUENCE_RELOADING );
+					Renderer::g_Verdana.Print ( ( int )ScreenTop[0], ( int )y + 12, 255, 80, 80, 255, FL_CENTER | FL_OUTLINE, SEQUENCE_RELOADING );
 
 					break;
 
 				case 5:
-					Renderer::g_Verdana.Print ( ( int )ScreenTop[0], ( int )y + 12, 
-						255, 90, 90, 255, FL_CENTER | FL_OUTLINE, SEQUENCE_PLANTING );
+					Renderer::g_Verdana.Print ( ( int )ScreenTop[0], ( int )y + 12, 255, 80, 80, 255, FL_CENTER | FL_OUTLINE, SEQUENCE_PLANTING );
 
 					break;
 				}
 
-				struct model_s *Model = Engine::g_Studio.GetModelByIndex ( Entity->curstate.weaponmodel );
+				struct model_s *Model = Engine::g_Studio.GetModelByIndex ( Information::g_Player[Index].Entity->curstate.weaponmodel );
 
 				if ( Model->name )
 				{
 					char WeaponName[64];
 
-					int Len = lstrlen ( Model->name + 9 ) - 3;
+					int len = lstrlen ( Model->name + 9 ) - 3;
 
-					lstrcpyn ( WeaponName, Model->name + 9, Len );
+					lstrcpyn ( WeaponName, Model->name + 9, len );
 
-					WeaponName[Len] = '\0';
+					WeaponName[len] = '\0';
 
-					Renderer::g_Verdana.Print ( ( int )ScreenTop[0], ( int )y, 
-						255, 255, 255, 255, FL_CENTER | FL_OUTLINE, WeaponName );
+					Renderer::g_Verdana.Print ( ( int )ScreenTop[0], ( int )y, 255, 255, 255, 255, FL_CENTER | FL_OUTLINE, WeaponName );
 				}
 			}
 
@@ -168,33 +178,29 @@ namespace Functions
 				switch ( Files::g_IniRead.esp.player_distance )
 				{
 				case 1:
-					DistanceUnits = ( int )GetPlayerDistance ( Entity, Local, false );
+					DistanceUnits = ( int )GetPlayerDistance ( Index, false );
 
 					if ( DistanceUnits >= 1000 )
 					{
-						Renderer::g_Verdana.Print ( ( int )ScreenTop[0], ( int )y, 255, 
-							90, 90, 255, FL_CENTER | FL_OUTLINE, "%d u", DistanceUnits );
+						Renderer::g_Verdana.Print ( ( int )ScreenTop[0], ( int )y, 255, 90, 90, 255, FL_CENTER | FL_OUTLINE, "%d u", DistanceUnits );
 					}
 					else
 					{
-						Renderer::g_Verdana.Print ( ( int )ScreenTop[0], ( int )y, 255, 
-							255, 255, 255, FL_CENTER | FL_OUTLINE, "%d u", DistanceUnits );
+						Renderer::g_Verdana.Print ( ( int )ScreenTop[0], ( int )y, 255, 255, 255, 255, FL_CENTER | FL_OUTLINE, "%d u", DistanceUnits );
 					}
 
 					break;
 
 				case 2:
-					DistanceMeters = ( int )GetPlayerDistance ( Entity, Local, true );
+					DistanceMeters = ( int )GetPlayerDistance ( Index, true );
 
 					if ( DistanceMeters >= 25 )
 					{
-						Renderer::g_Verdana.Print ( ( int )ScreenTop[0], ( int )y, 255, 
-							90, 90, 255, FL_CENTER | FL_OUTLINE, "%d m", DistanceMeters );
+						Renderer::g_Verdana.Print ( ( int )ScreenTop[0], ( int )y, 255, 90, 90, 255, FL_CENTER | FL_OUTLINE, "%d m", DistanceMeters );
 					}
 					else
 					{
-						Renderer::g_Verdana.Print ( ( int )ScreenTop[0], ( int )y, 255, 
-							255, 255, 255, FL_CENTER | FL_OUTLINE, "%d m", DistanceMeters );
+						Renderer::g_Verdana.Print ( ( int )ScreenTop[0], ( int )y, 255, 255, 255, 255, FL_CENTER | FL_OUTLINE, "%d m", DistanceMeters );
 					}
 
 					break;
@@ -205,15 +211,15 @@ namespace Functions
 
 	void ESP::AddEntity ( char* Name, int Important, Vector Origin, BYTE Type )
 	{
-		if ( g_ESP.EntityIndex < MAX_ENTITY )
+		if ( EntityIndex < MAX_ENTITY )
 		{
-			lstrcpy ( entity[g_ESP.EntityIndex].Name, Name );
+			lstrcpy ( Entity[EntityIndex].Name, Name );
 
-			entity[g_ESP.EntityIndex].Important = Important;
-			entity[g_ESP.EntityIndex].Origin = Origin;
-			entity[g_ESP.EntityIndex].Type = Type;
+			Entity[EntityIndex].Important = Important;
+			Entity[EntityIndex].Origin = Origin;
+			Entity[EntityIndex].Type = Type;
 
-			++g_ESP.EntityIndex;
+			++EntityIndex;
 		}
 		else
 		{
@@ -221,18 +227,18 @@ namespace Functions
 		}
 	}
 
-	void ESP::ClearEntity ( )
+	void _fastcall ESP::ClearEntity ( )
 	{
-		for ( int i = 0; i < g_ESP.EntityIndex; ++i )
+		for ( int i = 0; i < EntityIndex; ++i )
 		{
-			g_Util.MemorySet ( &entity[i].Name[0], 64, 0 );
+			g_Util.MemorySet ( &Entity[i].Name[0], 64, 0 );
 
-			entity[i].Important = 0;
-			entity[i].Origin = Vector ( 0, 0, 0 );
-			entity[i].Type = 0;
+			Entity[i].Important = 0;
+			Entity[i].Origin = Vector ( 0, 0, 0 );
+			Entity[i].Type = 0;
 		}
 
-		g_ESP.EntityIndex = 0;
+		EntityIndex = 0;
 	}
 
 	void ESP::HUD_AddEntity ( struct cl_entity_s *Entity )
@@ -288,166 +294,166 @@ namespace Functions
 		}
 	}
 
-	void ESP::DrawWorld ( )
+	void _fastcall ESP::DrawWorld ( )
 	{
-		for ( int i = 0; i < g_ESP.EntityIndex; ++i )
+		for ( int i = 0; i < EntityIndex; ++i )
 		{
 			float EntityScreen[2];
 
-			if ( g_Util.CalcScreen ( entity[i].Origin, EntityScreen ) && entity[i].Origin.x != 0 )
+			if ( g_Util.CalcScreen ( Entity[i].Origin, EntityScreen ) && Entity[i].Origin.x != 0 )
 			{
-				float uppt[] = { entity[i].Origin.x - Engine::g_Local.ViewOrg.x,
-					entity[i].Origin.y - Engine::g_Local.ViewOrg.y, entity[i].Origin.z - Engine::g_Local.ViewOrg.z };
+				float uppt[] = { Entity[i].Origin.x - Information::g_Local.ViewOrg.x, Entity[i].Origin.y - Information::g_Local.ViewOrg.y,
+					Entity[i].Origin.z - Information::g_Local.ViewOrg.z };
 
 				float l = sqrt ( VectorLengthSquared ( uppt ) );
 
 				l = max ( 100, l );
 
-				if ( Files::g_IniRead.esp.world_weapons && entity[i].Type == 1 )
+				if ( Files::g_IniRead.esp.world_weapons && Entity[i].Type == 1 )
 				{
-					if ( g_Util.native_strstr ( entity[i].Name, USP ) )
+					if ( g_Util.native_strstr ( Entity[i].Name, USP ) )
 					{
 						WEAPON_PARS ( USP );
 					}
-					else if ( g_Util.native_strstr ( entity[i].Name, GLOCK18 ) )
+					else if ( g_Util.native_strstr ( Entity[i].Name, GLOCK18 ) )
 					{
 						WEAPON_PARS ( GLOCK18 );
 					}
-					else if ( g_Util.native_strstr ( entity[i].Name, DEAGLE ) )
+					else if ( g_Util.native_strstr ( Entity[i].Name, DEAGLE ) )
 					{
 						WEAPON_PARS ( DEAGLE );
 					}
-					else if ( g_Util.native_strstr ( entity[i].Name, P228 ) )
+					else if ( g_Util.native_strstr ( Entity[i].Name, P228 ) )
 					{
 						WEAPON_PARS ( P228 );
 					}
-					else if ( g_Util.native_strstr ( entity[i].Name, ELITE ) )
+					else if ( g_Util.native_strstr ( Entity[i].Name, ELITE ) )
 					{
 						WEAPON_PARS ( ELITE );
 					}
-					else if ( g_Util.native_strstr ( entity[i].Name, FIVESEVEN ) )
+					else if ( g_Util.native_strstr ( Entity[i].Name, FIVESEVEN ) )
 					{
 						WEAPON_PARS ( FIVESEVEN );
 					}
-					else if ( g_Util.native_strstr ( entity[i].Name, M3 ) )
+					else if ( g_Util.native_strstr ( Entity[i].Name, M3 ) )
 					{
 						WEAPON_PARS ( M3 );
 					}
-					else if ( g_Util.native_strstr ( entity[i].Name, XM1014 ) )
+					else if ( g_Util.native_strstr ( Entity[i].Name, XM1014 ) )
 					{
 						WEAPON_PARS ( XM1014 );
 					}
-					else if ( g_Util.native_strstr ( entity[i].Name, MP5 ) )
+					else if ( g_Util.native_strstr ( Entity[i].Name, MP5 ) )
 					{
 						WEAPON_PARS ( MP5 );
 					}
-					else if ( g_Util.native_strstr ( entity[i].Name, TMP ) )
+					else if ( g_Util.native_strstr ( Entity[i].Name, TMP ) )
 					{
 						WEAPON_PARS ( TMP );
 					}
-					else if ( g_Util.native_strstr ( entity[i].Name, P90 ) )
+					else if ( g_Util.native_strstr ( Entity[i].Name, P90 ) )
 					{
 						WEAPON_PARS ( P90 );
 					}
-					else if ( g_Util.native_strstr ( entity[i].Name, MAC10 ) )
+					else if ( g_Util.native_strstr ( Entity[i].Name, MAC10 ) )
 					{
 						WEAPON_PARS ( MAC10 );
 					}
-					else if ( g_Util.native_strstr ( entity[i].Name, UMP45 ) )
+					else if ( g_Util.native_strstr ( Entity[i].Name, UMP45 ) )
 					{
 						WEAPON_PARS ( UMP45 );
 					}
-					else if ( g_Util.native_strstr ( entity[i].Name, FAMAS ) )
+					else if ( g_Util.native_strstr ( Entity[i].Name, FAMAS ) )
 					{
 						WEAPON_PARS ( FAMAS );
 					}
-					else if ( g_Util.native_strstr ( entity[i].Name, SG552 ) )
+					else if ( g_Util.native_strstr ( Entity[i].Name, SG552 ) )
 					{
 						WEAPON_PARS ( SG552 );
 					}
-					else if ( g_Util.native_strstr ( entity[i].Name, AK47 ) )
+					else if ( g_Util.native_strstr ( Entity[i].Name, AK47 ) )
 					{
 						WEAPON_PARS ( AK47 );
 					}
-					else if ( g_Util.native_strstr ( entity[i].Name, M4A1 ) )
+					else if ( g_Util.native_strstr ( Entity[i].Name, M4A1 ) )
 					{
 						WEAPON_PARS ( M4A1 );
 					}
-					else if ( g_Util.native_strstr ( entity[i].Name, AUG ) )
+					else if ( g_Util.native_strstr ( Entity[i].Name, AUG ) )
 					{
 						WEAPON_PARS ( AUG );
 					}
-					else if ( g_Util.native_strstr ( entity[i].Name, SCOUT ) )
+					else if ( g_Util.native_strstr ( Entity[i].Name, SCOUT ) )
 					{
 						WEAPON_PARS ( SCOUT );
 					}
-					else if ( g_Util.native_strstr ( entity[i].Name, AWP ) )
+					else if ( g_Util.native_strstr ( Entity[i].Name, AWP ) )
 					{
 						WEAPON_PARS ( AWP );
 					}
-					else if ( g_Util.native_strstr ( entity[i].Name, G3SG1 ) )
+					else if ( g_Util.native_strstr ( Entity[i].Name, G3SG1 ) )
 					{
 						WEAPON_PARS ( G3SG1 );
 					}
-					else if ( g_Util.native_strstr ( entity[i].Name, SG550 ) )
+					else if ( g_Util.native_strstr ( Entity[i].Name, SG550 ) )
 					{
 						WEAPON_PARS ( SG550 );
 					}
-					else if ( g_Util.native_strstr ( entity[i].Name, GALIL ) )
+					else if ( g_Util.native_strstr ( Entity[i].Name, GALIL ) )
 					{
 						WEAPON_PARS ( GALIL );
 					}
-					else if ( g_Util.native_strstr ( entity[i].Name, M249 ) )
+					else if ( g_Util.native_strstr ( Entity[i].Name, M249 ) )
 					{
 						WEAPON_PARS ( M249 );
 					}
-					else if ( g_Util.native_strstr ( entity[i].Name, SHIELD ) )
+					else if ( g_Util.native_strstr ( Entity[i].Name, SHIELD ) )
 					{
 						WEAPON_PARS ( SHIELD );
 					}
-					else if ( g_Util.native_strstr ( entity[i].Name, BACKPACK ) )
+					else if ( g_Util.native_strstr ( Entity[i].Name, BACKPACK ) )
 					{
 						WEAPON_PARS_C4 ( BACKPACK );
 					}
-					else if ( g_Util.native_strstr ( entity[i].Name, THIGHPACK ) )
+					else if ( g_Util.native_strstr ( Entity[i].Name, THIGHPACK ) )
 					{
 						WEAPON_PARS ( THIGHPACK );
 					}
-					else if ( g_Util.native_strstr ( entity[i].Name, C4 ) )
+					else if ( g_Util.native_strstr ( Entity[i].Name, C4 ) )
 					{
 						WEAPON_PARS_C4 ( C4 );
 					}
 					else
 					{
-						Renderer::g_Drawing.DrawBox ( ( int )EntityScreen[0] - 2, ( int )EntityScreen[1], 6, 6, 1, 0, 0, 0, 255 );
+						Renderer::g_Drawing.Box ( ( int )EntityScreen[0] - 2, ( int )EntityScreen[1], 6, 6, 1, 0, 0, 0, 255 );
 
-						Renderer::g_Drawing.FillArea ( ( int )EntityScreen[0] - 1, ( int )EntityScreen[1] + 1, 4, 4, 255, 150, 50, 255 );
+						Renderer::g_Drawing.Fill ( ( int )EntityScreen[0] - 1, ( int )EntityScreen[1] + 1, 4, 4, 255, 150, 50, 255 );
 
-						Renderer::g_Verdana.Print ( ( int )EntityScreen[0], ( int )EntityScreen[1] + 15, 
-							255, 255, 255, 255, FL_CENTER | FL_OUTLINE, entity[i].Name );
+						Renderer::g_Verdana.Print ( ( int )EntityScreen[0], ( int )EntityScreen[1] + 15,
+							255, 255, 255, 255, FL_CENTER | FL_OUTLINE, Entity[i].Name );
 					}
 				}
-				else if ( entity[i].Type == 2 && Files::g_IniRead.esp.world_sprites )
+				else if ( Files::g_IniRead.esp.world_sprites && Entity[i].Type == 2 )
 				{
 					float size = 3900 / l;
 
-					Renderer::g_Drawing.DrawBox ( EntityScreen[0], EntityScreen[1], size, size, 1, 255, 255, 200, 80 );
+					Renderer::g_Drawing.Box ( EntityScreen[0], EntityScreen[1], size, size, 1, 255, 255, 200, 80 );
 				}
-				else if ( entity[i].Type == 3 && Files::g_IniRead.esp.world_nades )
+				else if ( Files::g_IniRead.esp.world_nades && Entity[i].Type == 3 )
 				{
 					float rad = 3000 / l;
 
-					if ( g_Util.native_strstr ( entity[i].Name, HEGREN ) )
+					if ( g_Util.native_strstr ( Entity[i].Name, HEGREN ) )
 					{
-						Renderer::g_Drawing.DrawCircle ( EntityScreen[0], EntityScreen[1], rad, 100, 2, 255, 50, 50, 255 );
+						Renderer::g_Drawing.Circle ( EntityScreen[0], EntityScreen[1], rad, 50, 2, 255, 50, 50, 255 );
 					}
-					else if ( g_Util.native_strstr ( entity[i].Name, FLASH ) )
+					else if ( g_Util.native_strstr ( Entity[i].Name, FLASH ) )
 					{
-						Renderer::g_Drawing.DrawCircle ( EntityScreen[0], EntityScreen[1], rad, 100, 2, 255, 255, 255, 255 );
+						Renderer::g_Drawing.Circle ( EntityScreen[0], EntityScreen[1], rad, 50, 2, 255, 255, 255, 255 );
 					}
-					else if ( g_Util.native_strstr ( entity[i].Name, SMOKE ) )
+					else if ( g_Util.native_strstr ( Entity[i].Name, SMOKE ) )
 					{
-						Renderer::g_Drawing.DrawCircle ( EntityScreen[0], EntityScreen[1], rad, 100, 2, 50, 255, 50, 255 );
+						Renderer::g_Drawing.Circle ( EntityScreen[0], EntityScreen[1], rad, 50, 2, 50, 255, 50, 255 );
 					}
 				}
 			}
@@ -458,12 +464,12 @@ namespace Functions
 
 	void ESP::AddSound ( DWORD Time, Vector Origin )
 	{
-		if ( g_ESP.SoundIndex < MAX_SOUNDS )
+		if ( SoundIndex < MAX_SOUNDS )
 		{
-			sound[g_ESP.SoundIndex].Time = Time;
-			sound[g_ESP.SoundIndex].Origin = Origin;
+			Sound[SoundIndex].Time = Time;
+			Sound[SoundIndex].Origin = Origin;
 
-			++g_ESP.SoundIndex;
+			++SoundIndex;
 		}
 		else
 		{
@@ -471,23 +477,23 @@ namespace Functions
 		}
 	}
 
-	void ESP::ClearSound ( )
+	void _fastcall ESP::ClearSound ( )
 	{
-		for ( int i = 0; i < g_ESP.SoundIndex; ++i )
+		for ( int i = 0; i < SoundIndex; ++i )
 		{
-			sound[i].Time = 0;
-			sound[i].Origin = Vector ( 0, 0, 0 );
+			Sound[i].Time = 0;
+			Sound[i].Origin = Vector ( 0, 0, 0 );
 		}
 
-		g_ESP.SoundIndex = 0;
+		SoundIndex = 0;
 	}
 
-	void ESP::DrawSound ( )
+	void _fastcall ESP::DrawSound ( )
 	{
-		for ( short i = 0; i < g_ESP.SoundIndex; ++i )
+		for ( short i = 0; i < SoundIndex; ++i )
 		{
-			float uppt[] = { sound[i].Origin.x - Engine::g_Local.ViewOrg.x,
-				sound[i].Origin.y - Engine::g_Local.ViewOrg.y, sound[i].Origin.z - Engine::g_Local.ViewOrg.z };
+			float uppt[] = { Sound[i].Origin.x - Information::g_Local.ViewOrg.x, Sound[i].Origin.y - Information::g_Local.ViewOrg.y,
+				Sound[i].Origin.z - Information::g_Local.ViewOrg.z };
 
 			float l = sqrt ( VectorLengthSquared ( uppt ) );
 
@@ -495,25 +501,25 @@ namespace Functions
 
 			float size = 7020 / l;
 
-			float Time = ( float )sound[i].Time + Files::g_IniRead.esp.sound_fade_time;
+			float time = ( float )Sound[i].Time + Files::g_IniRead.esp.sound_fade_time;
 
-			if ( Time <= GetTickCount ( ) )
+			if ( time <= GetTickCount ( ) )
 			{
-				sound[i].Time = 0;
-				sound[i].Origin = Vector ( 0, 0, 0 );
+				Sound[i].Time = 0;
+				Sound[i].Origin = Vector ( 0, 0, 0 );
 			}
 			else
 			{
 				float SoundScreen[2];
 
-				float size_z = g_Util.Interp ( ( float )sound[i].Time, ( float )GetTickCount ( ), Time, size, 0 );
+				float size_z = g_Util.Interp ( ( float )Sound[i].Time, ( float )GetTickCount ( ), time, size, 0 );
 
-				if ( g_Util.CalcScreen ( sound[i].Origin, SoundScreen ) )
+				if ( g_Util.CalcScreen ( Sound[i].Origin, SoundScreen ) )
 				{
-					Renderer::g_Drawing.DrawBox ( SoundScreen[0] - size_z / 2, SoundScreen[1] - size_z / 2,
-						g_Util.Interp ( ( float )sound[i].Time, ( float )GetTickCount ( ), Time, size, 0 ),
-						g_Util.Interp ( ( float )sound[i].Time, ( float )GetTickCount ( ), Time, size, 0 ),
-						1, 255, 255, 255, g_Util.Interp ( ( float )sound[i].Time, ( float )GetTickCount ( ), Time, 255, 0 ) );
+					Renderer::g_Drawing.Box ( SoundScreen[0] - size_z / 2, SoundScreen[1] - size_z / 2,
+						g_Util.Interp ( ( float )Sound[i].Time, ( float )GetTickCount ( ), time, size, 0 ),
+						g_Util.Interp ( ( float )Sound[i].Time, ( float )GetTickCount ( ), time, size, 0 ),
+						1, 255, 255, 255, g_Util.Interp ( ( float )Sound[i].Time, ( float )GetTickCount ( ), time, 255, 0 ) );
 				}
 			}
 		}
@@ -538,8 +544,8 @@ namespace Functions
 
 	ESP g_ESP;
 
-	entity_s entity[MAX_ENTITY];
-	sound_s sound[MAX_SOUNDS];
+	entity_s Entity[MAX_ENTITY];
+	sound_s Sound[MAX_SOUNDS];
 
 	player_box_s player_box;
 }

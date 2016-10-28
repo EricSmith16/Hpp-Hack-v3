@@ -1,7 +1,5 @@
 #include "Main.h"
 
-#pragma warning (disable: 4100)
-
 namespace Engine
 {
 	PColor24 Console_TextColor;
@@ -19,8 +17,6 @@ namespace Engine
 	engine_studio_api_t g_Studio;
 
 	char* BaseDir;
-
-	bool FirstFrame = false;
 }
 
 DWORD WINAPI ProcessReload ( LPVOID lpThreadParameter );
@@ -65,46 +61,52 @@ StartHook:
 	{
 		goto StartHook;
 	}
-
-	DWORD ClientTable = Engine::g_Offset.FindClientTable ( );
-
-	if ( ClientTable )
+	else
 	{
-		Engine::g_pClient = ( cl_clientfunc_t* )ClientTable;
+		DWORD ClientTable = Engine::g_Offset.FindClientTable ( );
 
-		g_Util.MemoryCopy ( &Engine::g_Client, Engine::g_pClient, sizeof ( cl_clientfunc_t ) );
-
-		if ( Engine::g_Client.Initialize )
+		if ( ClientTable )
 		{
-			DWORD EngineTable = Engine::g_Offset.FindEngineTable ( );
+			Engine::g_pClient = ( cl_clientfunc_t* )ClientTable;
 
-			if ( EngineTable )
+			g_Util.MemoryCopy ( &Engine::g_Client, Engine::g_pClient, sizeof ( cl_clientfunc_t ) );
+
+			if ( Engine::g_Client.Initialize )
 			{
-				Engine::g_pEngine = ( cl_enginefunc_t* )EngineTable;
+				DWORD EngineTable = Engine::g_Offset.FindEngineTable ( );
 
-				g_Util.MemoryCopy ( &Engine::g_Engine, Engine::g_pEngine, sizeof ( cl_enginefunc_t ) );
-
-				if ( Engine::g_Engine.V_CalcShake )
+				if ( EngineTable )
 				{
-					DWORD StudioTable = Engine::g_Offset.FindStudioTable ( );
+					Engine::g_pEngine = ( cl_enginefunc_t* )EngineTable;
 
-					if ( StudioTable )
+					g_Util.MemoryCopy ( &Engine::g_Engine, Engine::g_pEngine, sizeof ( cl_enginefunc_t ) );
+
+					if ( Engine::g_Engine.V_CalcShake )
 					{
-						Engine::g_pStudio = ( engine_studio_api_t* )StudioTable;
+						DWORD StudioTable = Engine::g_Offset.FindStudioTable ( );
 
-						g_Util.MemoryCopy ( &Engine::g_Studio, Engine::g_pStudio, sizeof ( engine_studio_api_t ) );
-
-						if ( Engine::g_Studio.StudioSetupSkin )
+						if ( StudioTable )
 						{
-							while ( !Engine::FirstFrame )
-							{						
-								Client::g_Hpp.HookFunction ( );
-								Client::g_Hpp.HookStudio ( );
+							Engine::g_pStudio = ( engine_studio_api_t* )StudioTable;
 
-								Sleep ( 100 );
+							g_Util.MemoryCopy ( &Engine::g_Studio, Engine::g_pStudio, sizeof ( engine_studio_api_t ) );
+
+							if ( Engine::g_Studio.StudioSetupSkin )
+							{
+								while ( !Client::g_Hpp.FirstFrame )
+								{
+									Client::g_Hpp.HookFunction ( );
+									Client::g_Hpp.HookStudio ( );
+
+									Sleep ( 100 );
+								}
+
+								ProcessReloadThread = CreateThread ( 0, 0, ProcessReload, 0, 0, 0 );
 							}
-
-							ProcessReloadThread = CreateThread ( 0, 0, ProcessReload, 0, 0, 0 );
+							else
+							{
+								goto StartHook;
+							}
 						}
 						else
 						{
@@ -131,10 +133,6 @@ StartHook:
 			goto StartHook;
 		}
 	}
-	else
-	{
-		goto StartHook;
-	}
 
 	return 0;
 }
@@ -143,11 +141,11 @@ DWORD WINAPI ProcessReload ( LPVOID lpThreadParameter )
 {
 	while ( true )
 	{
-		if ( Engine::FirstFrame )
+		if ( Client::g_Hpp.FirstFrame )
 		{
 			if ( !Engine::g_Offset.GetModuleInfo ( ) )
 			{
-				Engine::FirstFrame = false;
+				Client::g_Hpp.FirstFrame = false;
 			}
 		}
 		else

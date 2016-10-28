@@ -1,7 +1,6 @@
 #include "IniRead.h"
 
 #pragma warning (disable: 4800)
-#pragma warning (disable: 4458)
 
 namespace Files
 {
@@ -28,8 +27,6 @@ namespace Files
 		INIREAD_INT ( player_visible_only, esp, mESP, ESP_PLAYER_VISIBLE_ONLY );
 
 		INIREAD_INT ( player_box, esp, mESP, ESP_PLAYER_BOX );
-		INIREAD_INT ( player_box_outline, esp, mESP, ESP_PLAYER_BOX_OUTLINE );
-		INIREAD_INT ( player_box_linewidth, esp, mESP, ESP_PLAYER_BOX_LW );
 
 		INIREAD_INT ( player_name, esp, mESP, ESP_PLAYER_NAME );
 		INIREAD_INT ( player_weapon, esp, mESP, ESP_PLAYER_WEAPON );
@@ -54,6 +51,8 @@ namespace Files
 
 		INIREAD_STRING ( reload_key, main, MAIN, MAIN_RELOAD_KEY );
 		INIREAD_STRING ( panic_key, main, MAIN, MAIN_PANIC_KEY );
+
+		INIREAD_INT ( scan_visibility, main, MAIN, MAIN_SCAN_VISIBILITY );
 	}
 
 	void IniRead::Functions ( )
@@ -62,6 +61,7 @@ namespace Files
 
 		INIREAD_INT ( esp, function, FUNCTIONS, FUNCTIONS_ESP );
 		INIREAD_INT ( noflash, function, FUNCTIONS, FUNCTIONS_NOFLASH );
+		INIREAD_INT ( menu, function, FUNCTIONS, FUNCTIONS_MENU );
 	}
 
 	IniRead g_IniRead;

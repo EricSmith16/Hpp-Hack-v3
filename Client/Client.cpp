@@ -2,15 +2,17 @@
 
 namespace Client
 {
+	bool Hpp::FirstFrame = false;
+
 	void Hpp::HUD_Frame ( double time )
 	{
-		if ( !Engine::FirstFrame )
+		if ( !FirstFrame )
 		{
 			Engine::g_Screen.iSize = sizeof ( SCREENINFO );
 
 			Engine::g_Offset.HLType = Engine::g_Studio.IsHardware ( ) + 1;
 
-			Engine::g_Local.ppmove = ( playermove_t* )Engine::g_Offset.PlayerMovePtr ( );
+			Information::g_Local.ppmove = ( playermove_t* )Engine::g_Offset.PlayerMovePtr ( );
 
 			Engine::g_Offset.ConsoleColorInitalize ( );
 			Engine::g_Offset.GetGameInfo ( &BuildInfo );
@@ -28,10 +30,9 @@ namespace Client
 			HookUserMessages ( );
 			HookEngineMessages ( );
 
-			Initial::g_Init.LoadSettings ( );
 			Initial::g_Init.InitHack ( );
 
-			Engine::FirstFrame = true;
+			FirstFrame = true;
 		}
 
 		Engine::g_Engine.pfnGetScreenInfo ( &Engine::g_Screen );
@@ -43,23 +44,19 @@ namespace Client
 	{
 		Engine::g_Client.HUD_Redraw ( time, intermission );
 
-		struct cl_entity_s *Local = Engine::g_Engine.GetLocalPlayer ( );
-
-		Engine::g_PlayerInfo.UpdateLocalEntity ( Local );
+		Information::g_PlayerInfo.UpdateLocalInfo ( );
 
 		for ( BYTE Index = 1; Index <= Engine::g_Engine.GetMaxClients ( ); ++Index )
 		{
-			struct cl_entity_s *Entity = Engine::g_Engine.GetEntityByIndex ( Index );
-
-			if ( Index != Local->index )
+			if ( Index != Information::g_Local.Entity->index )
 			{
-				Engine::g_PlayerInfo.UpdatePlayerInfo ( Entity, Local, Index );
+				Information::g_PlayerInfo.UpdateInfoByIndex ( Index );
 
 				if ( Files::g_IniRead.function.esp && Files::g_IniRead.esp.enable )
 				{
-					if ( Files::g_IniRead.esp.player && Engine::g_Player[Index].Valid )
+					if ( Files::g_IniRead.esp.player && Information::g_Player[Index].Valid )
 					{
-						Functions::g_ESP.DrawPlayer ( Entity, Local, Index );
+						Functions::g_ESP.DrawPlayer ( Index );
 					}
 				}
 			}
@@ -83,18 +80,20 @@ namespace Client
 			Functions::g_NoFlash.HUD_Redraw ( );
 		}
 
-		Renderer::g_Menu.Draw ( Engine::g_Screen.iWidth / 8, Engine::g_Screen.iHeight / 6 );
+		if ( Files::g_IniRead.function.menu )
+		{
+			Renderer::g_Menu.Draw ( Engine::g_Screen.iWidth / 8, Engine::g_Screen.iHeight / 6 );
+		}
 	}
 
 	void Hpp::StudioEntityLight ( struct alight_s *plight )
 	{
 		struct cl_entity_s *Entity = Engine::g_Studio.GetCurrentEntity ( );
-		struct cl_entity_s *Local = Engine::g_Engine.GetLocalPlayer ( );
 
-		if ( Entity->player && Entity->index != Local->index )
+		if ( Entity->player && Entity->index != Information::g_Local.Entity->index )
 		{
-			Engine::g_PlayerInfo.GetBoneOrigin ( Entity, Local );
-			Engine::g_PlayerInfo.GetHitboxOrigin ( Entity, Local );
+			Information::g_PlayerInfo.GetBoneOrigin ( Entity );
+			Information::g_PlayerInfo.GetHitboxOrigin ( Entity );
 		}
 
 		Engine::g_Studio.StudioEntityLight ( plight );
@@ -112,10 +111,13 @@ namespace Client
 
 	int Hpp::HUD_Key_Event ( int down, int keynum, const char *pszCurrentBinding )
 	{
-		Renderer::g_Menu.KeyEvent ( keynum );
-
 		Initial::g_Init.ReloadKey ( keynum );
 		Initial::g_Init.PanicKey ( keynum );
+
+		if ( Files::g_IniRead.function.menu )
+		{
+			Renderer::g_Menu.KeyEvent ( keynum );
+		}
 
 		if ( Files::g_IniRead.function.esp )
 		{

@@ -1,7 +1,6 @@
 #include "NoFlash.h"
 
 #pragma warning (disable: 4244)
-#pragma warning (disable: 4701)
 
 namespace Functions
 {
@@ -99,8 +98,7 @@ namespace Functions
 		float x = Engine::g_Screen.iWidth / 2;
 		float y = Engine::g_Screen.iHeight / 6;
 
-		Renderer::g_Font.Print ( ( int )x, ( int )y, noflash.color[0], 
-			noflash.color[1], 0, 255, FL_CENTER, FLASHED, Percentage );
+		Renderer::g_Font.Print ( ( int )x, ( int )y, noflash.color[0], noflash.color[1], 0, 255, FL_CENTER, FLASHED, Percentage );
 
 		if ( Percentage > 80 )
 		{
@@ -113,15 +111,15 @@ namespace Functions
 		float x = Engine::g_Screen.iWidth / 2;
 		float y = Engine::g_Screen.iHeight / 6.2f;
 
-		Renderer::g_Drawing.DrawBox ( ( int )x - 101, ( int )y - 9, 202, 18, 1, 0, 0, 0, 255 );
+		Renderer::g_Drawing.Box ( ( int )x - 101, ( int )y - 9, 202, 18, 1, 0, 0, 0, 255 );
 
-		Renderer::g_Drawing.FillArea ( ( int )x - 100, ( int )y - 8, 200, 16, noflash.color[0], noflash.color[1], 0, 200 );
+		Renderer::g_Drawing.Fill ( ( int )x - 100, ( int )y - 8, 200, 16, noflash.color[0], noflash.color[1], 0, 200 );
 
 		Renderer::g_Font.Print ( ( int )x, ( int )y + 4, 255, 255, 255, 255, FL_CENTER | FL_OUTLINE, FLASHED, ( int )Percentage );
 
 		if ( Percentage > 80 )
 		{
-			Renderer::g_Font.Print ( ( int )x, ( int )y + 23, 255, 0, 0, 255, FL_CENTER | FL_OUTLINE, DONTSEE );
+			Renderer::g_Font.Print ( ( int )x, ( int )y + 23, 255, 0, 0, 255, FL_CENTER, DONTSEE );
 		}
 	}
 
@@ -162,14 +160,11 @@ namespace Functions
 			Flashed = 0;
 		}
 
-		if ( Files::g_IniRead.noflash.fade_color_random )
-		{
-			SetFadeColorRandom ( Flashed );
-		}
-		else
-		{
+		Files::g_IniRead.noflash.fade_color_random ?
+
+			SetFadeColorRandom ( Flashed ) :
+
 			SetFadeColor ( );
-		}
 
 		float Percentage = ( Flashed / 255 ) * 100;
 

@@ -15,7 +15,7 @@ namespace Files
 		int fade_color_random;
 		int fade_limit;
 
-		int show_percentage;	
+		int show_percentage;
 	};
 
 	struct esp_s
@@ -25,8 +25,6 @@ namespace Files
 		int player;
 		int player_visible_only;
 		int player_box;
-		int player_box_outline;
-		int player_box_linewidth;
 		int player_name;
 		int player_weapon;
 		int player_distance;
@@ -47,6 +45,8 @@ namespace Files
 		int reload_key;
 		int panic_key;
 
+		int scan_visibility;
+
 		bool language;
 	};
 
@@ -54,6 +54,7 @@ namespace Files
 	{
 		bool esp;
 		bool noflash;
+		bool menu;
 	};
 
 	class IniRead
@@ -64,10 +65,10 @@ namespace Files
 		main_s main;
 		function_s function;
 
-		void NoFlash ( );
-		void ESP ( );
-		void Main ( );
-		void Functions ( );
+		static void NoFlash ( );
+		static void ESP ( );
+		static void Main ( );
+		static void Functions ( );
 	};
 
 	extern IniRead g_IniRead;
