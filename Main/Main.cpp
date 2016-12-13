@@ -11,6 +11,7 @@ namespace Engine
 	cl_enginefunc_t *g_pEngine = nullptr;
 	engine_studio_api_t *g_pStudio = nullptr;
 	screenfade_t *g_pScreenFade = nullptr;
+	playermove_t *g_pPlayerMove = nullptr;
 
 	cl_clientfunc_t g_Client;
 	cl_enginefunc_t g_Engine;
@@ -35,7 +36,7 @@ DWORD WINAPI CheatEntry ( LPVOID lpThreadParameter )
 
 StartHook:
 
-	if ( FindCounter == 50 )
+	if ( FindCounter == FIND_COUNTER_VALUE )
 	{
 		if ( !Engine::g_pClient )
 		{
@@ -51,17 +52,28 @@ StartHook:
 		{
 			Engine::g_Offset.Error ( true, STUDIO_FIND_ERROR );
 		}
+
+		if ( !Engine::g_pPlayerMove )
+		{
+			Engine::g_Offset.Error ( true, PPMOVE_PTR_ERROR );
+		}
+
+		if ( !Engine::g_pUserMsgBase )
+		{
+			Engine::g_Offset.Error ( true, USERMSG_ERROR );
+		}
+
+		if ( !Engine::g_pEngineMsgBase )
+		{
+			Engine::g_Offset.Error ( true, ENGINE_MSG_BASE );
+		}
 	}
 
-	Sleep ( 100 );
+	Sleep ( 50 );
 
 	++FindCounter;
 
-	if ( !Engine::g_Offset.GetModuleInfo ( ) )
-	{
-		goto StartHook;
-	}
-	else
+	if ( Engine::g_Offset.GetModuleInfo ( ) )
 	{
 		DWORD ClientTable = Engine::g_Offset.FindClientTable ( );
 
@@ -93,15 +105,48 @@ StartHook:
 
 							if ( Engine::g_Studio.StudioSetupSkin )
 							{
-								while ( !Client::g_Hpp.FirstFrame )
+								DWORD PlayerMove = ( DWORD )Engine::g_Offset.PlayerMove ( );
+
+								if ( PlayerMove )
 								{
-									Client::g_Hpp.HookFunction ( );
-									Client::g_Hpp.HookStudio ( );
+									Engine::g_pPlayerMove = ( playermove_t* )PlayerMove;
 
-									Sleep ( 100 );
+									DWORD UserMsg = Engine::g_Offset.FindUserMsgBase ( );
+
+									if ( UserMsg )
+									{
+										Engine::g_pUserMsgBase = ( PUserMsg )UserMsg;
+
+										DWORD EngineMsg = Engine::g_Offset.FindSVCMessages ( );
+
+										if ( EngineMsg )
+										{
+											Engine::g_pEngineMsgBase = ( PEngineMsg )EngineMsg;
+
+											while ( !Client::g_Hpp.FirstFrame )
+											{
+												Client::g_Hpp.HookFunction ( );
+												Client::g_Hpp.HookStudio ( );
+
+												Sleep ( 50 );
+											}
+
+											ProcessReloadThread = CreateThread ( 0, 0, ProcessReload, 0, 0, 0 );
+										}
+										else
+										{
+											goto StartHook;
+										}
+									}
+									else
+									{
+										goto StartHook;
+									}
 								}
-
-								ProcessReloadThread = CreateThread ( 0, 0, ProcessReload, 0, 0, 0 );
+								else
+								{
+									goto StartHook;
+								}
 							}
 							else
 							{
@@ -133,6 +178,10 @@ StartHook:
 			goto StartHook;
 		}
 	}
+	else
+	{
+		goto StartHook;
+	}
 
 	return 0;
 }
@@ -153,7 +202,7 @@ DWORD WINAPI ProcessReload ( LPVOID lpThreadParameter )
 			CreateThread ( 0, 0, CheatEntry, 0, 0, 0 );
 		}
 
-		Sleep ( 100 );
+		Sleep ( 50 );
 	}
 
 	return 0;

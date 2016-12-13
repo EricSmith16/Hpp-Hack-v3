@@ -1,52 +1,24 @@
 #include "File.h"
-#include "io.h"
+#include <io.h>
 
 namespace Files
 {
-	std::string File::DirFile ( const char* Name )
+	std::string File::DirFile ( const char *FileName )
 	{
-		std::string Ret = Engine::BaseDir;
+		std::string Path = Engine::BaseDir;
 
-		return ( Ret + Name );
+		return Path + FileName;
 	}
 
-	bool File::FileExists ( const char *FileName )
-	{
-		return _access ( FileName, 0 ) != -1;
-	}
-
-	int File::ReadInt ( char* Section, char* Key, int Default, char* Patch )
-	{
-		return GetPrivateProfileInt ( Section, Key, Default, Patch );
-	}
-
-	char* File::IniRead ( char *FileName, char *Section, char *Key, char *Default )
-	{
-		char *Out = new char[512];
-
-		GetPrivateProfileString ( ( LPCSTR )Section, ( LPCSTR )Key, Default, Out, 200, ( LPCSTR )FileName );
-
-		return Out;
-	}
-
-	int File::ReadString ( char* Section, char* Key, char* Default, char* Patch )
-	{
-		char TempString[19];
-
-		GetPrivateProfileString ( Section, Key, Default, TempString, 16, Patch );
-
-		return CharToKey ( TempString );
-	}
-
-	int File::CharToKey ( char* Key )
+	int File::StringToKey ( char* Key )
 	{
 		PARS_STRING ( "RU", "ru", RUSSIAN );
 		PARS_STRING ( "RUSSIAN", "russian", RUSSIAN );
 		PARS_STRING ( "EN", "en", ENGLISH );
 		PARS_STRING ( "ENGLISH", "english", ENGLISH );
 
-		PARS_STRING ( "UP", "up", TRUE );
-		PARS_STRING ( "DOWN", "down", FALSE );
+		PARS_STRING ( "UP", "up", 1001 );
+		PARS_STRING ( "DOWN", "down", 1000 );
 
 		PARS_STRING ( "TAB", "tab", K_TAB );
 		PARS_STRING ( "ENTER", "enter", K_ENTER );
@@ -143,7 +115,7 @@ namespace Files
 
 		PARS_STRING ( "NONE", "none", NULL );
 
-		return NULL;
+		return 0;
 	}
 
 	File g_File;

@@ -2,64 +2,57 @@
 
 #include "Main.h"
 
-namespace Renderer
+namespace Functions
 {
-	struct m_entry
+	namespace Visuals
 	{
-		char Name[32];
+		struct m_entry
+		{
+			char Name[32];
 
-		BYTE Color[3];
-	};
+			BYTE Color[3];
 
-	struct s_entry
-	{
-		char Name[32];
-		char* Help;
+			bool Space, Value, Active;
+		};
 
-		int* Value;
-		int Min;
-		int Max;
-		int Step;
-	};
+		struct s_entry
+		{
+			char Name[32], *Help;
 
-	class Menu
-	{
-	private:
-		HANDLE Heap;
-		PCHAR Value;
+			float *Value, Step;
+			float Min, Max;
 
-		DWORD LastSaveTime;
-		DWORD LastLoadTime;
+			bool bFloat, Space;
+		};
 
-		int M_EntryPos;
-		int M_EntrySize;
+		class Menu
+		{
+		private:
+			bool Visible, ExitMenu;
 
-		int S_EntryPos;
-		int S_EntrySize;
+			void Add ( char* Name, BYTE r, BYTE g, BYTE b, bool Space, bool Active );
+			void AddSub ( char* Name, float* Value, float Min, float Max, float Step, char* Help, bool bFloat, bool Space );
 
-		bool SubMenu;
-		bool Help;
+			void Clear ( );
 
-		m_entry menu_entry[MAX_MENU_COUNT];
-		s_entry subm_entry[MAX_SUB_MENU_COUNT];
+		public:
+			Menu ( );
 
-		void Add ( char* Name, BYTE r, BYTE g, BYTE b );
-		void AddSub ( char* Name, int* Value, int Min, int Max, int Step, char* Help );
+			m_entry MenuEntry[MAX_MENU_COUNT];
+			s_entry SubmEntry[MAX_SUB_MENU_COUNT];
 
-		void Clear ( );
+			int M_EntryPos, M_EntrySize;
+			int S_EntryPos, S_EntrySize;
 
-	public:
-		bool Visible;
-		bool DisableReload;
-		bool ExitMenu;
+			bool SubMenu;
 
-		Menu ( );
+			void Initialize ( );
 
-		void Initialize ( );
+			void Draw ( int x, int y );
 
-		void Draw ( int x, int y );
-		void KeyEvent ( int keynum );
-	};
+			void Menu_KeyEvent ( int keynum );
+		};
 
-	extern Menu g_Menu;
+		extern Menu g_Menu;
+	}
 }

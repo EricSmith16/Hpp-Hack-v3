@@ -15,8 +15,8 @@ namespace Engine
 
 		DWORD _fastcall FindString ( PCHAR String, DWORD Start, DWORD End, DWORD Offset );
 		DWORD _fastcall FindPattern ( PCHAR Pattern, DWORD PtLen, DWORD Start, DWORD End, DWORD Offset );
-
-		DWORD FindGameConsole ( );
+		DWORD _fastcall FindPattern ( PCHAR Pattern, PCHAR PtLen, DWORD Start, DWORD End, DWORD Offset );
+		DWORD _fastcall FindGameConsole ( );
 
 		inline DWORD GetModuleSize ( DWORD Address );
 		inline DWORD FindPushString ( DWORD Start, DWORD End, DWORD Address );
@@ -26,26 +26,31 @@ namespace Engine
 		ULONG _fastcall __findmemoryclone ( const ULONG Start, const ULONG End, const ULONG Clone, UINT Size );
 		BOOL _fastcall __comparemem ( const UCHAR *Buff1, const UCHAR *Buff2, UINT Size );
 
-		inline ULONG __findreference ( const ULONG Start, const ULONG End, const ULONG Address );	
+		inline ULONG __findreference ( const ULONG Start, const ULONG End, const ULONG Address );
 
 		inline void GetRenderType ( );
 
 	public:
-		DWORD FindClientTable ( );
-		DWORD FindEngineTable ( );
-		DWORD FindStudioTable ( );
-		DWORD FindUserMsgBase ( );
-		DWORD FindSVCMessages ( );
-
-		PVOID PlayerMovePtr ( );
+		Offset ( );
 
 		int HLType;
 
-		bool GetModuleInfo ( );
+		DWORD _fastcall FindEngineTable ( );
+		DWORD _fastcall FindStudioTable ( );
+		DWORD _fastcall FindSVCMessages ( );
+		DWORD _fastcall FindClientTable ( );
+		DWORD _fastcall FindUserMsgBase ( );
 
-		void Error ( bool Exit, char* Message, ... );
-		void ConsoleColorInitalize ( );
-		void GetGameInfo ( pGameInfo_s GameInfo );
+		PVOID _fastcall PlayerMove ( );
+
+		bool _fastcall GetModuleInfo ( );
+
+		void* SpeedHackPtr ( );
+
+		void _fastcall Error ( bool Exit, char* Message, ... );
+
+		void _fastcall ConsoleColorInitalize ( );
+		void _fastcall GetGameInfo ( pGameInfo_s GameInfo );
 	};
 
 	extern Offset g_Offset;

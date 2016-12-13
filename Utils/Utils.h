@@ -9,33 +9,38 @@ pfnEngineMsgHook HookEngineMsg ( char *MsgName, pfnEngineMsgHook pfn );
 class Util
 {
 public:
-	PCHAR _fastcall Util::itoa ( int i );
+	char *Prefix;
 
-	static char* ConvertTypeToRenderString ( BYTE Type );
+	char* _fastcall ConvertTypeToRenderString ( BYTE Type );
+	char* _fastcall PrefHack ( char *sz1, char *sz2, char *sz3 );
+	char* _fastcall native_strstr ( char *in, char *str );
 
-	static char* _fastcall native_strstr ( char *in, char *str );
+	float _fastcall Interp ( float s1, float s2, float s3, float f1, float f3 );
+	float _fastcall EndSpeed ( float StartSpeed, float Gravity, float FrameTime, float Distance );
 
-	static float _fastcall Interp ( float s1, float s2, float s3, float f1, float f3 );
+	int _fastcall native_strcmp ( char const* _Str1, char const* _Str2, size_t MaxCount );
 
-	static int _fastcall native_strcmp ( char const* _Str1, char const* _Str2, size_t MaxCount );
+	bool _fastcall CalcScreen ( float *pflOrigin, float *pflVecScreen );
+	bool _fastcall PathFree ( Vector Input );
 
-	static bool _fastcall CalcScreen ( float *pflOrigin, float *pflVecScreen );
+	void _fastcall MemoryCopy ( void * dst, const void * src, size_t count );
+	void _fastcall MemorySet ( void *buffer, DWORD len, DWORD sym );
 
-	static bool _fastcall PathFree ( Vector Input );
+	void _fastcall ConsolePrintColor ( BYTE R, BYTE G, BYTE B, char* String );
+	void _fastcall ConsolePrintColor ( BYTE R, BYTE G, BYTE B, DWORD String );
+	void _fastcall ConsolePrintColor ( BYTE R, BYTE G, BYTE B, BYTE String );
+	void _fastcall ConsolePrintColor ( BYTE R, BYTE G, BYTE B, int String );
+	void _fastcall ConsolePrintColor ( BYTE R, BYTE G, BYTE B, float String );
+	void _fastcall ConsolePrintColor_int ( BYTE R, BYTE G, BYTE B, float String );
 
-	static void _fastcall MemoryCopy ( void * dst, const void * src, size_t count );
-	static void _fastcall MemorySet ( void *Buffer, DWORD Len, DWORD Sym );
+	void _fastcall Parse ( BYTE MaxArray, char *String, float Number[] );
+	void _fastcall Parse ( BYTE MaxArray, char *String, BYTE Number[] );
 
-	static void _fastcall ConsolePrintColor ( BYTE R, BYTE G, BYTE B, char* String );
-	static void _fastcall ConsolePrintColor ( BYTE R, BYTE G, BYTE B, DWORD String );
-	static void _fastcall ConsolePrintColor ( BYTE R, BYTE G, BYTE B, BYTE String );
-	static void _fastcall ConsolePrintColor ( BYTE R, BYTE G, BYTE B, int String );
-	static void _fastcall ConsolePrintColor ( BYTE R, BYTE G, BYTE B, float String );
+	void _fastcall StrReplace ( char* buf, const char* search, const char* replace );
 
-	static void Parse ( BYTE MaxArray, char *String, int Number[] );
-	static void Parse ( BYTE MaxArray, char *String, BYTE Number[] );
+	void _fastcall MyVectorAngles ( const float *Forward, float *Angles );
+	void _fastcall RotateInvisible ( float FixedYaw, float FixedPitch, usercmd_s *cmd );
+	void _fastcall SlowHorizontalVelocity ( float to, float frametime, usercmd_s *cmd );
 };
 
 extern Util g_Util;
-
-extern char itoa_buffer[INT_DIGITS + 2];

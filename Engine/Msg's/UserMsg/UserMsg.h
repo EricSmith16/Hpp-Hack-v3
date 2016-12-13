@@ -9,9 +9,12 @@ namespace Engine
 	public:
 		static int ResetHUD ( const char *pszName, int iSize, void *pbuf );
 		static int SetFOV ( const char *pszName, int iSize, void *pbuf );
+		static int TextMsg ( const char *pszName, int iSize, void *pbuf );
 		static int TeamInfo ( const char *pszName, int iSize, void *pbuf );
 		static int CurWeapon ( const char *pszName, int iSize, void *pbuf );
 		static int DeathMsg ( const char *pszName, int iSize, void *pbuf );
+
+		static void AtRoundStart ( );
 	};
 
 	extern UserMsg g_UserMsg;
@@ -21,4 +24,5 @@ namespace Engine
 	extern pfnUserMsgHook pTeamInfo;
 	extern pfnUserMsgHook pCurWeapon;
 	extern pfnUserMsgHook pDeathMsg;
+	extern pfnUserMsgHook pTextMsg;
 }

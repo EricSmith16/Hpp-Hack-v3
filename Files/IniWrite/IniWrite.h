@@ -4,7 +4,7 @@
 
 namespace Files
 {
-	class IniRead
+	class IniWrite
 	{
 	public:
 		void EdgeBug ( );
@@ -17,8 +17,7 @@ namespace Files
 		void ESP ( );
 		void Main ( );
 		void Menu ( );
-		void Functions ( );
 	};
 
-	extern IniRead g_IniRead;
+	extern IniWrite g_IniWrite;
 }

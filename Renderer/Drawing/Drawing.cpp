@@ -1,12 +1,14 @@
 #include "Drawing.h"
 
+#pragma warning (disable: 4244)
+
 namespace Renderer
 {
-	void _fastcall Drawing::Fill ( float x, float y, float width, float height, BYTE r, BYTE g, BYTE b, BYTE a )
+	void Drawing::Fill ( float x, float y, float width, float height, BYTE r, BYTE g, BYTE b, BYTE a )
 	{
 		if ( Engine::g_Offset.HLType != RENDERTYPE_HARDWARE )
 		{
-			Engine::g_Engine.pfnFillRGBA ( ( int )x, ( int )y, ( int )width, ( int )height, r, g, b, a );
+			Engine::g_Engine.pfnFillRGBA ( x, y, width, height, r, g, b, a );
 		}
 		else
 		{
@@ -28,7 +30,7 @@ namespace Renderer
 		}
 	}
 
-	void _fastcall Drawing::Box ( float x, float y, float width, float height, float linewidth, BYTE r, BYTE g, BYTE b, BYTE a )
+	void Drawing::Box ( float x, float y, float width, float height, float linewidth, BYTE r, BYTE g, BYTE b, BYTE a )
 	{
 		Fill ( x, y, width, linewidth, r, g, b, a );
 		Fill ( x + width - linewidth, y + linewidth, linewidth, height - linewidth, r, g, b, a );
@@ -52,7 +54,7 @@ namespace Renderer
 		glLineWidth ( linewidth );
 		glBegin ( GL_LINE_LOOP );
 
-		for ( int i = 0; i < AmountSegments; ++i )
+		for ( unsigned short int i = 0; i < AmountSegments; ++i )
 		{
 			float angle = 2.0f * 3.1415926f * float ( i ) / float ( AmountSegments );
 

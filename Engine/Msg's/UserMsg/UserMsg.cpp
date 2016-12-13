@@ -7,9 +7,17 @@ namespace Engine
 	pfnUserMsgHook pTeamInfo = nullptr;
 	pfnUserMsgHook pCurWeapon = nullptr;
 	pfnUserMsgHook pDeathMsg = nullptr;
+	pfnUserMsgHook pTextMsg = nullptr;
+
+	void UserMsg::AtRoundStart ( )
+	{
+		Information::g_Local.Bomb.isPlanted = false;
+	}
 
 	int UserMsg::ResetHUD ( const char *pszName, int iSize, void *pbuf )
 	{
+		AtRoundStart ( );
+
 		return pResetHUD ( pszName, iSize, pbuf );
 	}
 
@@ -18,16 +26,40 @@ namespace Engine
 		return pSetFOV ( pszName, iSize, pbuf );
 	}
 
+	int UserMsg::TextMsg ( const char *pszName, int iSize, void *pbuf )
+	{
+		BEGIN_READ ( pbuf, iSize );
+
+		int ID = READ_BYTE ( );
+
+		char *Message = READ_STRING ( );
+
+		if ( *Message )
+		{
+			if ( !lstrcmpi ( Message, "#Bomb_Planted" ) )
+			{
+				Information::g_Local.Bomb.isPlanted = true;
+			}
+			else if ( !lstrcmpi ( Message, "#Target_Bombed" ) || !lstrcmp ( Message, "#Bomb_Defused" ) )
+			{
+				Information::g_Local.Bomb.isPlanted = false;
+			}
+		}
+
+		return pTextMsg ( pszName, iSize, pbuf );
+	}
+
 	int UserMsg::TeamInfo ( const char *pszName, int iSize, void *pbuf )
 	{
 		BEGIN_READ ( pbuf, iSize );
 
-		struct cl_entity_s *Entity = g_Engine.GetLocalPlayer ( );
+		cl_entity_s *Entity = g_Engine.GetLocalPlayer ( );
 
-		int Index = READ_BYTE( );
+		int Index = READ_BYTE ( );
+
 		char *Team = READ_STRING ( );
 
-		if ( !strcmp ( Team, TERRORIST_UMSG ) )
+		if ( !lstrcmpi ( Team, TERRORIST_UMSG ) )
 		{
 			Information::g_Player[Index].Team = TERRORIST;
 
@@ -36,7 +68,7 @@ namespace Engine
 				Information::g_Local.Team = TERRORIST;
 			}
 		}
-		else if ( !strcmp ( Team, CT_UMSG ) )
+		else if ( !lstrcmpi ( Team, CT_UMSG ) )
 		{
 			Information::g_Player[Index].Team = CT;
 

@@ -4,50 +4,74 @@
 
 namespace Information
 {
-	class PlayerInfo
+	struct bomb_s
 	{
-	private:
-		inline static bool isAlive ( struct cl_entity_s *Entity );
-		inline static bool isValid ( int Index );
-		inline static bool isDucked ( int Index );
+		float C4Timer;
 
-		static bool ScanVisibility ( int Index );
-
-	public:
-		static void _fastcall UpdateLocalInfo ( );
-		static void _fastcall UpdateInfoByIndex ( int Index );
-		static void _fastcall GetBoneOrigin ( struct cl_entity_s *Entity );
-		static void _fastcall GetHitboxOrigin ( struct cl_entity_s *Entity );
+		bool isPlanted;
 	};
-
-	extern PlayerInfo g_PlayerInfo;
 
 	struct local_s
 	{
-		cl_entity_s *Entity;
-		playermove_t *ppmove;
+		bomb_s Bomb;
+		cl_entity_s *Entity;	
 
 		Vector ViewOrg;
 
-		int Team;
+		DWORD SpeedPtr, Speed;
 
-		bool Alive;
+		double *g_Net;
+
+		float FrameTime, FPS;
+		float GroundAngle, HeightGround;
+		float HeightPlane, Height;
+		float EdgeDistance, FallDamage;
+		float EdgeOffset;
+
+		int Team, Index;
+
+		bool Alive, SlowDown;
 	};
 
 	extern local_s g_Local;
 
 	struct player_s
 	{
-		cl_entity_s *Entity;
 		hud_player_info_t Info;
+		cl_entity_s *Entity;	
 
 		Vector Bone[53], HitBox[21];
 
 		int Team;
 
-		bool Ducked, Valid;
-		bool Visible, Alive;
+		bool Valid, Visible, Ducked;
 	};
 
 	extern player_s g_Player[33];
+
+	class PlayerInfo
+	{
+	private:
+		inline float GetGroundAngle ( );	
+		inline float GetEdgeDistance ( );
+		inline float GetFallDamage ( );
+		inline void GetHeightGround ( );
+
+		inline bool isAlive ( );
+		inline bool isDucked ( int Index );
+		inline bool isValid ( int Index );
+
+		bool _fastcall ScanVisibility ( int Index );
+
+	public:
+		void _fastcall UpdateLocalInfo ( );
+		void _fastcall UpdateInfoByIndex ( int Index );
+
+		void _fastcall GetBoneOrigin ( struct cl_entity_s *Entity );
+		void _fastcall GetHitboxOrigin ( struct cl_entity_s *Entity );
+
+		void _fastcall HUD_Redraw ( );
+	};
+
+	extern PlayerInfo g_PlayerInfo;
 }

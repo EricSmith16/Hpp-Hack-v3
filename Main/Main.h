@@ -4,7 +4,9 @@
 #pragma comment(lib,"GLu32.lib")
 
 #include "Windows.h"
+
 #include <fstream>
+#include <io.h>
 
 #include <gl/gl.h>
 #include <gl/glu.h>
@@ -136,15 +138,24 @@ typedef struct sizebuf_s
 #include "Offsets.h"
 #include "Utils.h"
 #include "Client.h"
+#include "Variables.h"
 #include "Player.h"
+#include "ConsoleCmds.h"
 #include "Initial.h"
 #include "Font.h"
 #include "Drawing.h"
 #include "File.h"
 #include "IniRead.h"
+#include "IniWrite.h"
 #include "Menu.h"
 #include "ESP.h"
 #include "NoFlash.h"
+#include "ScreenInfo.h"
+#include "BHop.h"
+#include "GStrafe.h"
+#include "Speed.h"
+#include "JumpBug.h"
+#include "EdgeBug.h"
 
 namespace Engine
 {
@@ -152,6 +163,7 @@ namespace Engine
 	extern cl_enginefunc_t *g_pEngine;
 	extern engine_studio_api_t *g_pStudio;
 	extern screenfade_t *g_pScreenFade;
+	extern playermove_t *g_pPlayerMove;
 
 	extern cl_clientfunc_t g_Client;
 	extern cl_enginefunc_t g_Engine;

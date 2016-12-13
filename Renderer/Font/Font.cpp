@@ -2,10 +2,6 @@
 
 namespace Renderer
 {
-	GLuint Font::g_FontListID;
-
-	int Font::cHeight, Font::cWidth[255];
-
 	void Font::InitText ( char* Font, int Height, int Width )
 	{
 		if ( Engine::g_Offset.HLType != RENDERTYPE_HARDWARE )
@@ -24,7 +20,10 @@ namespace Renderer
 
 		hOldFont = ( HFONT )SelectObject ( hDC, hFont );
 
-		wglUseFontBitmaps ( hDC, 0, 255, g_FontListID );
+		if ( !wglUseFontBitmaps ( hDC, 0, 255, g_FontListID ) )
+		{
+			wglUseFontBitmaps ( hDC, 0, 255, g_FontListID );
+		}
 
 		for ( int i = 0; i < 255; ++i )
 		{
@@ -42,7 +41,7 @@ namespace Renderer
 		DeleteObject ( hFont );
 	}
 
-	void _fastcall Font::Render ( float x, float y, BYTE r, BYTE g, BYTE b, BYTE a, char *String )
+	void Font::Render ( float x, float y, BYTE r, BYTE g, BYTE b, BYTE a, char *String )
 	{
 		int i = 0;
 
@@ -65,7 +64,7 @@ namespace Renderer
 		glPopAttrib ( );
 	}
 
-	void _fastcall Font::Print ( float x, float y, BYTE r, BYTE g, BYTE b, BYTE a, BYTE Flags, char *String, ... )
+	void Font::Print ( float x, float y, BYTE r, BYTE g, BYTE b, BYTE a, BYTE Flags, char *String, ... )
 	{
 		char Text[256];
 
@@ -92,7 +91,28 @@ namespace Renderer
 
 		if ( Flags & FL_OUTLINE )
 		{
-			Render ( x + 1, y + 1, 0, 0, 0, 255, Text );
+			if ( g_Vars.main.font_outline_quality == 1 )
+			{
+				Render ( x + 1, y + 1, 0, 0, 0, a, Text );
+			}
+			else if ( g_Vars.main.font_outline_quality == 2 )
+			{
+				Render ( x, y + 1, 0, 0, 0, a, Text );
+				Render ( x + 1, y, 0, 0, 0, a, Text );
+				Render ( x + 1, y + 1, 0, 0, 0, a, Text );
+			}
+			else if ( g_Vars.main.font_outline_quality == 3 )
+			{
+				Render ( x, y - 1, 0, 0, 0, a, Text );
+				Render ( x, y + 1, 0, 0, 0, a, Text );
+				Render ( x - 1, y, 0, 0, 0, a, Text );
+				Render ( x + 1, y, 0, 0, 0, a, Text );
+
+				Render ( x - 1, y - 1, 0, 0, 0, a, Text );
+				Render ( x + 1, y - 1, 0, 0, 0, a, Text );
+				Render ( x - 1, y + 1, 0, 0, 0, a, Text );
+				Render ( x + 1, y + 1, 0, 0, 0, a, Text );
+			}
 		}
 
 		Render ( x, y, r, g, b, a, Text );

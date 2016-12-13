@@ -2,7 +2,32 @@
 
 namespace Engine
 {
-	void Offset::Error ( bool Exit, char* Message, ... )
+	Offset::Offset ( )
+	{
+		HwDll = 0;
+		SwDll = 0;
+		HlMod = 0;
+
+		HwBase = 0;
+		HwSize = 0;
+		HwEnd = 0;
+
+		ClBase = 0;
+		ClSize = 0;
+		ClEnd = 0;
+
+		HlBase = 0;
+		HlSize = 0;
+		HlEnd = 0;
+
+		VgBase = 0;
+		VgSize = 0;
+		VgEnd = 0;
+
+		HLType = 0;
+	}
+
+	void _fastcall Offset::Error ( bool Exit, char* Message, ... )
 	{
 		char Text[256];
 
@@ -26,12 +51,7 @@ namespace Engine
 		HlMod = ( DWORD )GetModuleHandle ( 0 );
 	}
 
-	DWORD Offset::GetModuleSize ( DWORD Address )
-	{
-		return PIMAGE_NT_HEADERS ( Address + ( DWORD )PIMAGE_DOS_HEADER ( Address )->e_lfanew )->OptionalHeader.SizeOfImage;
-	}
-
-	bool Offset::GetModuleInfo ( )
+	bool _fastcall Offset::GetModuleInfo ( )
 	{
 		GetRenderType ( );
 
@@ -136,6 +156,77 @@ namespace Engine
 		return 0;
 	}
 
+	DWORD _fastcall Offset::FindPattern ( PCHAR Pattern, PCHAR PtLen, DWORD Start, DWORD End, DWORD Offset )
+	{
+		int PatternLength = lstrlen ( Pattern );
+
+		bool Found = false;
+
+		for ( DWORD i = Start; i < End - PatternLength; i++ )
+		{
+			Found = true;
+
+			for ( int idx = 0; idx < PatternLength; idx++ )
+			{
+				if ( PtLen[idx] == 'x' && Pattern[idx] != *( PCHAR )( i + idx ) )
+				{
+					Found = false;
+
+					break;
+				}
+			}
+
+			if ( Found )
+			{
+				return i + Offset;
+			}
+		}
+
+		return 0;
+	}
+
+	ULONG _fastcall Offset::__findmemoryclone ( const ULONG Start, const ULONG End, const ULONG Clone, UINT Size )
+	{
+		for ( ULONG ul = Start; ( ul + Size ) < End; ++ul )
+		{
+			if ( CompareMemory ( ul, Clone, Size ) )
+			{
+				return ul;
+			}
+		}
+
+		return 0;
+	}
+
+	BOOL _fastcall Offset::__comparemem ( const UCHAR *Buff1, const UCHAR *Buff2, UINT Size )
+	{
+		for ( UINT i = 0; i < Size; ++i, ++Buff1, ++Buff2 )
+		{
+			if ( ( *Buff1 != *Buff2 ) && ( *Buff2 != 0xFF ) )
+			{
+				return FALSE;
+			}
+		}
+
+		return TRUE;
+	}
+
+	ULONG Offset::__findreference ( const ULONG Start, const ULONG End, const ULONG Address )
+	{
+		UCHAR Pattern[5];
+
+		Pattern[0] = 0x68;
+
+		*( ULONG* )&Pattern[1] = Address;
+
+		return FindMemoryClone ( Start, End, Pattern, sizeof ( Pattern ) - 1 );
+	}
+
+	DWORD Offset::GetModuleSize ( DWORD Address )
+	{
+		return PIMAGE_NT_HEADERS ( Address + ( DWORD )PIMAGE_DOS_HEADER ( Address )->e_lfanew )->OptionalHeader.SizeOfImage;
+	}
+
 	DWORD Offset::FindPushString ( DWORD Start, DWORD End, DWORD Address )
 	{
 		char Pattern[5] = { 0x68, 0x00, 0x00, 0x00, 0x00 };
@@ -150,89 +241,17 @@ namespace Engine
 		return ( ( Address < LB ) || ( Address > HB ) );
 	}
 
-	DWORD Offset::FindClientTable ( )
+	DWORD Offset::Absolute ( DWORD Address )
 	{
-		DWORD ClientPattern = FindString ( CLIENT_PATTERN, HwBase, HwEnd, 0 );
-
-		BYTE ClientOffset[2] = { 0x10, 0x13 };
-
-		if ( ClientPattern )
+		if ( !Address )
 		{
-			for ( BYTE i = 0; i < sizeof ( ClientOffset ); ++i )
-			{
-				DWORD ClientTablePtr = *( PDWORD )( FindPushString ( HwBase, HwEnd, ClientPattern ) + ClientOffset[i] );
-
-				if ( !FarProc ( ClientTablePtr, HwBase, HwEnd ) && !IsBadReadPtr ( ( PVOID )ClientTablePtr, sizeof ( cl_clientfunc_t ) ) )
-				{
-					return ClientTablePtr;
-				}
-			}
+			Error ( true, ABSOLUTE_ERROR );
 		}
 
-		return 0;
+		return Address + *( PDWORD )Address + 4;
 	}
 
-	DWORD Offset::FindEngineTable ( )
-	{
-		BYTE EngineOffset[7] = { 0x22, 0x23, 0x1C, 0x1D, 0x37, 0x2D, 0x0E };
-
-		for ( BYTE Offset = 0; Offset < sizeof ( EngineOffset ); ++Offset )
-		{
-			PVOID EnginePtr = ( cl_enginefunc_t* )*( PDWORD )( ( DWORD )g_pClient->Initialize + EngineOffset[Offset] );
-
-			if ( FarProc ( ( DWORD )EnginePtr, HwBase, HwEnd ) && FarProc ( ( DWORD )EnginePtr, HlBase, HlEnd ) &&
-				!FarProc ( ( DWORD )EnginePtr, ClBase, ClEnd ) )
-			{
-				return ( DWORD )EnginePtr;
-			}
-		}
-
-		return 0;
-	}
-
-	DWORD Offset::FindStudioTable ( )
-	{
-		DWORD StudioPattern = FindString ( STUDIO_PATTERN, HwBase, HwEnd, 0 );
-
-		if ( StudioPattern )
-		{
-			DWORD StudioTablePtr = *( PDWORD )( FindPushString ( HwBase, HwEnd, StudioPattern ) - 0x14 );
-
-			if ( !FarProc ( StudioTablePtr, HwBase, HwEnd ) )
-			{
-				return StudioTablePtr;
-			}
-			else
-			{
-				goto FindNext;
-			}
-		}
-
-		return 0;
-
-	FindNext:
-
-		DWORD StudioTablePtr = *( DWORD* )( ( DWORD )g_pClient->HUD_GetStudioModelInterface + 0x30 );
-
-		if ( FarProc ( StudioTablePtr, HwBase, HwEnd ) && FarProc ( StudioTablePtr, HlBase, HlEnd ) && FarProc ( StudioTablePtr, ClBase, ClEnd ) )
-		{
-			StudioTablePtr = *( DWORD* )( ( DWORD )g_pClient->HUD_GetStudioModelInterface + 0x1A );
-
-			if ( FarProc ( StudioTablePtr, ClBase, ClEnd ) )
-			{
-				StudioTablePtr = *( DWORD* )( ( DWORD )g_pClient->HUD_GetStudioModelInterface + 0x20 );
-
-				if ( FarProc ( StudioTablePtr, ClBase, ClEnd ) )
-				{
-					return 0;
-				}
-			}
-		}
-
-		return StudioTablePtr;
-	}
-
-	DWORD Offset::FindGameConsole ( )
+	DWORD _fastcall Offset::FindGameConsole ( )
 	{
 		DWORD GameConsolePattern = FindPattern ( CONSOLE_PATTERN, lstrlen ( CONSOLE_PATTERN ), VgBase, VgEnd, 0 );
 
@@ -251,7 +270,111 @@ namespace Engine
 		return FindAddress;
 	}
 
-	void Offset::ConsoleColorInitalize ( )
+	DWORD _fastcall Offset::FindClientTable ( )
+	{
+		DWORD PatternAddress = FindString ( CLIENT_PATTERN, HwBase, HwEnd, 0 );
+
+		BYTE ClientOffset[2] = { 0x10, 0x13 };
+
+		if ( PatternAddress )
+		{
+			for ( BYTE i = 0; i < sizeof ( ClientOffset ); ++i )
+			{
+				DWORD ClientTablePtr = *( PDWORD )( FindPushString ( HwBase, HwEnd, PatternAddress ) + ClientOffset[i] );
+
+				if ( !FarProc ( ClientTablePtr, HwBase, HwEnd ) && !IsBadReadPtr ( ( PVOID )ClientTablePtr, sizeof ( cl_clientfunc_t ) ) )
+				{
+					return ClientTablePtr;
+				}
+			}
+		}
+
+		return 0;
+	}
+
+	DWORD _fastcall Offset::FindEngineTable ( )
+	{
+		BYTE EngineOffset[4] = { 0x22, 0x1C, 0x1D, 0x37 };
+
+		for ( BYTE Offset = 0; Offset < sizeof ( EngineOffset ); ++Offset )
+		{
+			PVOID EnginePtr = ( cl_enginefunc_t* )*( PDWORD )( ( DWORD )g_pClient->Initialize + EngineOffset[Offset] );
+
+			if ( FarProc ( ( DWORD )EnginePtr, HwBase, HwEnd ) && FarProc ( ( DWORD )EnginePtr, HlBase, HlEnd ) &&
+				!FarProc ( ( DWORD )EnginePtr, ClBase, ClEnd ) )
+			{
+				return ( DWORD )EnginePtr;
+			}
+		}
+
+		return 0;
+	}
+
+	DWORD _fastcall Offset::FindStudioTable ( )
+	{
+		DWORD StudioTablePtr = *( DWORD* )( ( DWORD )g_pClient->HUD_GetStudioModelInterface + 0x30 );
+
+		if ( FarProc ( StudioTablePtr, HwBase, HwEnd ) && FarProc ( StudioTablePtr, HlBase, HlEnd ) && FarProc ( StudioTablePtr, ClBase, ClEnd ) )
+		{
+			StudioTablePtr = *( DWORD* )( ( DWORD )g_pClient->HUD_GetStudioModelInterface + 0x1A );
+
+			if ( !FarProc ( StudioTablePtr, ClBase, ClEnd ) )
+			{
+				return StudioTablePtr;
+			}
+		}
+
+		return 0;
+	}
+
+	DWORD _fastcall Offset::FindUserMsgBase ( )
+	{
+		DWORD UserMsgPattern = FindString ( USERMSG_PATTERN, HwBase, HwEnd, 0 );
+
+		BYTE OffsetUserMsgBase = 0x16;
+
+		if ( !UserMsgPattern )
+		{
+			return 0;
+		}
+
+		DWORD FindAddress = FindPushString ( HwBase, HwEnd, UserMsgPattern );
+
+		if ( FindAddress )
+		{
+			PBYTE MovPtr = ( PBYTE )( FindAddress - OffsetUserMsgBase );
+
+			if ( *MovPtr == 0x8B )
+			{
+				DWORD UserMsgBase = *( PDWORD )( ( DWORD )MovPtr + 2 );
+
+				if ( !FarProc ( UserMsgBase, HwBase, HwEnd ) )
+				{
+					return *( PDWORD )UserMsgBase;
+				}
+			}
+		}
+
+		return 0;
+	}
+
+	PVOID _fastcall Offset::PlayerMove ( )
+	{
+		PCHAR String = CLIENT_PATTERN;
+
+		DWORD Address = ( DWORD )FindMemoryClone ( HwBase, HwBase + HwSize, String, strlen ( String ) );
+
+		PVOID PlayerMovePtr = ( PVOID )*( PDWORD )( FindReference ( HwBase, HwBase + HwSize, Address ) + 0x18 );
+
+		if ( !FarProc ( ( DWORD )PlayerMovePtr, HwBase, HwEnd ) )
+		{
+			return PlayerMovePtr;
+		}
+
+		return 0;
+	}
+
+	void _fastcall Offset::ConsoleColorInitalize ( )
 	{
 		DWORD GameConsole = FindGameConsole ( );
 
@@ -270,17 +393,7 @@ namespace Engine
 		}
 	}
 
-	DWORD Offset::Absolute ( DWORD Address )
-	{
-		if ( !Address )
-		{
-			Error ( true, ABSOLUTE_ERROR );
-		}
-
-		return Address + *( PDWORD )Address + 4;
-	}
-
-	void Offset::GetGameInfo ( pGameInfo_s GameInfo )
+	void _fastcall Offset::GetGameInfo ( pGameInfo_s GameInfo )
 	{
 		typedef int ( *function )( );
 
@@ -304,96 +417,7 @@ namespace Engine
 		GameInfo->Build = GetBuild ( );
 	}
 
-	BOOL _fastcall Offset::__comparemem ( const UCHAR *Buff1, const UCHAR *Buff2, UINT Size )
-	{
-		for ( UINT i = 0; i < Size; ++i, ++Buff1, ++Buff2 )
-		{
-			if ( ( *Buff1 != *Buff2 ) && ( *Buff2 != 0xFF ) )
-			{
-				return FALSE;
-			}
-		}
-
-		return TRUE;
-	}
-
-	ULONG _fastcall Offset::__findmemoryclone ( const ULONG Start, const ULONG End, const ULONG Clone, UINT Size )
-	{
-		for ( ULONG ul = Start; ( ul + Size ) < End; ++ul )
-		{
-			if ( CompareMemory ( ul, Clone, Size ) )
-			{
-				return ul;
-			}
-		}
-
-		return 0;
-	}
-
-	ULONG Offset::__findreference ( const ULONG Start, const ULONG End, const ULONG Address )
-	{
-		UCHAR Pattern[5];
-
-		Pattern[0] = 0x68;
-
-		*( ULONG* )&Pattern[1] = Address;
-
-		return FindMemoryClone ( Start, End, Pattern, sizeof ( Pattern ) - 1 );
-	}
-
-	PVOID Offset::PlayerMovePtr ( )
-	{
-		PCHAR String = CLIENT_PATTERN;
-
-		DWORD Address = ( DWORD )FindMemoryClone ( HwBase, HwBase + HwSize, String, strlen ( String ) );
-
-		PVOID Ptr = ( PVOID )*( PDWORD )( FindReference ( HwBase, HwBase + HwSize, Address ) + 0x18 );
-
-		if ( FarProc ( ( DWORD )Ptr, HwBase, HwEnd ) )
-		{
-			Error ( true, PPMOVE_PTR_ERROR );
-		}
-
-		return Ptr;
-	}
-
-	DWORD Offset::FindUserMsgBase ( )
-	{
-		DWORD UserMsgPattern = FindString ( USERMSG_PATTERN, HwBase, HwEnd, 0 );
-
-		BYTE Offset_UserMsgBase[2] = { 0x16, 0x18 };
-
-		if ( !UserMsgPattern )
-		{
-			Error ( true, USERMSG_ERROR_1 );
-		}
-
-		DWORD FindAddress = FindPushString ( HwBase, HwEnd, UserMsgPattern );
-
-		if ( FindAddress )
-		{
-			for ( BYTE Offset = 0; Offset < sizeof ( Offset_UserMsgBase ); ++Offset )
-			{
-				PBYTE MovPtr = ( PBYTE )( FindAddress - Offset_UserMsgBase[Offset] );
-
-				if ( *MovPtr == 0x8B )
-				{
-					DWORD UserMsgBase = *( PDWORD )( ( DWORD )MovPtr + 2 );
-
-					if ( !FarProc ( UserMsgBase, HwBase, HwEnd ) )
-					{
-						return *( PDWORD )UserMsgBase;
-					}
-				}
-			}
-		}
-
-		Error ( true, USERMSG_ERROR_2 );
-
-		return 0;
-	}
-
-	DWORD Offset::FindSVCMessages ( )
+	DWORD _fastcall Offset::FindSVCMessages ( )
 	{
 		DWORD SvcMsgPattern = FindString ( SVC_MSG_PATTERN, HwBase, HwEnd, 0 );
 
@@ -411,8 +435,8 @@ namespace Engine
 
 		PEngineMsg pEngineMsgBase = ( PEngineMsg )( FindAddress - sizeof ( DWORD ) );
 
-		BYTE Offset_ReadCoord[5] = { 0x13, 0x15, 0x17, 0x0E, 0x0B };
-		BYTE Offset_SVC_SoundBase[3] = { 0x0E, 0x0C, 0x16 };
+		BYTE OffsetReadCoord[5] = { 0x13, 0x15, 0x17, 0x0E, 0x0B };
+		BYTE OffsetSVC_SoundBase[3] = { 0x0E, 0x0C, 0x16 };
 
 		if ( pEngineMsgBase )
 		{
@@ -424,11 +448,11 @@ namespace Engine
 
 			DWORD CallMSG_ReadCoord = Absolute ( ( DWORD )( pEngineMsgBase[SVC_PARTICLE].pfn ) + 1 );
 
-			for ( BYTE Offset = 0; Offset < sizeof ( Offset_ReadCoord ); ++Offset )
+			for ( BYTE Offset = 0; Offset < sizeof ( OffsetReadCoord ); ++Offset )
 			{
-				if ( *( PBYTE )( CallMSG_ReadCoord + Offset_ReadCoord[Offset] ) == 0xE8 )
+				if ( *( PBYTE )( CallMSG_ReadCoord + OffsetReadCoord[Offset] ) == 0xE8 )
 				{
-					MSG_ReadCoord = ( HL_MSG_ReadCoord )Absolute ( ( CallMSG_ReadCoord + Offset_ReadCoord[Offset] + 1 ) );
+					MSG_ReadCoord = ( HL_MSG_ReadCoord )Absolute ( ( CallMSG_ReadCoord + OffsetReadCoord[Offset] + 1 ) );
 
 					goto NextFind1;
 				}
@@ -444,13 +468,13 @@ namespace Engine
 
 			DWORD SVC_SoundBase = ( DWORD )pEngineMsgBase[SVC_SOUND].pfn;
 
-			for ( BYTE Offset = 0; Offset < sizeof ( Offset_SVC_SoundBase ); ++Offset )
+			for ( BYTE Offset = 0; Offset < sizeof ( OffsetSVC_SoundBase ); ++Offset )
 			{
-				if ( *( PBYTE )( SVC_SoundBase + Offset_SVC_SoundBase[Offset] ) == 0xE8 )
+				if ( *( PBYTE )( SVC_SoundBase + OffsetSVC_SoundBase[Offset] ) == 0xE8 )
 				{
-					MSG_Buffer = ( sizebuf_t * )( *( PDWORD )( SVC_SoundBase + Offset_SVC_SoundBase[Offset] - 4 ) );
-					MSG_StartBitReading = ( HL_MSG_StartBitReading )Absolute ( SVC_SoundBase + Offset_SVC_SoundBase[Offset] + 1 );
-					MSG_ReadBits = ( HL_MSG_ReadBits )Absolute ( SVC_SoundBase + Offset_SVC_SoundBase[Offset] + 8 );
+					MSG_Buffer = ( sizebuf_t * )( *( PDWORD )( SVC_SoundBase + OffsetSVC_SoundBase[Offset] - 4 ) );
+					MSG_StartBitReading = ( HL_MSG_StartBitReading )Absolute ( SVC_SoundBase + OffsetSVC_SoundBase[Offset] + 1 );
+					MSG_ReadBits = ( HL_MSG_ReadBits )Absolute ( SVC_SoundBase + OffsetSVC_SoundBase[Offset] + 8 );
 
 					goto NextFind2;
 				}
@@ -482,11 +506,31 @@ namespace Engine
 		}
 		else
 		{
-			Error ( true, ENGINE_MSG_BASE );
+			return 0;
 		}
 
 		return ( DWORD )pEngineMsgBase;
 	}
+
+	void* Offset::SpeedHackPtr ( )
+	{
+		DWORD Old = 0;
+		PCHAR String = "Texture load: %6.1fms";
+		DWORD Address = ( DWORD )FindMemoryClone ( HwBase, HwBase + HwSize, String, strlen ( String ) );
+		PVOID SpeedPtr = ( PVOID )*( DWORD* )( FindReference ( HwBase, HwBase + HwSize, Address ) - 7 );
+
+		if ( FarProc ( ( DWORD )SpeedPtr, HwBase, HwEnd ) )
+		{
+			Error ( true, SPEEDPTR_ERROR );
+		}
+		else
+		{
+			VirtualProtect ( SpeedPtr, sizeof ( double ), PAGE_READWRITE, &Old );
+		}
+
+		return SpeedPtr;
+	}
+
 
 	Offset g_Offset;
 }

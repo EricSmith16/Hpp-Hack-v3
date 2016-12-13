@@ -7,17 +7,20 @@ namespace Initial
 	class Init
 	{
 	private:
-		static bool PanicEnabled;
-
-		inline static void ReloadSettings ( );
-		inline static void Panic ( bool enabled );
+		inline void CreateFileFunctions ( );
+		inline void CreateFileMain ( );	
+		inline void CreateFileVisuals ( );
+		inline void CreateFileMisc ( );
+		inline void CreateFileAutoRun ( );
 
 	public:
-		static void InitHack ( );
-		static void LoadSettings ( );
+		void _fastcall InitHack ( );
 
-		static void ReloadKey ( int keynum );
-		static void PanicKey ( int keynum );
+		void _fastcall LoadSettings ( );
+		void _fastcall SaveSettings ( );
+		void _fastcall ReloadSettings ( );
+
+		void _fastcall RunScript ( char *ScriptName );
 	};
 
 	extern Init g_Init;
