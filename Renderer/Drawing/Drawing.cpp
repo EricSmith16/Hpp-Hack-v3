@@ -1,14 +1,12 @@
 #include "Drawing.h"
 
-#pragma warning (disable: 4244)
-
 namespace Renderer
 {
-	void Drawing::Fill ( float x, float y, float width, float height, BYTE r, BYTE g, BYTE b, BYTE a )
+	void _fastcall Drawing::FillArea ( float Pos_x, float Pos_y, float Width, float Height, BYTE Red, BYTE Green, BYTE Blue, BYTE Alpha )
 	{
 		if ( Engine::g_Offset.HLType != RENDERTYPE_HARDWARE )
 		{
-			Engine::g_Engine.pfnFillRGBA ( x, y, width, height, r, g, b, a );
+			Engine::g_Engine.pfnFillRGBA ( Pos_x, Pos_y, Width, Height, Red, Green, Blue, Alpha );
 		}
 		else
 		{
@@ -17,12 +15,12 @@ namespace Renderer
 			glDisable ( GL_TEXTURE_2D );
 			glEnable ( GL_BLEND );
 			glBlendFunc ( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
-			glColor4ub ( r, g, b, a );
+			glColor4ub ( Red, Green, Blue, Alpha );
 			glBegin ( GL_QUADS );
-			glVertex2f ( x, y );
-			glVertex2f ( x + width, y );
-			glVertex2f ( x + width, y + height );
-			glVertex2f ( x, y + height );
+			glVertex2f ( Pos_x, Pos_y );
+			glVertex2f ( Pos_x + Width, Pos_y );
+			glVertex2f ( Pos_x + Width, Pos_y + Height );
+			glVertex2f ( Pos_x, Pos_y + Height );
 			glEnd ( );
 			glDisable ( GL_BLEND );
 			glEnable ( GL_TEXTURE_2D );
@@ -30,38 +28,38 @@ namespace Renderer
 		}
 	}
 
-	void Drawing::Box ( float x, float y, float width, float height, float linewidth, BYTE r, BYTE g, BYTE b, BYTE a )
+	void _fastcall Drawing::Box ( float Pos_x, float Pos_y, float Width, float Height, float LineWidth, BYTE Red, BYTE Green, BYTE Blue, BYTE Alpha )
 	{
-		Fill ( x, y, width, linewidth, r, g, b, a );
-		Fill ( x + width - linewidth, y + linewidth, linewidth, height - linewidth, r, g, b, a );
-		Fill ( x, y + linewidth, linewidth, height - linewidth, r, g, b, a );
-		Fill ( x + linewidth, y + height - linewidth, width - linewidth * 2, linewidth, r, g, b, a );
+		FillArea ( Pos_x, Pos_y, Width, LineWidth, Red, Green, Blue, Alpha );
+		FillArea ( Pos_x + Width - LineWidth, Pos_y + LineWidth, LineWidth, Height - LineWidth, Red, Green, Blue, Alpha );
+		FillArea ( Pos_x, Pos_y + LineWidth, LineWidth, Height - LineWidth, Red, Green, Blue, Alpha );
+		FillArea ( Pos_x + LineWidth, Pos_y + Height - LineWidth, Width - LineWidth * 2, LineWidth, Red, Green, Blue, Alpha );
 	}
 
-	void Drawing::BoxWithOutLine ( float x, float y, float width, float height, float linewidth, BYTE r, BYTE g, BYTE b, BYTE a )
+	void _fastcall Drawing::BoxOutLine ( float Pos_x, float Pos_y, float Width, float Height, float LineWidth, BYTE Red, BYTE Green, BYTE Blue, BYTE Alpha )
 	{
-		Box ( x, y, width, height, linewidth, r, g, b, a );
-		Box ( x - 1, y - 1, width + 2, height + 2, 1, 0, 0, 0, a );
-		Box ( x + linewidth, y + linewidth, width - linewidth * 2, height - linewidth * 2, 1, 0, 0, 0, a );
+		Box ( Pos_x, Pos_y, Width, Height, LineWidth, Red, Green, Blue, Alpha );
+		Box ( Pos_x - 1, Pos_y - 1, Width + 2, Height + 2, 1, 0, 0, 0, Alpha );
+		Box ( Pos_x + LineWidth, Pos_y + LineWidth, Width - LineWidth * 2, Height - LineWidth * 2, 1, 0, 0, 0, Alpha );
 	}
 
-	void Drawing::Circle ( float x, float y, float rad, int AmountSegments, float linewidth, BYTE r, BYTE g, BYTE b, BYTE a )
+	void _fastcall Drawing::Circle ( float Pos_x, float Pos_y, float Radius, int Amount, float LineWidth, BYTE Red, BYTE Green, BYTE Blue, BYTE Alpha )
 	{
 		glDisable ( GL_TEXTURE_2D );
 		glEnable ( GL_BLEND );
 		glBlendFunc ( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
-		glColor4ub ( r, g, b, a );
-		glLineWidth ( linewidth );
+		glColor4ub ( Red, Green, Blue, Alpha );
+		glLineWidth ( LineWidth );
 		glBegin ( GL_LINE_LOOP );
 
-		for ( unsigned short int i = 0; i < AmountSegments; ++i )
+		for ( uint8 i = 0; i < Amount; ++i )
 		{
-			float angle = 2.0f * 3.1415926f * float ( i ) / float ( AmountSegments );
+			float Angle = 2 * 3.1415926 * float ( i ) / float ( Amount );
 
-			float dx = rad * cosf ( angle );
-			float dy = rad * sinf ( angle );
+			float x = Radius * cosf ( Angle );
+			float y = Radius * sinf ( Angle );
 
-			glVertex2f ( x + dx, y + dy );
+			glVertex2f ( Pos_x + x, Pos_y + y );
 		}
 
 		glEnd ( );

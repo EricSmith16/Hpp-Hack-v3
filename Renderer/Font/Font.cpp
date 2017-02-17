@@ -25,13 +25,13 @@ namespace Renderer
 			wglUseFontBitmaps ( hDC, 0, 255, g_FontListID );
 		}
 
-		for ( int i = 0; i < 255; ++i )
+		for ( BYTE i = 0; i < 255; ++i )
 		{
 			SIZE s;
 
-			char line[2] = { ( char )i, 0 };
+			char Line[2] = { ( char )i, 0 };
 
-			GetTextExtentPoint ( hDC, line, 1, &s );
+			GetTextExtentPoint ( hDC, Line, 1, &s );
 
 			cWidth[i] = s.cx;
 			cHeight = s.cy;
@@ -41,13 +41,13 @@ namespace Renderer
 		DeleteObject ( hFont );
 	}
 
-	void Font::Render ( float x, float y, BYTE r, BYTE g, BYTE b, BYTE a, char *String )
+	void Font::Render ( float Pos_x, float Pos_y, BYTE Red, BYTE Green, BYTE Blue, BYTE Alpha, char *String )
 	{
-		int i = 0;
+		int i;
 
-		for ( int i = 0; x < 0; ++i )
+		for ( i = 0; Pos_x < 0; ++i )
 		{
-			x += cWidth[String[i]];
+			Pos_x += cWidth[String[i]];
 
 			if ( !String[i] )
 			{
@@ -55,8 +55,8 @@ namespace Renderer
 			}
 		}
 
-		glColor4ub ( r, g, b, a );
-		glRasterPos2f ( x, y );
+		glColor4ub ( Red, Green, Blue, Alpha );
+		glRasterPos2f ( Pos_x, Pos_y );
 		glHint ( GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST );
 		glPushAttrib ( GL_LIST_BIT );
 		glListBase ( g_FontListID );
@@ -64,14 +64,14 @@ namespace Renderer
 		glPopAttrib ( );
 	}
 
-	void Font::Print ( float x, float y, BYTE r, BYTE g, BYTE b, BYTE a, BYTE Flags, char *String, ... )
+	void Font::Print ( float Pos_x, float Pos_y, BYTE Red, BYTE Green, BYTE Blue, BYTE Alpha, BYTE Flags, char *String, ... )
 	{
 		char Text[256];
 
-		va_list argumentPtr;
-		va_start ( argumentPtr, String );
-		vsprintf_s ( Text, String, argumentPtr );
-		va_end ( argumentPtr );
+		va_list ArgumentPtr;
+		va_start ( ArgumentPtr, String );
+		vsprintf_s ( Text, String, ArgumentPtr );
+		va_end ( ArgumentPtr );
 
 		glDisable ( GL_TEXTURE_2D );
 		glEnable ( GL_BLEND );
@@ -86,36 +86,35 @@ namespace Renderer
 
 		if ( Flags & FL_CENTER )
 		{
-			x -= ( DrawLen / 2 );
+			Pos_x -= DrawLen / 2;
 		}
 
 		if ( Flags & FL_OUTLINE )
 		{
-			if ( g_Vars.main.font_outline_quality == 1 )
+			if ( g_Vars.Main.FontOutLineQuality == 1 )
 			{
-				Render ( x + 1, y + 1, 0, 0, 0, a, Text );
+				Render ( Pos_x + 1, Pos_y + 1, 0, 0, 0, Alpha, Text );
 			}
-			else if ( g_Vars.main.font_outline_quality == 2 )
+			else if ( g_Vars.Main.FontOutLineQuality == 2 )
 			{
-				Render ( x, y + 1, 0, 0, 0, a, Text );
-				Render ( x + 1, y, 0, 0, 0, a, Text );
-				Render ( x + 1, y + 1, 0, 0, 0, a, Text );
+				Render ( Pos_x + 1, Pos_y, 0, 0, 0, Alpha, Text );
+				Render ( Pos_x + 1, Pos_y + 1, 0, 0, 0, Alpha, Text );
 			}
-			else if ( g_Vars.main.font_outline_quality == 3 )
+			else if ( g_Vars.Main.FontOutLineQuality == 3 )
 			{
-				Render ( x, y - 1, 0, 0, 0, a, Text );
-				Render ( x, y + 1, 0, 0, 0, a, Text );
-				Render ( x - 1, y, 0, 0, 0, a, Text );
-				Render ( x + 1, y, 0, 0, 0, a, Text );
+				Render ( Pos_x, Pos_y - 1, 0, 0, 0, Alpha, Text );
+				Render ( Pos_x, Pos_y + 1, 0, 0, 0, Alpha, Text );
+				Render ( Pos_x - 1, Pos_y, 0, 0, 0, Alpha, Text );
+				Render ( Pos_x + 1, Pos_y, 0, 0, 0, Alpha, Text );
 
-				Render ( x - 1, y - 1, 0, 0, 0, a, Text );
-				Render ( x + 1, y - 1, 0, 0, 0, a, Text );
-				Render ( x - 1, y + 1, 0, 0, 0, a, Text );
-				Render ( x + 1, y + 1, 0, 0, 0, a, Text );
+				Render ( Pos_x - 1, Pos_y - 1, 0, 0, 0, Alpha, Text );
+				Render ( Pos_x + 1, Pos_y - 1, 0, 0, 0, Alpha, Text );
+				Render ( Pos_x - 1, Pos_y + 1, 0, 0, 0, Alpha, Text );
+				Render ( Pos_x + 1, Pos_y + 1, 0, 0, 0, Alpha, Text );
 			}
 		}
 
-		Render ( x, y, r, g, b, a, Text );
+		Render ( Pos_x, Pos_y, Red, Green, Blue, Alpha, Text );
 
 		glDisable ( GL_BLEND );
 		glEnable ( GL_TEXTURE_2D );

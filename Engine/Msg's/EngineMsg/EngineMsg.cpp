@@ -90,10 +90,10 @@ namespace Engine
 
 		MSG_EndBitReading ( MSG_Buffer );
 
-		if ( g_Vars.function.esp && g_Vars.esp.enable && g_Vars.esp.sound &&
+		if ( g_Vars.Function.ESP && g_Vars.ESP.Enable && g_Vars.ESP.Sound &&
 			!Client::g_Hpp.PanicEnabled && !Functions::Visuals::g_ESP.PanicEnabled )
 		{
-			if ( Entity != Information::g_Local.Index )
+			if ( Entity != Info::g_Local.Player.Index )
 			{
 				Functions::Visuals::g_ESP.AddSound ( GetTickCount ( ), Origin );
 			}
@@ -130,10 +130,10 @@ namespace Engine
 
 		MSG_EndBitReading ( MSG_Buffer );
 
-		if ( g_Vars.function.esp && g_Vars.esp.enable && g_Vars.esp.sound &&
+		if ( g_Vars.Function.ESP && g_Vars.ESP.Enable && g_Vars.ESP.Sound &&
 			!Client::g_Hpp.PanicEnabled && !Functions::Visuals::g_ESP.PanicEnabled )
 		{
-			if ( Entity != Information::g_Local.Index )
+			if ( Entity != Info::g_Local.Player.Index )
 			{
 				Functions::Visuals::g_ESP.AddSound ( GetTickCount ( ), Position );
 			}

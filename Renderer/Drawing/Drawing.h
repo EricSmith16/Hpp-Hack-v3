@@ -7,10 +7,10 @@ namespace Renderer
 	class Drawing
 	{
 	public:
-		void Fill ( float x, float y, float width, float height, BYTE r, BYTE g, BYTE b, BYTE a );
-		void Box ( float x, float y, float width, float height, float linewidth, BYTE r, BYTE g, BYTE b, BYTE a );
-		void BoxWithOutLine ( float x, float y, float width, float height, float linewidth, BYTE r, BYTE g, BYTE b, BYTE a );
-		void Circle ( float x, float y, float rad, int AmountSegments, float linewidth, BYTE r, BYTE g, BYTE b, BYTE a );
+		void _fastcall FillArea ( float Pos_x, float Pos_y, float Width, float Height, BYTE Red, BYTE Green, BYTE Blue, BYTE Alpha );
+		void _fastcall Box ( float Pos_x, float Pos_y, float Width, float Height, float LineWidth, BYTE Red, BYTE Green, BYTE Blue, BYTE Alpha );
+		void _fastcall BoxOutLine ( float Pos_x, float Pos_y, float Width, float Height, float LineWidth, BYTE Red, BYTE Green, BYTE Blue, BYTE Alpha );
+		void _fastcall Circle ( float Pos_x, float Pos_y, float Radius, int Amount, float LineWidth, BYTE Red, BYTE Green, BYTE Blue, BYTE Alpha );
 	};
 
 	extern Drawing g_Drawing;

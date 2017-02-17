@@ -1,7 +1,7 @@
 #pragma once
 
-#pragma comment(lib,"OpenGL32.lib")
-#pragma comment(lib,"GLu32.lib")
+#pragma comment ( lib,"OpenGL32.lib" )
+#pragma comment ( lib,"GLu32.lib" )
 
 #include "Windows.h"
 
@@ -39,6 +39,8 @@
 #include "Defines.h"
 
 typedef void ( *pfnEngineMsgHook )( );
+typedef void ( *Snapshot_t )( );
+typedef void ( *Screenshot_t )( );
 
 typedef struct cl_clientfuncs_s
 {
@@ -140,7 +142,7 @@ typedef struct sizebuf_s
 #include "Client.h"
 #include "Variables.h"
 #include "Player.h"
-#include "ConsoleCmds.h"
+#include "Cmds.h"
 #include "Initial.h"
 #include "Font.h"
 #include "Drawing.h"
@@ -151,11 +153,14 @@ typedef struct sizebuf_s
 #include "ESP.h"
 #include "NoFlash.h"
 #include "ScreenInfo.h"
-#include "BHop.h"
-#include "GStrafe.h"
+#include "BunnyHop.h"
+#include "GroundStrafe.h"
 #include "Speed.h"
 #include "JumpBug.h"
 #include "EdgeBug.h"
+#include "StrafeHelper.h"
+#include "Camera.h"
+/*end*/
 
 namespace Engine
 {

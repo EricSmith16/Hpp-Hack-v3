@@ -1,27 +1,61 @@
-#include "ConsoleCmds.h"
+#include "Cmds.h"
 
 namespace Engine
 {
-	enum FUNC_NAME
+	bool Command::Return;
+
+	enum FUNCTION_INDEX
 	{
-		PANIC, RELOAD_SETTINGS, BUNNYHOP, BUNNYHOP_STANDUP, GROUNDSTRAFE,
-		GROUNDSTRAFE_STANDUP, SPEEDBOOST, SPEEDSLOWMO, JB, EB
+		PANIC, ESP_PANIC, RELOAD_SETTINGS, BUNNYHOP, BUNNYHOP_STANDUP, GROUNDSTRAFE,
+		GROUNDSTRAFE_STANDUP, SPEEDBOOST, SPEEDSLOWMO, JB, EB, ANTISCREEN, STRAFEHELPER,
+		STRAFEHELPER_SWITCH, THIRDPERSON_SWITCH, FREELOOK_SWITCH, SPECTATOR_SWITCH
 	};
 
-	int Command::Function ( char *Command )
+	uint8 Command::GetFunctionIndex ( char *CommandName )
 	{
-		PARSE_CMD ( "panic", PANIC );
-		PARSE_CMD ( "reload_settings", RELOAD_SETTINGS );
-		PARSE_CMD ( "bunnyhop", BUNNYHOP );
-		PARSE_CMD ( "bunnyhop_standup", BUNNYHOP_STANDUP );
-		PARSE_CMD ( "groundstrafe", GROUNDSTRAFE );
-		PARSE_CMD ( "groundstrafe_standup", GROUNDSTRAFE_STANDUP );
-		PARSE_CMD ( "speed_boost", SPEEDBOOST );
-		PARSE_CMD ( "speed_slowmo", SPEEDSLOWMO );
-		PARSE_CMD ( "jumpbug", JB );
-		PARSE_CMD ( "edgebug", EB );
+		PARSE_CMD2 ( CMD_PANIC, PANIC );
+		PARSE_CMD2 ( CMD_ESP_PANIC, ESP_PANIC );
+		PARSE_CMD2 ( CMD_SETTINGS_RELOAD, RELOAD_SETTINGS );
+		PARSE_CMD ( CMD_BHOP, BUNNYHOP );
+		PARSE_CMD ( CMD_BHOP_STANDUP, BUNNYHOP_STANDUP );
+		PARSE_CMD ( CMD_GSTRAFE, GROUNDSTRAFE );
+		PARSE_CMD ( CMD_GSTRAFE_STANDUP, GROUNDSTRAFE_STANDUP );
+		PARSE_CMD ( CMD_SPEED_BOOST, SPEEDBOOST );
+		PARSE_CMD ( CMD_SPEED_SLOWMO, SPEEDSLOWMO );
+		PARSE_CMD ( CMD_JUMPBUG, JB );
+		PARSE_CMD ( CMD_EDGEBUG, EB );
+		PARSE_CMD2 ( CMD_ANTISCREEN, ANTISCREEN );
+		PARSE_CMD ( CMD_STRAFE_HELPER, STRAFEHELPER );
+		PARSE_CMD2 ( CMD_STRAFE_HELPER_SWITCH, STRAFEHELPER_SWITCH );
+		PARSE_CMD2 ( CMD_THIRDPERSON_SWITCH, THIRDPERSON_SWITCH );
+		PARSE_CMD2 ( CMD_FREELOOK_SWITCH, FREELOOK_SWITCH );
+		PARSE_CMD2 ( CMD_SPECTATOR_SWITCH, SPECTATOR_SWITCH );
 
 		return 0;
+	}
+
+	uint8 Command::SetKeyCommand ( )
+	{
+		return Files::g_File.StringToKey ( g_Engine.Cmd_Argv ( 1 ) );
+	}
+
+	void Command::BindIs ( BYTE Key, char *act, char *CommandName )
+	{
+		if ( !Return )
+		{
+			if ( Key == Files::g_File.StringToKey ( g_Engine.Cmd_Argv ( 1 ) ) )
+			{
+				g_Util.ConsolePrintColor ( 200, 255, 200, " = \"" );
+				g_Util.ConsolePrintColor ( 200, 255, 200, g_Util.PrefHack ( act, g_Util.Prefix, CommandName ) );
+				g_Util.ConsolePrintColor ( 200, 255, 200, "\"\n" );
+
+				Return = true;
+			}
+			else
+			{
+				Return = false;
+			}
+		}
 	}
 
 	void Command::Bind ( )
@@ -39,65 +73,29 @@ namespace Engine
 			g_Util.ConsolePrintColor ( 200, 255, 200, g_Engine.Cmd_Argv ( 1 ) );
 			g_Util.ConsolePrintColor ( 200, 255, 200, "\"" );
 
-			if ( g_Vars.main.panic_key == Files::g_File.StringToKey ( g_Engine.Cmd_Argv ( 1 ) ) )
+			BindIs ( g_Vars.Main.PanicKey, "", CMD_PANIC );
+			BindIs ( g_Vars.ESP.PanicKey, "", CMD_ESP_PANIC );
+			BindIs ( g_Vars.Main.ReloadKey, "", CMD_SETTINGS_RELOAD );
+			BindIs ( g_Vars.BHop.Key, "+", CMD_BHOP );
+			BindIs ( g_Vars.BHop.StandUpKey, "+", CMD_BHOP_STANDUP );
+			BindIs ( g_Vars.GStrafe.Key, "+", CMD_GSTRAFE );
+			BindIs ( g_Vars.GStrafe.StandUpKey, "+", CMD_GSTRAFE_STANDUP );
+			BindIs ( g_Vars.Speed.BoostKey, "+", CMD_SPEED_BOOST );
+			BindIs ( g_Vars.Speed.SlowMotionKey, "+", CMD_SPEED_SLOWMO );
+			BindIs ( g_Vars.JumpBug.Key, "+", CMD_JUMPBUG );
+			BindIs ( g_Vars.EdgeBug.Key, "+", CMD_EDGEBUG );
+			BindIs ( g_Vars.Main.AntiScreenKey, "", CMD_ANTISCREEN );
+			BindIs ( g_Vars.StrafeHelper.Key, "+", CMD_STRAFE_HELPER );
+			BindIs ( g_Vars.StrafeHelper.SwitchKey, "", CMD_STRAFE_HELPER_SWITCH );
+			BindIs ( g_Vars.Camera.ThirdPersonSwitchKey, "", CMD_THIRDPERSON_SWITCH );
+			BindIs ( g_Vars.Camera.FreeLookSwitchKey, "", CMD_FREELOOK_SWITCH );
+			BindIs ( g_Vars.Camera.SpectatorSwitchKey, "", CMD_SPECTATOR_SWITCH );
+
+			if ( Return )
 			{
-				g_Util.ConsolePrintColor ( 200, 255, 200, " = \"" );
-				g_Util.ConsolePrintColor ( 200, 255, 200, g_Util.PrefHack ( "+", g_Util.Prefix, "panic" ) );
-				g_Util.ConsolePrintColor ( 200, 255, 200, "\"\n" );
-			}
-			else if ( g_Vars.main.reload_key == Files::g_File.StringToKey ( g_Engine.Cmd_Argv ( 1 ) ) )
-			{
-				g_Util.ConsolePrintColor ( 200, 255, 200, " = \"" );
-				g_Util.ConsolePrintColor ( 200, 255, 200, g_Util.PrefHack ( "+", g_Util.Prefix, "reload_settings" ) );
-				g_Util.ConsolePrintColor ( 200, 255, 200, "\"\n" );
-			}
-			else if ( g_Vars.bhop.key == Files::g_File.StringToKey ( g_Engine.Cmd_Argv ( 1 ) ) )
-			{
-				g_Util.ConsolePrintColor ( 200, 255, 200, " = \"" );
-				g_Util.ConsolePrintColor ( 200, 255, 200, g_Util.PrefHack ( "+", g_Util.Prefix, "bunnyhop" ) );
-				g_Util.ConsolePrintColor ( 200, 255, 200, "\"\n" );
-			}
-			else if ( g_Vars.bhop.standup_key == Files::g_File.StringToKey ( g_Engine.Cmd_Argv ( 1 ) ) )
-			{
-				g_Util.ConsolePrintColor ( 200, 255, 200, " = \"" );
-				g_Util.ConsolePrintColor ( 200, 255, 200, g_Util.PrefHack ( "+", g_Util.Prefix, "bunnyhop_standup" ) );
-				g_Util.ConsolePrintColor ( 200, 255, 200, "\"\n" );
-			}
-			else if ( g_Vars.gstrafe.key == Files::g_File.StringToKey ( g_Engine.Cmd_Argv ( 1 ) ) )
-			{
-				g_Util.ConsolePrintColor ( 200, 255, 200, " = \"" );
-				g_Util.ConsolePrintColor ( 200, 255, 200, g_Util.PrefHack ( "+", g_Util.Prefix, "groundstrafe" ) );
-				g_Util.ConsolePrintColor ( 200, 255, 200, "\"\n" );
-			}
-			else if ( g_Vars.gstrafe.standup_key == Files::g_File.StringToKey ( g_Engine.Cmd_Argv ( 1 ) ) )
-			{
-				g_Util.ConsolePrintColor ( 200, 255, 200, " = \"" );
-				g_Util.ConsolePrintColor ( 200, 255, 200, g_Util.PrefHack ( "+", g_Util.Prefix, "groundstrafe_standup" ) );
-				g_Util.ConsolePrintColor ( 200, 255, 200, "\"\n" );
-			}
-			else if ( g_Vars.speed.boost_key == Files::g_File.StringToKey ( g_Engine.Cmd_Argv ( 1 ) ) )
-			{
-				g_Util.ConsolePrintColor ( 200, 255, 200, " = \"" );
-				g_Util.ConsolePrintColor ( 200, 255, 200, g_Util.PrefHack ( "+", g_Util.Prefix, "speed_boost" ) );
-				g_Util.ConsolePrintColor ( 200, 255, 200, "\"\n" );
-			}
-			else if ( g_Vars.speed.slowmo_key == Files::g_File.StringToKey ( g_Engine.Cmd_Argv ( 1 ) ) )
-			{
-				g_Util.ConsolePrintColor ( 200, 255, 200, " = \"" );
-				g_Util.ConsolePrintColor ( 200, 255, 200, g_Util.PrefHack ( "+", g_Util.Prefix, "speed_slowmo" ) );
-				g_Util.ConsolePrintColor ( 200, 255, 200, "\"\n" );
-			}
-			else if ( g_Vars.jumpbug.key == Files::g_File.StringToKey ( g_Engine.Cmd_Argv ( 1 ) ) )
-			{
-				g_Util.ConsolePrintColor ( 200, 255, 200, " = \"" );
-				g_Util.ConsolePrintColor ( 200, 255, 200, g_Util.PrefHack ( "+", g_Util.Prefix, "jumpbug" ) );
-				g_Util.ConsolePrintColor ( 200, 255, 200, "\"\n" );
-			}
-			else if ( g_Vars.edgebug.key == Files::g_File.StringToKey ( g_Engine.Cmd_Argv ( 1 ) ) )
-			{
-				g_Util.ConsolePrintColor ( 200, 255, 200, " = \"" );
-				g_Util.ConsolePrintColor ( 200, 255, 200, g_Util.PrefHack ( "+", g_Util.Prefix, "edgebug" ) );
-				g_Util.ConsolePrintColor ( 200, 255, 200, "\"\n" );
+				Return = false;
+
+				return;
 			}
 			else
 			{
@@ -106,61 +104,99 @@ namespace Engine
 		}
 		else
 		{
-			int function = Function ( g_Engine.Cmd_Argv ( 2 ) );
+			uint8 FunctionIndex = GetFunctionIndex ( g_Engine.Cmd_Argv ( 2 ) );
 
-			if ( function == PANIC )
+			switch ( FunctionIndex )
 			{
-				g_Vars.main.panic_key = Files::g_File.StringToKey ( g_Engine.Cmd_Argv ( 1 ) );
-			}
+			case PANIC:
+				g_Vars.Main.PanicKey = SetKeyCommand ( );
 
-			if ( function == RELOAD_SETTINGS )
-			{
-				g_Vars.main.reload_key = Files::g_File.StringToKey ( g_Engine.Cmd_Argv ( 1 ) );
-			}
+				break;
 
-			if ( function == BUNNYHOP )
-			{
-				g_Vars.bhop.key = Files::g_File.StringToKey ( g_Engine.Cmd_Argv ( 1 ) );
-			}
+			case ESP_PANIC:
+				g_Vars.ESP.PanicKey = SetKeyCommand ( );
 
-			if ( function == BUNNYHOP_STANDUP )
-			{
-				g_Vars.bhop.standup_key = Files::g_File.StringToKey ( g_Engine.Cmd_Argv ( 1 ) );
-			}
+				break;
 
-			if ( function == GROUNDSTRAFE )
-			{
-				g_Vars.gstrafe.key = Files::g_File.StringToKey ( g_Engine.Cmd_Argv ( 1 ) );
-			}
+			case RELOAD_SETTINGS:
+				g_Vars.Main.ReloadKey = SetKeyCommand ( );
 
-			if ( function == GROUNDSTRAFE_STANDUP )
-			{
-				g_Vars.gstrafe.standup_key = Files::g_File.StringToKey ( g_Engine.Cmd_Argv ( 1 ) );
-			}
+				break;
 
-			if ( function == SPEEDBOOST )
-			{
-				g_Vars.speed.boost_key = Files::g_File.StringToKey ( g_Engine.Cmd_Argv ( 1 ) );
-			}
+			case BUNNYHOP:
+				g_Vars.BHop.Key = SetKeyCommand ( );
 
-			if ( function == SPEEDSLOWMO )
-			{
-				g_Vars.speed.slowmo_key = Files::g_File.StringToKey ( g_Engine.Cmd_Argv ( 1 ) );
-			}
+				break;
 
-			if ( function == JB )
-			{
-				g_Vars.jumpbug.key = Files::g_File.StringToKey ( g_Engine.Cmd_Argv ( 1 ) );
-			}
+			case BUNNYHOP_STANDUP:
+				g_Vars.BHop.StandUpKey = SetKeyCommand ( );
 
-			if ( function == EB )
-			{
-				g_Vars.edgebug.key = Files::g_File.StringToKey ( g_Engine.Cmd_Argv ( 1 ) );
+				break;
+
+			case GROUNDSTRAFE:
+				g_Vars.GStrafe.Key = SetKeyCommand ( );
+
+				break;
+
+			case GROUNDSTRAFE_STANDUP:
+				g_Vars.GStrafe.StandUpKey = SetKeyCommand ( );
+
+				break;
+
+			case SPEEDBOOST:
+				g_Vars.Speed.BoostKey = SetKeyCommand ( );
+
+				break;
+
+			case SPEEDSLOWMO:
+				g_Vars.Speed.SlowMotionKey = SetKeyCommand ( );
+
+				break;
+
+			case JB:
+				g_Vars.JumpBug.Key = SetKeyCommand ( );
+
+				break;
+
+			case EB:
+				g_Vars.EdgeBug.Key = SetKeyCommand ( );
+
+				break;
+
+			case ANTISCREEN:
+				g_Vars.Main.AntiScreenKey = SetKeyCommand ( );
+
+				break;
+
+			case STRAFEHELPER:
+				g_Vars.StrafeHelper.Key = SetKeyCommand ( );
+
+				break;
+
+			case STRAFEHELPER_SWITCH:
+				g_Vars.StrafeHelper.SwitchKey = SetKeyCommand ( );
+
+				break;
+
+			case THIRDPERSON_SWITCH:
+				g_Vars.Camera.ThirdPersonSwitchKey = SetKeyCommand ( );
+
+				break;
+
+			case FREELOOK_SWITCH:
+				g_Vars.Camera.FreeLookSwitchKey = SetKeyCommand ( );
+
+				break;
+
+			case SPECTATOR_SWITCH:
+				g_Vars.Camera.SpectatorSwitchKey = SetKeyCommand ( );
+
+				break;
 			}
 		}
 	}
 
-	void Command::UnBind ( )
+	void Command::Unbind ( )
 	{
 		if ( g_Engine.Cmd_Argc ( ) < 2 )
 		{
@@ -170,67 +206,52 @@ namespace Engine
 		}
 		else
 		{
-			if ( g_Vars.main.panic_key == Files::g_File.StringToKey ( g_Engine.Cmd_Argv ( 1 ) ) )
-			{
-				g_Vars.main.panic_key = 0;
-			}
+			uint8 KeyCommand = SetKeyCommand ( );
 
-			if ( g_Vars.main.reload_key == Files::g_File.StringToKey ( g_Engine.Cmd_Argv ( 1 ) ) )
-			{
-				g_Vars.main.reload_key = 0;
-			}
-
-			if ( g_Vars.bhop.key == Files::g_File.StringToKey ( g_Engine.Cmd_Argv ( 1 ) ) )
-			{
-				g_Vars.bhop.key = 0;
-			}
-
-			if ( g_Vars.bhop.standup_key == Files::g_File.StringToKey ( g_Engine.Cmd_Argv ( 1 ) ) )
-			{
-				g_Vars.bhop.standup_key = 0;
-			}
-
-			if ( g_Vars.gstrafe.key == Files::g_File.StringToKey ( g_Engine.Cmd_Argv ( 1 ) ) )
-			{
-				g_Vars.gstrafe.key = 0;
-			}
-
-			if ( g_Vars.gstrafe.standup_key == Files::g_File.StringToKey ( g_Engine.Cmd_Argv ( 1 ) ) )
-			{
-				g_Vars.gstrafe.standup_key = 0;
-			}
-
-			if ( g_Vars.speed.boost_key == Files::g_File.StringToKey ( g_Engine.Cmd_Argv ( 1 ) ) )
-			{
-				g_Vars.speed.boost_key = 0;
-			}
-
-			if ( g_Vars.speed.slowmo_key == Files::g_File.StringToKey ( g_Engine.Cmd_Argv ( 1 ) ) )
-			{
-				g_Vars.speed.slowmo_key = 0;
-			}
-
-			if ( g_Vars.jumpbug.key == Files::g_File.StringToKey ( g_Engine.Cmd_Argv ( 1 ) ) )
-			{
-				g_Vars.jumpbug.key = 0;
-			}
-
-			if ( g_Vars.edgebug.key == Files::g_File.StringToKey ( g_Engine.Cmd_Argv ( 1 ) ) )
-			{
-				g_Vars.edgebug.key = 0;
-			}
+			DELETE_KEY_CMD ( g_Vars.Main.PanicKey );
+			DELETE_KEY_CMD ( g_Vars.Main.ReloadKey );
+			DELETE_KEY_CMD ( g_Vars.BHop.Key );
+			DELETE_KEY_CMD ( g_Vars.BHop.StandUpKey );
+			DELETE_KEY_CMD ( g_Vars.GStrafe.Key );
+			DELETE_KEY_CMD ( g_Vars.GStrafe.StandUpKey );
+			DELETE_KEY_CMD ( g_Vars.Speed.BoostKey );
+			DELETE_KEY_CMD ( g_Vars.Speed.SlowMotionKey );
+			DELETE_KEY_CMD ( g_Vars.JumpBug.Key );
+			DELETE_KEY_CMD ( g_Vars.EdgeBug.Key );
+			DELETE_KEY_CMD ( g_Vars.Main.AntiScreenKey );
+			DELETE_KEY_CMD ( g_Vars.StrafeHelper.Key );
+			DELETE_KEY_CMD ( g_Vars.StrafeHelper.SwitchKey );
+			DELETE_KEY_CMD ( g_Vars.Camera.ThirdPersonSwitchKey );
+			DELETE_KEY_CMD ( g_Vars.Camera.FreeLookSwitchKey );
+			DELETE_KEY_CMD ( g_Vars.Camera.SpectatorSwitchKey );
 		}
 	}
 
-	void Command::UnBindAll ( )
+	void Command::UnbindAll ( )
 	{
-		g_Vars.bhop.key = 0;
-		g_Vars.bhop.standup_key = 0;
-		g_Vars.gstrafe.key = 0;
-		g_Vars.gstrafe.standup_key = 0;
-		g_Vars.speed.boost_key = 0;
-		g_Vars.speed.slowmo_key = 0;
-		g_Vars.jumpbug.key = 0;
-		g_Vars.edgebug.key = 0;
+		g_Vars.ESP.PanicKey = 0;
+
+		g_Vars.BHop.Key = 0;
+		g_Vars.BHop.StandUpKey = 0;
+
+		g_Vars.GStrafe.Key = 0;
+		g_Vars.GStrafe.StandUpKey = 0;
+
+		g_Vars.Speed.BoostKey = 0;
+		g_Vars.Speed.SlowMotionKey = 0;
+
+		g_Vars.JumpBug.Key = 0;
+
+		g_Vars.EdgeBug.Key = 0;
+
+		g_Vars.Main.ReloadKey = 0;
+		g_Vars.Main.AntiScreenKey = 0;
+
+		g_Vars.StrafeHelper.Key = 0;
+		g_Vars.StrafeHelper.SwitchKey = 0;
+
+		g_Vars.Camera.ThirdPersonSwitchKey = 0;
+		g_Vars.Camera.FreeLookSwitchKey = 0;
+		g_Vars.Camera.SpectatorSwitchKey = 0;
 	}
 }

@@ -11,12 +11,12 @@ namespace Renderer
 
 		int cHeight, cWidth[255];
 
-		void Render ( float x, float y, BYTE r, BYTE g, BYTE b, BYTE a, char *String );
+		inline void Render ( float Pos_x, float Pos_y, BYTE Red, BYTE Green, BYTE Blue, BYTE Alpha, char *String );
 
 	public:
-		void InitText ( char* Font, int Height, int Width );
+		void _fastcall InitText ( char* Font, int Height, int Width );
 
-		void Print ( float x, float y, BYTE r, BYTE g, BYTE b, BYTE a, BYTE Flags, char *String, ... );
+		void _fastcall Print ( float Pos_x, float Pos_y, BYTE Red, BYTE Green, BYTE Blue, BYTE Alpha, BYTE Flags, char *String, ... );
 	};
 
 	extern Font g_Font, g_Verdana;

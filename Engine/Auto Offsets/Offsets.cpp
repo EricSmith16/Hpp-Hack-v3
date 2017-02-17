@@ -29,14 +29,15 @@ namespace Engine
 
 	void _fastcall Offset::Error ( bool Exit, char* Message, ... )
 	{
-		char Text[256];
+		char String[256];
 
-		va_list argumentPtr;
-		va_start ( argumentPtr, Message );
-		vsprintf_s ( Text, Message, argumentPtr );
-		va_end ( argumentPtr );
+		va_list ArgumentPtr;
 
-		MessageBox ( 0, Text, ERROR_HEADER, MB_OK | MB_ICONERROR );
+		va_start ( ArgumentPtr, Message );
+		vsprintf_s ( String, Message, ArgumentPtr );
+		va_end ( ArgumentPtr );
+
+		MessageBox ( 0, String, ERROR_HEADER, MB_OK | MB_ICONERROR );
 
 		if ( Exit )
 		{
@@ -97,7 +98,7 @@ namespace Engine
 			VgEnd = VgBase + VgSize - 1;
 		}
 
-		return ( HwBase && ClBase && VgBase );
+		return HwBase && ClBase && VgBase;
 	}
 
 	DWORD _fastcall Offset::FindString ( PCHAR String, DWORD Start, DWORD End, DWORD Offset )

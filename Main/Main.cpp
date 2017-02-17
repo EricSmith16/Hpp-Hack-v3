@@ -24,7 +24,7 @@ DWORD WINAPI ProcessReload ( LPVOID lpThreadParameter );
 
 DWORD WINAPI CheatEntry ( LPVOID lpThreadParameter )
 {
-	static HANDLE ProcessReloadThread = 0;
+	static HANDLE ProcessReloadThread;
 
 	if ( ProcessReloadThread )
 	{
@@ -32,7 +32,7 @@ DWORD WINAPI CheatEntry ( LPVOID lpThreadParameter )
 		CloseHandle ( ProcessReloadThread );
 	}
 
-	BYTE FindCounter = 0;
+	uint8 FindCounter = 0;
 
 StartHook:
 
@@ -60,16 +60,16 @@ StartHook:
 
 		if ( !Engine::g_pUserMsgBase )
 		{
-			Engine::g_Offset.Error ( true, USERMSG_ERROR );
+			Engine::g_Offset.Error ( true, USERMSG_BASE_FIND_ERROR );
 		}
 
 		if ( !Engine::g_pEngineMsgBase )
 		{
-			Engine::g_Offset.Error ( true, ENGINE_MSG_BASE );
+			Engine::g_Offset.Error ( true, ENGINEMSG_BASE_FIND_ERROR );
 		}
 	}
 
-	Sleep ( 50 );
+	Sleep ( 100 );
 
 	++FindCounter;
 
@@ -128,7 +128,7 @@ StartHook:
 												Client::g_Hpp.HookFunction ( );
 												Client::g_Hpp.HookStudio ( );
 
-												Sleep ( 50 );
+												Sleep ( 100 );
 											}
 
 											ProcessReloadThread = CreateThread ( 0, 0, ProcessReload, 0, 0, 0 );
@@ -202,7 +202,7 @@ DWORD WINAPI ProcessReload ( LPVOID lpThreadParameter )
 			CreateThread ( 0, 0, CheatEntry, 0, 0, 0 );
 		}
 
-		Sleep ( 50 );
+		Sleep ( 100 );
 	}
 
 	return 0;

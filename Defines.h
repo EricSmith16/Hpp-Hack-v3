@@ -1,288 +1,309 @@
-#define HW_DLL					"hw.dll"
-#define SW_DLL					"sw.dll"
-#define CLIENT_DLL				"client.dll"
-#define GAMEUI_DLL				"GameUI.dll"
+/*dll's*/
+#define HW_DLL							"hw.dll"
+#define SW_DLL							"sw.dll"
+#define CLIENT_DLL						"client.dll"
+#define GAMEUI_DLL						"GameUI.dll"
+/*end*/
 
-#define CLIENT_PATTERN			"ScreenFade"
-#define STUDIO_PATTERN			"Couldn't get client .dll studio model rendering interface."
-#define CONSOLE_PATTERN			"GameConsole003"
-#define USERMSG_PATTERN			"UserMsg: Not Present on Client %d"
-#define SVC_MSG_PATTERN			"-------- Message Load ---------"
-#define SVC_MESSAGES_PATTERN	"End of List."
+/*pattern's*/
+#define CLIENT_PATTERN					"ScreenFade"
+#define STUDIO_PATTERN					"Couldn't get client .dll studio model rendering interface."
+#define CONSOLE_PATTERN					"GameConsole003"
+#define USERMSG_PATTERN					"UserMsg: Not Present on Client %d"
+#define SVC_MSG_PATTERN					"-------- Message Load ---------"
+#define SVC_MESSAGES_PATTERN			"End of List."
+/*end*/
 
-#define ERROR_HEADER			"Hpp Hack"
+/*error's*/
+#define ERROR_HEADER					"Hpp Hack"
 
-#define CLIENT_FIND_ERROR		"Error #0000. Couldn't find g_pClient pointer."
-#define ENGINE_FIND_ERROR		"Error #0001. Couldn't find g_pEngine pointer."
-#define STUDIO_FIND_ERROR		"Error #0002. Couldn't find g_pStudio pointer."
-#define STUDIOAPI_FIND_ERROR	"Error #0003. Couldn't find g_pStudioAPI pointer."
+#define CLIENT_FIND_ERROR				"Error #0000. Couldn't find g_pClient pointer."
+#define ENGINE_FIND_ERROR				"Error #0001. Couldn't find g_pEngine pointer."
+#define STUDIO_FIND_ERROR				"Error #0002. Couldn't find g_pStudio pointer."
+#define PPMOVE_PTR_ERROR				"Error #0003. Couldn't find g_pPlayerMove pointer."
+#define USERMSG_BASE_FIND_ERROR			"Error #0004. Couldn't find g_pUserMsgBase pointer."
+#define ENGINEMSG_BASE_FIND_ERROR		"Error #0005. Couldn't find g_pEngineMsgBase pointer."
+#define CONSOLE_ERROR_1					"Error #0006. Couldn't find GameConsole pointer."
+#define CONSOLE_ERROR_2					"Error #0007. Couldn't find GameConsole pointer."
+#define CONSOLE_ERROR_3					"Error #0008. Couldn't find GameConsole pointer."
+#define ABSOLUTE_ERROR					"Error #0009. Absolute Address Error."
+#define GAMEINFO_ERROR					"Error #0010. Couldn't find GameInfo pointer."
+#define SVC_MSG_ERROR_1					"Error #0011. Couldn't find SvcBase pointer."
+#define SVC_MSG_ERROR_2					"Error #0012. Couldn't find SvcBase pointer."
+#define ENGINEMSG_ERROR					"Error #0013. Couldn't find %s."
+#define MSG_READ_CORD					"Error #0014. MSG_ReadCoord."
+#define MSG_STR_READING					"Error #0015. MSG_StartBitReading.\nNote: If you inject Hpp Hack with another cheat, it is likely that they are not compatible."
+#define MSG_END_READING					"Error #0016. MSG_EndBitReading.\nNote: If you inject Hpp Hack with another cheat, it is likely that they are not compatible."
+#define EXEC_CONFIG_ERROR				"Error #0017. Couldn't find file \""
+#define SPEEDPTR_ERROR					"Error #0018. Couldn't find SpeedPtr pointer."
+/*end*/
 
-#define CONSOLE_ERROR_1			"Error #0004. Couldn't find GameConsole pointer."
-#define CONSOLE_ERROR_2			"Error #0005. Couldn't find GameConsole pointer."
-#define CONSOLE_ERROR_3			"Error #0006. Couldn't find GameConsole pointer."
+#define FE_MAIN_CREATE					"File \"Main.ini\" automatically created.\n"
 
-#define ABSOLUTE_ERROR			"Error #0007. Absolute Address Error."
+#define HPP								"[Hpp] "
+#define SETTINGS_RELOADED_ENG			"Settings successfully reloaded.\n"
+#define SETTINGS_RELOADED_RUS			"Настройки успешно перезагружены.\n"
+#define SETTINGS_SAVED_ENG				"Settings successfully saved.\n"
+#define SETTINGS_SAVED_RUS				"Настройки успешно сохранены.\n"
+#define FILE_LOADED_ENG					"Config file successfully loaded.\n"
+#define FILE_LOADED_RUS					"Файл конфигурации успешно загружен.\n"
 
-#define GAMEINFO_ERROR			"Error #0008. Couldn't find GameInfo pointer."
+#define BIND_ATTACH_CMD					"bind <key> [command] : attach a command to a key\n"
+#define UNBIND_REMOVE_CMD				"unbind <key> : remove commands from a key\n"
+#define IS_NOT_BOUND					" is not bound\n"
 
-#define PPMOVE_PTR_ERROR		"Error #0009. Couldn't find g_pPlayerMove pointer."
+#define VERSION							"3.0 dev 11\n"
+#define AUTHOR							"kilabeez\n"
 
-#define USERMSG_ERROR			"Error #0010. Couldn't find g_pUserMsgBase pointer."
+#define COPYRIGHT_TEXT					"Hpp Hack v3.0 (dev version)"
 
-#define SVC_MSG_ERROR_1			"Error #0011. Couldn't find SvcBase pointer."
-#define SVC_MSG_ERROR_2			"Error #0012. Couldn't find SvcBase pointer."
+#define LUCIDA_CONSOLE					"Lucida Console"
+#define VERDANA							"Verdana"
+#define CALIBRI							"Calibri"
 
-#define ENGINEMSG_ERROR			"Error #0013. Couldn't find %s."
+#define MENU							"Menu"
+#define MAIN							"Main"
+#define FUNCTIONS						"Functions"
+#define mESP							"ESP"
+#define NOFLASH							"NoFlash"
+#define mSCREENINFO						"ScreenInfo"
+#define CAMERA							"Camera"
+#define SPEED							"Speed"
+#define BHOP							"BunnyHop"
+#define GSTRAFE							"GroundStrafe"
+#define JUMPBUG							"JumpBug"
+#define EDGEBUG							"EdgeBug"
+#define STRAFE_HELPER					"StrafeHelper"
 
-#define MSG_READ_CORD			"Error #0014. MSG_ReadCoord."
-#define MSG_STR_READING			"Error #0015. MSG_StartBitReading.\nNote: If you inject Hpp Hack with another cheat, it is likely that they are not compatible."
-#define MSG_END_READING			"Error #0016. MSG_EndBitReading.\nNote: If you inject Hpp Hack with another cheat, it is likely that they are not compatible."
+#define SETTINGS_DIR_PATH				"\\Settings"
+#define CONFIGS_DIR_PATH				"\\Configs"
 
-#define ENGINE_MSG_BASE			"Error #0017. Couldn't find g_pEngineMsgBase  pointer."
+#define MISC_PATH						"\\Settings\\Misc.ini"
+#define MAIN_PATH						"\\Settings\\Main.ini"
+#define VISUALS_PATH					"\\Settings\\Visuals.ini"
+#define FUNCTIONS_PATH					"\\Settings\\Functions.ini"
+#define AUTORUN_PATH					"\\Configs\\AutoRun.cfg"
 
-#define EXEC_CONFIG_ERROR		"Error #0018. Couldn't find file \""
+#define MENU_POS_X						"|Menu.Pos.x"
+#define MENU_POS_Y						"|Menu.Pos.y"
+#define MENU_BOX_HEIGHT					"|Menu.Box.Height"
+#define MENU_BOX_WIDTH					"|Menu.Box.Width"
+#define MENU_BOX_COLOR					"|Menu.Box.Color"
+#define MENU_BOXFILL_COLOR				"|Menu.BoxFill.Color"
+#define MENU_BOXSELECT_COLOR			"|Menu.BoxSelect.Color"
+#define MENU_TEXT_COLOR					"|Menu.Text.Color"
+#define MENU_KEY						"|Menu.Key"
 
-#define SPEEDPTR_ERROR			"Error #0019. Couldn't find SpeedPtr pointer."
+#define MAIN_LANGUAGE					"|Language"
+#define MAIN_RELOAD_KEY					"|Reload.Key"
+#define MAIN_PANIC_KEY					"|Panic.Key"
+#define MAIN_PLAYER_VISIBLE_SCAN		"|Player.VisibleScan"
+#define MAIN_PLAYER_VALID_CHECK			"|Player.ValidCheck"
+#define MAIN_FONT_OUTLINE_QUALITY		"|Font.OutLine.Quality"
+#define MAIN_ANTISCREEN_ENABLE			"|AntiScreen.Enable"
+#define MAIN_ANTISCREEN_TIMER			"|AntiScreen.Timer"
+#define MAIN_ANTISCREEN_STEAM_KEY		"|AntiScreen.Steam.Key"
 
-#define FE_MAIN_CREATE			"File \"Main.ini\" automatically created.\n"
+#define FUNCTIONS_MENU					"|Menu"
+#define FUNCTIONS_ESP					"|ESP"
+#define FUNCTIONS_NOFLASH				"|NoFlash"
+#define FUNCTIONS_SCREEINFO				"|ScreenInfo"
+#define FUNCTIONS_CAMERA				"|Camera"
+#define FUNCTIONS_SPEED					"|Speed"
+#define FUNCTIONS_BHOP					"|BunnyHop"
+#define FUNCTIONS_GSTRAFE				"|GroundStrafe"
+#define FUNCTIONS_JUMPBUG				"|JumpBug"
+#define FUNCTIONS_EDGEBUG				"|EdgeBug"
+#define FUNCTIONS_STRAFE_HELPER			"|StrafeHelper"
+#define FUNCTIONS_CMDS					"|Console.Commands"
+#define FUNCTIONS_CMDS_PREFIX			"|Console.Commands.Prefix"
+#define FUNCTIONS_CMDS_BINDS			"|Console.Binds"
 
-#define HPP						"[Hpp] "
-#define SETTINGS_RELOADED_ENG	"Settings successfully reloaded.\n"
-#define SETTINGS_RELOADED_RUS	"Настройки успешно перезагружены.\n"
-#define SETTINGS_SAVED_ENG		"Settings successfully saved.\n"
-#define SETTINGS_SAVED_RUS		"Настройки успешно сохранены.\n"
-#define FILE_LOADED_ENG			"Config file successfully loaded.\n"
-#define FILE_LOADED_RUS			"Файл конфигурации успешно загружен.\n"
+#define ESP_ENABLE						"|ESP.Enable"
+#define ESP_PLAYER						"|ESP.Player"
+#define ESP_PLAYER_VISIBLE_ONLY			"|ESP.Player.VisibleOnly"
+#define ESP_PLAYER_BOX					"|ESP.Player.Box"
+#define ESP_PLAYER_BOX_LINEWIDTH		"|ESP.Player.Box.LineWidth"
+#define ESP_PLAYER_BOX_T_VIS			"|ESP.Player.Box.T.Vis"
+#define ESP_PLAYER_BOX_T_HIDE			"|ESP.Player.Box.T.Hide"
+#define ESP_PLAYER_BOX_CT_VIS			"|ESP.Player.Box.CT.Vis"
+#define ESP_PLAYER_BOX_CT_HIDE			"|ESP.Player.Box.CT.Hide"
+#define ESP_PLAYER_NAME					"|ESP.Player.Name"
+#define ESP_PLAYER_WEAPON				"|ESP.Player.Weapon"
+#define ESP_PLAYER_DISTANCE				"|ESP.Player.Distance"
+#define ESP_PLAYER_BARREL				"|ESP.Player.Barrel"
+#define ESP_WORLD_ITEMS					"|ESP.World.Items"
+#define ESP_WORLD_NADES					"|ESP.World.Nades"
+#define ESP_C4TIMER						"|ESP.C4Timer"
+#define ESP_C4TIMER_VALUE				"|ESP.C4Timer.Value"
+#define ESP_SOUND						"|ESP.Sound"
+#define ESP_SOUND_LINEWIDTH				"|ESP.Sound.LineWidth"
+#define ESP_SOUND_FADE_TIME				"|ESP.Sound.FadeTime"
+#define ESP_SOUND_COLOR					"|ESP.Sound.Color"
+#define ESP_FONT_OUTLINE				"|ESP.Font.OutLine"
+#define ESP_FONT_COLOR					"|ESP.Font.Color"
+#define ESP_PANIC_KEY					"|ESP.Panic.Key"
 
-#define BIND_ATTACH_CMD			"bind <key> [command] : attach a command to a key\n"
-#define UNBIND_REMOVE_CMD		"unbind <key> : remove commands from a key\n"
-#define IS_NOT_BOUND			" is not bound\n"
+#define NOFLASH_ENABLE					"|NoFlash.Enable"
+#define NOFLASH_FADELIMIT				"|NoFlash.Fade.Limit"
+#define NOFLASH_FADECOLOR				"|NoFlash.Fade.Color"
+#define NOFLASH_FADECOLORRANDOM			"|NoFlash.Fade.Color.Random"
+#define NOFLASH_SHOWPERCENTAGE			"|NoFlash.ShowPercentage"
+#define NOFLASH_FONT_OUTLINE			"|NoFlash.Font.OutLine"
 
-#define VERSION					"3.0 dev 7\n"
-#define AUTHOR					"kilabeez\n"
+#define SCREENINFO_ENABLE				"|ScreenInfo.Enable"
+#define SCREENINFO_FPS					"|ScreenInfo.FPS"
+#define SCREENINFO_COPYRIGHT			"|ScreenInfo.CopyRight"
+#define SCREENINFO_TIME					"|ScreenInfo.Time"
+#define SCREENINFO_SHOWKEYS				"|ScreenInfo.ShowKeys"
+#define SCREENINFO_KREEDZ				"|ScreenInfo.Kreedz"
+#define SCREENINFO_FONT_COLOR			"|ScreenInfo.Font.Color"
+#define SCREENINFO_FONT_OUTLINE			"|ScreenInfo.Font.OutLine"
 
-#define COPYRIGHT_TEXT			"Hpp Hack v3.0 (dev version)"
+#define THIRDPERSON_ENABLE				"|ThirdPerson.Enable"
+#define THIRDPERSON_SIDE				"|ThirdPerson.Side"
+#define THIRDPERSON_UP					"|ThirdPerson.Up"
+#define THIRDPERSON_BACK				"|ThirdPerson.Back"
+#define THIRDPERSON_SWITCH_KEY			"|ThirdPerson.SwitchKey"
 
-#define LUCIDA_CONSOLE			"Lucida Console"
-#define VERDANA					"Verdana"
-#define CALIBRI					"Calibri"
+#define FREELOOK_ENABLE					"|FreeLook.Enable"
+#define FREELOOK_SPEED					"|FreeLook.Speed"	
+#define FREELOOK_SWITCH_KEY				"|FreeLook.SwitchKey"
 
-#define MENU					"Menu"
-#define MAIN					"Main"
-#define FUNCTIONS				"Functions"
-#define mESP					"ESP"
-#define NOFLASH					"NoFlash"
-#define mSCREENINFO				"ScreenInfo"
-#define SPEED					"Speed"
-#define BHOP					"BunnyHop"
-#define GSTRAFE					"GroundStrafe"
-#define JUMPBUG					"JumpBug"
-#define EDGEBUG					"EdgeBug"
+#define SPECTATOR_ENABLE				"|Spectator.Enable"
+#define SPECTATOR_ID					"|Spectator.ID"
+#define SPECTATOR_SWITCH_KEY			"|Spectator.SwitchKey"
 
-#define SETTINGS_DIR_PATH		"\\Settings"
-#define CONFIGS_DIR_PATH		"\\Configs"
+#define SPEED_VALUE						"|Speed"
+#define SPEED_ENGINE_VALUE				"|Speed.Engine"
+#define SPEED_TYPE						"|Speed.Type"
+#define SPEED_BOOST						"|Speed.Boost"
+#define SPEED_BOOST_KEY					"|Speed.Boost.Key"
+#define SPEED_SLOWMOTION				"|Speed.SlowMotion"
+#define SPEED_SLOWMOTION_KEY			"|Speed.SlowMotion.Key"
 
-#define MISC_PATH				"\\Settings\\Misc.ini"
-#define MAIN_PATH				"\\Settings\\Main.ini"
-#define VISUALS_PATH			"\\Settings\\Visuals.ini"
-#define FUNCTIONS_PATH			"\\Settings\\Functions.ini"
-#define AUTORUN_PATH			"\\Configs\\AutoRun.cfg"
+#define BHOP_SCROLL_EMULATION			"|BunnyHop.Scroll.Emulation"
+#define BHOP_SCROLL_DIRECTION			"|BunnyHop.Scroll.Direction"
+#define BHOP_DISTANCE					"|BunnyHop.Distance"
+#define BHOP_NOSLOWDOWN					"|BunnyHop.NoSlowDown"
+#define BHOP_ONLADDER					"|BunnyHop.OnLadder"
+#define BHOP_STANDUP_AUTO				"|BunnyHop.StandUp.Auto"
+#define BHOP_STANDUP_FALLVELOCITY		"|BunnyHop.StandUp.FallVelocity"
+#define BHOP_STANDUP_KEY				"|BunnyHop.StandUp.Key"
+#define BHOP_KEY						"|BunnyHop.Key"
 
-#define MENU_POS_X				"|Menu.Pos.x"
-#define MENU_POS_Y				"|Menu.Pos.y"
-#define MENU_BOX_HEIGHT			"|Menu.Box.Height"
-#define MENU_BOX_WIDTH			"|Menu.Box.Width"
-#define MENU_BOX_COLOR			"|Menu.Box.Color"
-#define MENU_FILL_COLOR			"|Menu.Fill.Color"
-#define MENU_TEXT_COLOR			"|Menu.Text.Color"
-#define MENU_SELECT_COLOR		"|Menu.Select.Color"
-#define MENU_KEY				"|Menu.Key"
+#define GSTRAFE_SCROLL_EMULATION		"|GroundStrafe.Scroll.Emulation"
+#define GSTRAFE_SCROLL_DIRECTION		"|GroundStrafe.Scroll.Direction"
+#define GSTRAFE_DISTANCE				"|GroundStrafe.Distance"
+#define GSTRAFE_COUNT					"|GroundStrafe.Count"
+#define GSTRAFE_FALLRUN					"|GroundStrafe.FallRun"
+#define GSTRAFE_SLOWDOWN_SCALE			"|GroundStrafe.SlowDown.Scale"
+#define GSTRAFE_STANDUP_FALLVELOCITY	"|GroundStrafe.StandUp.FallVelocity"
+#define GSTRAFE_STANDUP_KEY				"|GroundStrafe.StandUp.Key"
+#define GSTRAFE_KEY						"|GroundStrafe.Key"
 
-#define MAIN_LANGUAGE			"|Language"
-#define MAIN_RELOAD_KEY			"|ReloadSettings.Key"
-#define MAIN_PANIC_KEY			"|Panic.Key"
-#define MAIN_SCAN_VISIBILITY	"|Player.Scan.Visibility"
-#define MAIN_VALID_CHECK		"|Player.Valid.Check"
-#define MAIN_OUTLINE_QUALITY	"|Font.OutLine.Quality"
+#define JUMPBUG_AUTO					"|JumpBug.Auto"
+#define JUMPBUG_AUTO_DAMAGE				"|JumpBug.Auto.Damage"
+#define JUMPBUG_AUTO_PERCENTAGE			"|JumpBug.Auto.Percentage"
+#define JUMPBUG_SLOWDOWN				"|JumpBug.SlowDown"
+#define JUMPBUG_SLOWMOTION				"|JumpBug.SlowMotion"
+#define JUMPBUG_KEY						"|JumpBug.Key"
 
-#define FUNCTIONS_ESP			"|ESP"
-#define FUNCTIONS_NOFLASH		"|NoFlash"
-#define FUNCTIONS_SCREEINFO		"|ScreenInfo"
-#define FUNCTIONS_SPEED			"|Speed"
-#define FUNCTIONS_BHOP			"|BunnyHop"
-#define FUNCTIONS_GSTRAFE		"|GroundStrafe"
-#define FUNCTIONS_JUMPBUG		"|JumpBug"
-#define FUNCTIONS_EDGEBUG		"|EdgeBug"
-#define FUNCTIONS_MENU			"|Menu"
-#define FUNCTIONS_CMDS			"|Commands"
-#define FUNCTIONS_CMDS_PREFIX	"|Commands.Prefix"
-#define FUNCTIONS_CMDS_BINDS	"|Commands.Binds"
+#define EDGEBUG_AUTO					"|EdgeBug.Auto"
+#define EDGEBUG_AUTO_DAMAGE				"|EdgeBug.Auto.Damage"
+#define EDGEBUG_SPEED					"|EdgeBug.Speed"
+#define EDGEBUG_SPEED_FINAL				"|EdgeBug.Speed.Final"
+#define EDGEBUG_SPEED_OFFSET			"|EdgeBug.Speed.Offset"
+#define EGDEBUG_KEY						"|EdgeBug.Key"
 
-#define ESP_ENABLE				"|ESP.Enable"
-#define ESP_PLAYER				"|ESP.Player"
-#define ESP_PLAYER_VISIBLECHECK	"|ESP.Player.VisibleCheck"
-#define ESP_PLAYER_VISIBLEONLY	"|ESP.Player.VisibleOnly"
-#define ESP_PLAYER_IGNORE_DEATH	"|ESP.Player.IgnoreDeath"
-#define ESP_PLAYER_BOX			"|ESP.Player.Box"
-#define ESP_PLAYER_BOX_LW		"|ESP.Player.Box.LineWidth"
-#define ESP_PLAYER_BOX_SIZE		"|ESP.Player.Box.Size"
-#define ESP_PLAYER_BOX_T_VIS	"|ESP.Player.Box.T.Vis"
-#define ESP_PLAYER_BOX_T_HIDE	"|ESP.Player.Box.T.Hide"
-#define ESP_PLAYER_BOX_CT_VIS	"|ESP.Player.Box.CT.Vis"
-#define ESP_PLAYER_BOX_CT_HIDE	"|ESP.Player.Box.CT.Hide"
-#define ESP_PLAYER_NAME			"|ESP.Player.Name"
-#define ESP_PLAYER_WEAPON		"|ESP.Player.Weapon"
-#define ESP_PLAYER_DISTANCE		"|ESP.Player.Distance"
-#define ESP_PLAYER_BARREL		"|ESP.Player.Barrel"
-#define ESP_WORLD				"|ESP.World"
-#define ESP_WORLD_WEAPONS		"|ESP.World.Weapons"
-#define ESP_WORLD_NADES			"|ESP.World.Nades"
-#define ESP_C4TIMER				"|ESP.C4Timer"
-#define ESP_C4TIMER_VALUE		"|ESP.C4Timer.Value"
-#define ESP_SOUND				"|ESP.Sound"
-#define ESP_SOUND_LINEWIDTH		"|ESP.Sound.LineWidth"
-#define ESP_SOUND_FADE_TIME		"|ESP.Sound.FadeTime"
-#define ESP_SOUND_COLOR			"|ESP.Sound.Color"
-#define ESP_FONT_OUTLINE		"|ESP.Font.OutLine"
-#define ESP_FONT_COLOR			"|ESP.Font.Color"
-#define ESP_PANIC_KEY			"|ESP.Panic.Key"
+#define STRAFE_HELPER_ACTIVE			"|StrafeHelper.Active"
+#define STRAFE_HELPER_MODE				"|StrafeHelper.Mode"
+#define STRAFE_HELPER_TYPE				"|StrafeHelper.Type"
+#define STRAFE_HELPER_CORRECT_SPEED		"|StrafeHelper.Correct.Speed"
+#define STRAFE_HELPER_CORRECT_LIMIT		"|StrafeHelper.Correct.Limit"
+#define STRAFE_HELPER_CORRECT_SMOOTH	"|StrafeHelper.Correct.Limit.Smooth"
+#define STRAFE_HELPER_KEY_EMULATION		"|StrafeHelper.KeyEmulation"
+#define STRAFE_HELPER_BOOST				"|StrafeHelper.Boost"
+#define STRAFE_HELPER_MINIMAL_SPEED		"|StrafeHelper.MinimalSpeed"
+#define STRAFE_HELPER_DIRECTION			"|StrafeHelper.Direction"
+#define STRAFE_HELPER_DIRECTION_AUTO	"|StrafeHelper.Direction.Auto"
+#define STRAFE_HELPER_STRAFE_LIMIT		"|StrafeHelper.StrafeLimit"
+#define STRAFE_HELPER_SWITCH_KEY		"|StrafeHelper.SwitchKey"
+#define STRAFE_HELPER_KEY				"|StrafeHelper.Key"
 
-#define NOFLASH_ENABLE			"|NoFlash.Enable"
-#define NOFLASH_FADELIMIT		"|NoFlash.Fade.Limit"
-#define NOFLASH_FADECOLOR		"|NoFlash.Fade.Color"
-#define NOFLASH_FADECOLORRANDOM	"|NoFlash.Fade.Color.Random"
-#define NOFLASH_SHOWPERCENTAGE	"|NoFlash.ShowPercentage"
-#define NOFLASH_FONT_OUTLINE	"|NoFlash.Font.OutLine"
+#define TERRORIST_UMSG					"TERRORIST"
+#define CT_UMSG							"CT"
 
-#define SCREENINFO_ENABLE		"|ScreenInfo.Enable"
-#define SCREENINFO_FPS			"|ScreenInfo.FPS"
-#define SCREENINFO_COPYRIGHT	"|ScreenInfo.CopyRight"
-#define SCREENINFO_TIME			"|ScreenInfo.Time"
-#define SCREENINFO_SHOWKEYS		"|ScreenInfo.ShowKeys"
-#define SCREENINFO_KREEDZ		"|ScreenInfo.Kreedz"
-#define SCREENINFO_COLOR		"|ScreenInfo.Font.Color"
-#define SCREENINFO_FONT_OUTLINE	"|ScreenInfo.Font.OutLine"
-#define SCREENINFO_DEBUG		"|ScreenInfo.Debug"
+#define RESET_HUD						"ResetHUD"
+#define SET_FOV							"SetFOV"
+#define TEAM_INFO						"TeamInfo"
+#define CUR_WEAPON						"CurWeapon"
+#define DEATH_MSG						"DeathMsg"
+#define TEXT_MSG						"TextMsg"
 
-#define SPEED_VALUE				"|Speed"
-#define SPEED_ENGINE_VALUE		"|Speed.Engine"
-#define SPEED_TYPE				"|Speed.Type"
-#define SPEED_BOOST				"|Speed.Boost"
-#define SPEED_BOOST_KEY			"|Speed.Boost.Key"
-#define SPEED_SLOWMO			"|Speed.SlowMotion"
-#define SPEED_SLOWMO_KEY		"|Speed.SlowMotion.Key"
+#define FLASHED							"Flashed: %d"
+#define DONTSEE							"You are don't see."
 
-#define BHOP_MWHEEL_EMU			"|BunnyHop.MouseWheel.Emulation"
-#define BHOP_MWHEEL_DIR			"|BunnyHop.MouseWheel.Direction"
-#define BHOP_DISTANCE_TYPE		"|BunnyHop.Distance.Type"
-#define BHOP_DISTANCE			"|BunnyHop.Distance"
-#define BHOP_NOSLOWDOWN			"|BunnyHop.NoSlowDown"
-#define BHOP_INWATER			"|BunnyHop.InWater"
-#define BHOP_ONLADDER			"|BunnyHop.OnLadder"
-#define BHOP_STANDUP			"|BunnyHop.StandUp"
-#define BHOP_STANDUP_VELOCITY	"|BunnyHop.StandUp.FallVelocity"
-#define BHOP_STANDUP_ANGLE		"|BunnyHop.StandUp.GroundAngle"
-#define BHOP_STANDUP_KEY		"|BunnyHop.StandUp.Key"
-#define BHOP_KEY				"|BunnyHop.Key"
+#define SEQUENCE_RELOADING				"reloading"
+#define SEQUENCE_PLANTING				"planting c4"
 
-#define GSTRAFE_MWHEEL_EMU		"|GroundStrafe.MouseWheel.Emulation"
-#define GSTRAFE_MWHEEL_DIR		"|GroundStrafe.MouseWheel.Direction"
-#define GSTRAFE_DISTANCE_TYPE	"|GroundStrafe.Distance.Type"
-#define GSTRAFE_DISTANCE		"|GroundStrafe.Distance"
-#define GSTRAFE_COUNT			"|GroundStrafe.Count"
-#define GSTRAFE_FALLRUN			"|GroundStrafe.FallRun"
-#define GSTRAFE_SLOWDOWN_SCALE	"|GroundStrafe.SlowDown.Scale"
-#define GSTRAFE_SLOWDOWN_ANGLE	"|GroundStrafe.SlowDown.GroundAngle"
-#define GSTRAFE_STANDUP_VEL		"|GroundStrafe.StandUp.FallVelocity"
-#define GSTRAFE_STANDUP_KEY		"|GroundStrafe.StandUp.Key"
-#define GSTRAFE_KEY				"|GroundStrafe.Key"
+#define HEGREN							"hegrenade"
+#define FLASH							"flash"
+#define SMOKE							"smoke"
+#define USP								"usp"
+#define GLOCK18							"glock18"
+#define DEAGLE							"deagle"
+#define P228							"p228"
+#define ELITE							"elite"
+#define FIVESEVEN						"fiveseven"
+#define M3								"m3"
+#define XM1014							"xm1014"
+#define MP5								"mp5"
+#define TMP								"tmp"
+#define P90								"p90"
+#define MAC10							"mac10"
+#define UMP45							"ump45"
+#define FAMAS							"famas"
+#define SG552							"sg552"
+#define AK47							"ak47"
+#define M4A1							"m4a1"
+#define AUG								"aug"
+#define SCOUT							"scout"
+#define AWP								"awp"
+#define G3SG1							"g3sg1"
+#define SG550							"sg550"
+#define GALIL							"galil"
+#define M249							"m249"
+#define SHIELD							"shield"
+#define BACKPACK						"backpack"
+#define THIGHPACK						"thighpack"
+#define C4								"c4"
+#define C4_PLANTED						"bomb"
 
-#define JUMPBUG_AUTO			"|JumpBug.Auto"
-#define JUMPBUG_AUTO_DAMAGE		"|JumpBug.Auto.Damage"
-#define JUMPBUG_AUTO_PERCENTAGE	"|JumpBug.Auto.Percentage"
-#define JUMPBUG_SLOWDOWN		"|JumpBug.SlowDown"
-#define JUMPBUG_SLOWDOWN_DIST	"|JumpBug.SlowDown.Distance"
-#define JUMPBUG_SLOWMOTION		"|JumpBug.SlowMotion"
-#define JUMPBUG_KEY				"|JumpBug.Key"
-
-#define EDGEBUG_AUTO			"|EdgeBug.Auto"
-#define EDGEBUG_AUTO_DAMAGE		"|EdgeBug.Auto.Damage"
-#define EDGEBUG_SPEED			"|EdgeBug.Speed"
-#define EDGEBUG_DIST			"|EdgeBug.Distance"
-#define EDGEBUG_DIST_DYNAMIC	"|EdgeBug.Distance.Auto"
-#define EGDEBUG_KEY				"|EdgeBug.Key"
-
-#define TERRORIST_UMSG			"TERRORIST"
-#define CT_UMSG					"CT"
-
-#define RESET_HUD				"ResetHUD"
-#define SET_FOV					"SetFOV"
-#define TEAM_INFO				"TeamInfo"
-#define CUR_WEAPON				"CurWeapon"
-#define DEATH_MSG				"DeathMsg"
-#define TEXT_MSG				"TextMsg"
-
-#define FLASHED					"Flashed: %d"
-#define DONTSEE					"You are don't see."
-
-#define SEQUENCE_RELOADING		"reloading"
-#define SEQUENCE_PLANTING		"planting c4"
-
-#define HEGREN					"hegrenade"
-#define FLASH					"flash"
-#define SMOKE					"smoke"
-#define USP						"usp"
-#define GLOCK18					"glock18"
-#define DEAGLE					"deagle"
-#define P228					"p228"
-#define ELITE					"elite"
-#define FIVESEVEN				"fiveseven"
-#define M3						"m3"
-#define XM1014					"xm1014"
-#define MP5						"mp5"
-#define TMP						"tmp"
-#define P90						"p90"
-#define MAC10					"mac10"
-#define UMP45					"ump45"
-#define FAMAS					"famas"
-#define SG552					"sg552"
-#define AK47					"ak47"
-#define M4A1					"m4a1"
-#define AUG						"aug"
-#define SCOUT					"scout"
-#define AWP						"awp"
-#define G3SG1					"g3sg1"
-#define SG550					"sg550"
-#define GALIL					"galil"
-#define M249					"m249"
-#define SHIELD					"shield"
-#define BACKPACK				"backpack"
-#define THIGHPACK				"thighpack"
-#define C4						"c4"
-#define C4_PLANTED				"bomb"
-
-#define SOUND					"svc_sound"
-#define SPAWN_STATIC_SOUND		"svc_spawnstaticsound"
-#define STUFF_TEXT				"svc_stufftext"
-#define NEW_USER_MSG			"svc_newusermsg"
-#define UPDATE_USER_INFO		"svc_updateuserinfo"
-#define SEND_CVAR_VALUE			"svc_sendcvarvalue"
-#define SEND_CVAR_VALUE2		"svc_sendcvarvalue2"
-#define DIRECTOR				"svc_director"
+#define SOUND							"svc_sound"
+#define SPAWN_STATIC_SOUND				"svc_spawnstaticsound"
+#define STUFF_TEXT						"svc_stufftext"
+#define NEW_USER_MSG					"svc_newusermsg"
+#define UPDATE_USER_INFO				"svc_updateuserinfo"
+#define SEND_CVAR_VALUE					"svc_sendcvarvalue"
+#define SEND_CVAR_VALUE2				"svc_sendcvarvalue2"
+#define DIRECTOR						"svc_director"
 
 #define HPP_MESSAGE						"Hpp Hack v3.0 (dev version)"
 
-#define MENU_MENU						"Menu"
+#define MENU_MENU						"Menu Settings"
 #define MENU_MAIN						"Main"
-#define MENU_ESP						"ESP"
+#define MENU_ESP						"ESP Settings"
 #define MENU_ESP_COLORS					"ESP Colors"
 #define MENU_NOFLASH					"NoFlash"
 #define MENU_SCREENINFO					"ScreenInfo"
+#define MENU_CAMERA						"Camera"
 #define MENU_SPEED						"Speed"
 #define MENU_BHOP						"BunnyHop"
 #define MENU_GSTRAFE					"GroundStrafe"
 #define MENU_JUMPBUG					"JumpBug"
 #define MENU_EDGEBUG					"EdgeBug"
+#define MENU_STRAFE_HELPER				"Strafe Helper"
 #define MENU_LOAD_SETTINGS				"Load Settings"
 #define MENU_SAVE_SETTINGS				"Save Settings"
 
@@ -290,73 +311,72 @@
 #define MENU_MENU_POS_Y					"Pos.y"
 #define MENU_MENU_BOX_HEIGHT			"Box.Height"
 #define MENU_MENU_BOX_WIDTH				"Box.Width"
-#define MENU_MENU_BOX_COLOR_R			"Box.Color.Red"
-#define MENU_MENU_BOX_COLOR_G			"Box.Color.Green"
-#define MENU_MENU_BOX_COLOR_B			"Box.Color.Blue"
-#define MENU_MENU_BOX_COLOR_A			"Box.Color.Alpha"
-#define MENU_MENU_FILL_COLOR_R			"Fill.Color.Red"
-#define MENU_MENU_FILL_COLOR_G			"Fill.Color.Green"
-#define MENU_MENU_FILL_COLOR_B			"Fill.Color.Blue"
-#define MENU_MENU_FILL_COLOR_A			"Fill.Color.Alpha"
-#define MENU_MENU_TEXT_COLOR_R			"Text.Color.Red"
-#define MENU_MENU_TEXT_COLOR_G			"Text.Color.Green"
-#define MENU_MENU_TEXT_COLOR_B			"Text.Color.Blue"
-#define MENU_MENU_TEXT_COLOR_A			"Text.Color.Alpha"
-#define MENU_MENU_SELECT_COLOR_R		"Select.Color.Red"
-#define MENU_MENU_SELECT_COLOR_G		"Select.Color.Green"
-#define MENU_MENU_SELECT_COLOR_B		"Select.Color.Blue"
-#define MENU_MENU_SELECT_COLOR_A		"Select.Color.Alpha"
+#define MENU_MENU_BOX_COLOR_R			"Box.Color.R"
+#define MENU_MENU_BOX_COLOR_G			"Box.Color.G"
+#define MENU_MENU_BOX_COLOR_B			"Box.Color.B"
+#define MENU_MENU_BOX_COLOR_A			"Box.Color.A"
+#define MENU_MENU_BOXFILL_COLOR_R		"BoxFill.Color.R"
+#define MENU_MENU_BOXFILL_COLOR_G		"BoxFill.Color.G"
+#define MENU_MENU_BOXFILL_COLOR_B		"BoxFill.Color.B"
+#define MENU_MENU_BOXFILL_COLOR_A		"BoxFill.Color.A"
+#define MENU_MENU_BOXSELECT_COLOR_R		"BoxSelect.Color.R"
+#define MENU_MENU_BOXSELECT_COLOR_G		"BoxSelect.Color.G"
+#define MENU_MENU_BOXSELECT_COLOR_B		"BoxSelect.Color.B"
+#define MENU_MENU_BOXSELECT_COLOR_A		"BoxSelect.Color.A"
+#define MENU_MENU_TEXT_COLOR_R			"Text.Color.R"
+#define MENU_MENU_TEXT_COLOR_G			"Text.Color.G"
+#define MENU_MENU_TEXT_COLOR_B			"Text.Color.B"
+#define MENU_MENU_TEXT_COLOR_A			"Text.Color.A"
 
-#define MENU_MAIN_SCAN_VISIBILITY		"Player.Scan.Visibility"
-#define MENU_MAIN_VALID_CHECK			"Player.Valid.Check"
-#define MENU_MAIN_OUTLINE_QUALITY		"Font.OutLine.Quality"
+#define MENU_MAIN_PLAYER_VISIBLE_SCAN	"Player.VisibleScan"
+#define MENU_MAIN_PLAYER_VALID_CHECK	"Player.ValidCheck"
+#define MENU_MAIN_FONT_OUTLINE_QUALITY	"Font.OutLine.Quality"
+#define MENU_MAIN_ANTISCREEN_ENABLE		"AntiScreen.Enable"
+#define MENU_MAIN_ANTISCREEN_TIME		"AntiScreen.Timer"
 
 #define MENU_ESP_ENABLE					"Enable"
 #define MENU_ESP_PLAYER					"Player"
-#define MENU_ESP_PLAYER_VISIBLECHECK	"Player.VisibleCheck"
-#define MENU_ESP_PLAYER_VISIBLEONLY		"Player.VisibleOnly"
-#define MENU_ESP_PLAYER_IGNOREDEATH		"Player.IgnoreDeath"
+#define MENU_ESP_PLAYER_VISIBLE_ONLY	"Player.VisibleOnly"
 #define MENU_ESP_PLAYER_BOX				"Player.Box"
-#define MENU_ESP_PLAYER_BOX_LW			"Player.Box.LineWidth"
-#define MENU_ESP_PLAYER_BOX_SIZE		"Player.Box.Size"
-#define MENU_ESP_COLOR_T_HIDE_R			"Box.T.Hide.Red"
-#define MENU_ESP_COLOR_T_HIDE_G			"Box.T.Hide.Green"
-#define MENU_ESP_COLOR_T_HIDE_B			"Box.T.Hide.Blue"
-#define MENU_ESP_COLOR_T_VIS_R			"Box.T.Vis.Red"
-#define MENU_ESP_COLOR_T_VIS_G			"Box.T.Vis.Green"
-#define MENU_ESP_COLOR_T_VIS_B			"Box.T.Vis.Blue"
-#define MENU_ESP_COLOR_CT_HIDE_R		"Box.CT.Hide.Red"
-#define MENU_ESP_COLOR_CT_HIDE_G		"Box.CT.Hide.Green"
-#define MENU_ESP_COLOR_CT_HIDE_B		"Box.CT.Hide.Blue"
-#define MENU_ESP_COLOR_CT_VIS_R			"Box.CT.Vis.Red"
-#define MENU_ESP_COLOR_CT_VIS_G			"Box.CT.Vis.Green"
-#define MENU_ESP_COLOR_CT_VIS_B			"Box.CT.Vis.Blue"
+#define MENU_ESP_PLAYER_BOX_LINEWIDTH	"Player.Box.LineWidth"
 #define MENU_ESP_PLAYER_NAME			"Player.Name"
 #define MENU_ESP_PLAYER_WEAPON			"Player.Weapon"
 #define MENU_ESP_PLAYER_DISTANCE		"Player.Distance"
 #define MENU_ESP_PLAYER_BARREL			"Player.Barrel"
-#define MENU_ESP_WORLD					"World"
-#define MENU_ESP_WORLD_WEAPONS			"World.Weapons"
+#define MENU_ESP_WORLD_ITEMS			"World.Items"
 #define MENU_ESP_WORLD_NADES			"World.Nades"
 #define MENU_ESP_C4TIMER				"C4Timer"
 #define MENU_ESP_C4TIMER_VALUE			"C4Timer.Value"
 #define MENU_ESP_SOUND					"Sound"
 #define MENU_ESP_SOUND_LINEWIDTH		"Sound.LineWidth"
 #define MENU_ESP_SOUND_FADE_TIME		"Sound.FadeTime"
-#define MENU_ESP_SOUND_COLOR_R			"Sound.Color.Red"
-#define MENU_ESP_SOUND_COLOR_G			"Sound.Color.Green"
-#define MENU_ESP_SOUND_COLOR_B			"Sound.Color.Blue"
 #define MENU_ESP_FONT_OUTLINE			"Font.OutLine"
-#define MENU_ESP_FONT_COLOR_R			"Font.Color.Red"
-#define MENU_ESP_FONT_COLOR_G			"Font.Color.Green"
-#define MENU_ESP_FONT_COLOR_B			"Font.Color.Blue"
+
+#define MENU_ESP_COLOR_T_HIDE_R			"Box.T.Hide.R"
+#define MENU_ESP_COLOR_T_HIDE_G			"Box.T.Hide.G"
+#define MENU_ESP_COLOR_T_HIDE_B			"Box.T.Hide.B"
+#define MENU_ESP_COLOR_T_VIS_R			"Box.T.Vis.R"
+#define MENU_ESP_COLOR_T_VIS_G			"Box.T.Vis.G"
+#define MENU_ESP_COLOR_T_VIS_B			"Box.T.Vis.B"
+#define MENU_ESP_COLOR_CT_HIDE_R		"Box.CT.Hide.R"
+#define MENU_ESP_COLOR_CT_HIDE_G		"Box.CT.Hide.G"
+#define MENU_ESP_COLOR_CT_HIDE_B		"Box.CT.Hide.B"
+#define MENU_ESP_COLOR_CT_VIS_R			"Box.CT.Vis.R"
+#define MENU_ESP_COLOR_CT_VIS_G			"Box.CT.Vis.G"
+#define MENU_ESP_COLOR_CT_VIS_B			"Box.CT.Vis.B"
+#define MENU_ESP_SOUND_COLOR_R			"Sound.Color.R"
+#define MENU_ESP_SOUND_COLOR_G			"Sound.Color.G"
+#define MENU_ESP_SOUND_COLOR_B			"Sound.Color.B"
+#define MENU_ESP_FONT_COLOR_R			"Font.Color.R"
+#define MENU_ESP_FONT_COLOR_G			"Font.Color.G"
+#define MENU_ESP_FONT_COLOR_B			"Font.Color.B"
 
 #define MENU_NOFLASH_ENABLE				"Enable"
-#define MENU_NOFLASH_FADELIMIT			"Fade.Limit"
-#define MENU_NOFLASH_FADECOLOR_R		"Fade.Color.Red"
-#define MENU_NOFLASH_FADECOLOR_G		"Fade.Color.Green"
-#define MENU_NOFLASH_FADECOLOR_B		"Fade.Color.Blue"
-#define MENU_NOFLASH_FADECOLORRANDOM	"Fade.Color.Random"
+#define MENU_NOFLASH_FADE_LIMIT			"Fade.Limit"
+#define MENU_NOFLASH_FADE_COLOR_R		"Fade.Color.R"
+#define MENU_NOFLASH_FADE_COLOR_G		"Fade.Color.G"
+#define MENU_NOFLASH_FADE_COLOR_B		"Fade.Color.B"
+#define MENU_NOFLASH_FADE_COLOR_RANDOM	"Fade.Color.Random"
 #define MENU_NOFLASH_SHOWPERCENTAGE		"ShowPercentage"
 #define MENU_NOFLASH_FONT_OUTLINE		"Font.OutLine"
 
@@ -366,42 +386,47 @@
 #define MENU_SCREENINFO_TIME			"Time"
 #define MENU_SCREENINFO_SHOWKEYS		"ShowKeys"
 #define MENU_SCREENINFO_KREEDZ			"Kreedz"
-#define MENU_SCREENINFO_COLOR_R			"Color.Red"
-#define MENU_SCREENINFO_COLOR_G			"Color.Green"
-#define MENU_SCREENINFO_COLOR_B			"Color.Blue"
+#define MENU_SCREENINFO_FONT_COLOR_R	"Font.Color.R"
+#define MENU_SCREENINFO_FONT_COLOR_G	"Font.Color.G"
+#define MENU_SCREENINFO_FONT_COLOR_B	"Font.Color.B"
 #define MENU_SCREENINFO_FONT_OUTLINE	"Font.OutLine"
-#define MENU_SCREENINFO_DEBUG			"Debug"
+
+#define MENU_THIRDPERSON_ENABLE			"ThirdPerson.Enable"
+#define MENU_THIRDPERSON_SIDE			"ThirdPerson.Side"
+#define MENU_THIRDPERSON_UP				"ThirdPerson.Up"
+#define MENU_THIRDPERSON_BACK			"ThirdPerson.Back"
+
+#define MENU_FREELOOK_ENABLE			"FreeLook.Enable"
+#define MENU_FREELOOK_SPEED				"FreeLook.Speed"
+
+#define MENU_SPECTATOR_ENABLE			"Spectator.Enable"
+#define MENU_SPECTATOR_ID				"Spectator.ID"
 
 #define MENU_SPEED_VALUE				"Speed"
 #define MENU_SPEED_ENGINE_VALUE			"Speed.Engine"
 #define MENU_SPEED_TYPE					"Speed.Type"
 #define MENU_SPEED_BOOST				"Speed.Boost"
-#define MENU_SPEED_SLOWMO				"Speed.SlowMo"
+#define MENU_SPEED_SLOWMO				"Speed.SlowMotion"
 
-#define MENU_BHOP_MWHEEL_EMULATION		"MouseWheel.Emulation"
-#define MENU_BHOP_MWHEEL_DIRECTION		"MouseWheel.Direction"
-#define MENU_BHOP_DISTANCE_MINIMAL		"Distance.Minimal"
-#define MENU_BHOP_DISTANCE_MAXIMAL		"Distance.Maximal"
-#define MENU_BHOP_DISTANCE_TYPE			"Distance.Type"
-#define MENU_BHOP_COUNT_MINIMAL			"Count.Minimal"
-#define MENU_BHOP_COUNT_MAXIMAL			"Count.Maximal"
+#define MENU_BHOP_SCROLL_EMULATION		"Scroll.Emulation"
+#define MENU_BHOP_SCROLL_DIRECTION		"Scroll.Direction"
+#define MENU_BHOP_DISTANCE_MIN			"Distance.Min"
+#define MENU_BHOP_DISTANCE_MAX			"Distance.Max"
+#define MENU_BHOP_COUNT_MIN				"Count.Min"
+#define MENU_BHOP_COUNT_MAX				"Count.Max"
 #define MENU_BHOP_NOSLOWDOWN			"NoSlowDown"
-#define MENU_BHOP_INWATER				"InWater"
 #define MENU_BHOP_ONLADDER				"OnLadder"
-#define MENU_BHOP_STANDUP				"StandUp"
+#define MENU_BHOP_STANDUP_AUTO			"StandUp.Auto"
 #define MENU_BHOP_STANDUP_FALLVELOCITY	"StandUp.FallVelocity"
-#define MENU_BHOP_STANDUP_GROUNDANGLE	"StandUp.GroundAngle"
 
-#define MENU_GSTRAFE_MWHEEL_EMULATION	"MouseWheel.Emulation"
-#define MENU_GSTRAFE_MWHEEL_DIRECTION	"MouseWheel.Direction"
-#define MENU_GSTRAFE_DISTANCE_TYPE		"Distance.Type"
-#define MENU_GSTRAFE_DISTANCE_MINIMAL	"Distance.Minimal"
-#define MENU_GSTRAFE_DISTANCE_MAXIMAL	"Distance.Maximal"
-#define MENU_GSTRAFE_COUNT_MINIMAL		"Count.Minimal"
-#define MENU_GSTRAFE_COUNT_MAXIMAL		"Count.Maximal"
+#define MENU_GSTRAFE_SCROLL_EMULATION	"Scroll.Emulation"
+#define MENU_GSTRAFE_SCROLL_DIRECTION	"Scroll.Direction"
+#define MENU_GSTRAFE_DISTANCE_MIN		"Distance.Min"
+#define MENU_GSTRAFE_DISTANCE_MAX		"Distance.Max"
+#define MENU_GSTRAFE_COUNT_MIN			"Count.Min"
+#define MENU_GSTRAFE_COUNT_MAX			"Count.Max"
 #define MENU_GSTARFE_FALLRUN			"FallRun"
 #define MENU_GSTARFE_SLOWDOWN_SCALE		"SlowDown.Scale"
-#define MENU_GSTARFE_SLOWDOWN_ANGLE		"SlowDown.GroundAngle"
 #define MENU_GSTARFE_STANDUP_VELOCITY	"StandUp.FallVelocity"
 
 #define MENU_JUMPBUG_AUTO				"Auto"
@@ -411,11 +436,48 @@
 #define MENU_JUMPBUG_SLOWDOWN_DISTANCE	"SlowDown.Distance"
 #define MENU_JUMPBUG_SLOWMOTION			"SlowMotion"
 
-#define MENU_EDGEBUG_AUTO				"EdgeBug.Auto"
-#define MENU_EDGEBUG_AUTO_DAMAGE		"EdgeBug.Auto.Damage"
-#define MENU_EDGEBUG_SPEED				"EdgeBug.Speed"
-#define MENU_EDGEBUG_DISTANCE			"EdgeBug.Distance"
-#define MENU_EDGEBUG_DISTANCE_DYNAMIC	"EdgeBug.Distance.Auto"
+#define MENU_EDGEBUG_AUTO				"Auto"
+#define MENU_EDGEBUG_AUTO_DAMAGE		"Auto.Damage"
+#define MENU_EDGEBUG_SPEED				"Speed"
+#define MENU_EDGEBUG_SPEED_FINAL		"Speed.Final"
+#define MENU_EDGEBUG_SPEED_OFFSET		"Speed.Offset"
+
+#define MENU_STRAFEHELPER_ACTIVE		"Active"
+#define MENU_STRAFEHELPER_MODE			"Mode"
+#define MENU_STRAFEHELPER_TYPE			"Type"
+#define MENU_STRAFEHELPER_CORRECT_SPEED	"Correct.Speed"
+#define MENU_STRAFEHELPER_CORRECT_LIMIT	"Correct.Limit"
+#define MENU_STRAFEHELPER_CORRECT_SMOTH	"Correct.Limit.Smooth"
+#define MENU_STRAFEHELPER_KEY_EMULATION	"KeyEmulation"
+#define MENU_STRAFEHELPER_BOOST			"Boost"
+#define MENU_STRAFEHELPER_MIN_SPEED		"MinimalSpeed"
+#define MENU_STRAFEHELPER_DIRECTION		"Direction"
+#define MENU_STRAFEHELPER_DIR_AUTO		"Direction.Auto"
+#define MENU_STRAFEHELPER_STRAFE_LIMIT	"StrafeLimit"
+
+#define CMD_PANIC						"panic"
+#define CMD_ESP_PANIC					"esp_panic"
+#define CMD_SETTINGS_RELOAD				"settings_reload"
+#define CMD_BHOP						"bhop"
+#define CMD_BHOP_STANDUP				"bhop_standup"
+#define CMD_GSTRAFE						"gstrafe"
+#define CMD_GSTRAFE_STANDUP				"gstrafe_standup"
+#define CMD_SPEED_BOOST					"speed_boost"
+#define CMD_SPEED_SLOWMO				"speed_slowmo"
+#define CMD_JUMPBUG						"jumpbug"
+#define CMD_EDGEBUG						"edgebug"
+#define CMD_ANTISCREEN					"antiscreen"
+#define CMD_STRAFE_HELPER				"strafe_helper"
+#define CMD_STRAFE_HELPER_SWITCH		"strafe_helper_switch"
+#define CMD_THIRDPERSON_SWITCH			"thirdperson_switch"
+#define CMD_FREELOOK_SWITCH				"freelook_switch"
+#define CMD_SPECTATOR_SWITCH			"spectator_switch"
+
+#define OFF								"off"
+#define ON								"on"
+
+#define DOWN							"down"
+#define UP								"up"
 
 #define CompareMemory(Buff1, Buff2, Size) __comparemem((const UCHAR *)Buff1, (const UCHAR *)Buff2, (UINT)Size)
 #define FindMemoryClone(Start, End, Clone, Size) __findmemoryclone((const ULONG)Start, (const ULONG)End, (const ULONG)Clone, (UINT)Size)
@@ -427,6 +489,8 @@
 #define VectorLengthSquared(v) ((v)[0]*(v)[0]+(v)[1]*(v)[1]+(v)[2]*(v)[2])
 #define VectorTransform(a,b,c){(c)[0]=DotProduct((a),(b)[0])+(b)[0][3];(c)[1]=DotProduct((a),(b)[1])+(b)[1][3];(c)[2]=DotProduct((a),(b)[2])+(b)[2][3];}
 #define VectorDistance(a,b) sqrt(POW((a)[0]-(b)[0])+POW((a)[1]-(b)[1])+POW((a)[2]-(b)[2]))
+
+#define STRAFE_MOVE_KOEF		1.4142135007461927831067196676929
 
 #define FIND_COUNTER_VALUE		100
 
@@ -580,7 +644,7 @@
 #define K_Y						121
 #define K_Z						122
 
-#define M_PI					3.14159265358979323846f
+#define M_PI					3.14159265358979323846
 
 #define PLAYER_FATAL_FALL_SPEED		980
 #define PLAYER_MAX_SAFE_FALL_SPEED	504.8
@@ -614,22 +678,22 @@
 
 #define WEAPON_PARS(name) {\
 	Renderer::g_Drawing.Box ( int ( EntityScreen[0] - 2 ), int ( EntityScreen[1] ), 6, 6, 1, 0, 0, 0, 255 );\
-	Renderer::g_Drawing.Fill ( int ( EntityScreen[0] - 1 ), int ( EntityScreen[1] + 1 ), 4, 4, 255, 120, 50, 255 );\
-	Renderer::g_Verdana.Print ( int ( EntityScreen[0] ), int ( EntityScreen[1] + 15 ), g_Vars.esp.font_color[0], g_Vars.esp.font_color[1], g_Vars.esp.font_color[2], 255, g_Vars.esp.font_outline ?  FL_CENTER | FL_OUTLINE : FL_CENTER, name );\
+	Renderer::g_Drawing.FillArea ( int ( EntityScreen[0] - 1 ), int ( EntityScreen[1] + 1 ), 4, 4, 255, 120, 50, 255 );\
+	Renderer::g_Verdana.Print ( int ( EntityScreen[0] ), int ( EntityScreen[1] + 15 ), g_Vars.ESP.FontColor[0], g_Vars.ESP.FontColor[1], g_Vars.ESP.FontColor[2], 255, g_Vars.ESP.FontOutLine ?  FL_CENTER | FL_OUTLINE : FL_CENTER, name );\
 }
 
 #define WEAPON_PARS_C4_PLANTED(name) {\
 	Renderer::g_Drawing.Box ( int ( EntityScreen[0] - 2 ), int ( EntityScreen[1] ), 6, 6, 1, 0, 0, 0, 255 );\
-	Renderer::g_Drawing.Fill ( int ( EntityScreen[0] - 1 ), int ( EntityScreen[1] + 1 ), 4, 4, 255, 0, 0, 255 );\
-	Renderer::g_Verdana.Print ( int ( EntityScreen[0] ), int ( EntityScreen[1] + 15 ), g_Vars.esp.font_color[0], g_Vars.esp.font_color[1], g_Vars.esp.font_color[2], 255, g_Vars.esp.font_outline ?  FL_CENTER | FL_OUTLINE : FL_CENTER, name );\
-	if ( g_Vars.esp.c4timer && Information::g_Local.Bomb.isPlanted ) {\
-	Renderer::g_Verdana.Print ( int ( EntityScreen[0] ), int ( EntityScreen[1] + 15 ) + 12, g_Vars.esp.font_color[0], g_Vars.esp.font_color[1], g_Vars.esp.font_color[2], 255, g_Vars.esp.font_outline ?  FL_CENTER | FL_OUTLINE : FL_CENTER, "time: %.2f", Information::g_Local.Bomb.C4Timer );}\
+	Renderer::g_Drawing.FillArea ( int ( EntityScreen[0] - 1 ), int ( EntityScreen[1] + 1 ), 4, 4, 255, 0, 0, 255 );\
+	Renderer::g_Verdana.Print ( int ( EntityScreen[0] ), int ( EntityScreen[1] + 15 ), g_Vars.ESP.FontColor[0], g_Vars.ESP.FontColor[1], g_Vars.ESP.FontColor[2], 255, g_Vars.ESP.FontOutLine ?  FL_CENTER | FL_OUTLINE : FL_CENTER, name );\
+	if ( g_Vars.ESP.C4Timer && Info::g_Local.Bomb.isPlanted ) {\
+	Renderer::g_Verdana.Print ( int ( EntityScreen[0] ), int ( EntityScreen[1] + 15 ) + 12, g_Vars.ESP.FontColor[0], g_Vars.ESP.FontColor[1], g_Vars.ESP.FontColor[2], 255, g_Vars.ESP.FontOutLine ?  FL_CENTER | FL_OUTLINE : FL_CENTER, "time: %.2f", Info::g_Local.Bomb.C4Timer );}\
 }
 
 #define WEAPON_PARS_C4(name) {\
 	Renderer::g_Drawing.Box ( int ( EntityScreen[0] - 2 ), int ( EntityScreen[1] ), 6, 6, 1, 0, 0, 0, 255 );\
-	Renderer::g_Drawing.Fill ( int ( EntityScreen[0] - 1 ), int ( EntityScreen[1] + 1 ), 4, 4, 255, 0, 0, 255 );\
-	Renderer::g_Verdana.Print ( int ( EntityScreen[0] ), int ( EntityScreen[1] + 15 ), g_Vars.esp.font_color[0], g_Vars.esp.font_color[1], g_Vars.esp.font_color[2], 255, g_Vars.esp.font_outline ?  FL_CENTER | FL_OUTLINE : FL_CENTER, name );\
+	Renderer::g_Drawing.FillArea ( int ( EntityScreen[0] - 1 ), int ( EntityScreen[1] + 1 ), 4, 4, 255, 0, 0, 255 );\
+	Renderer::g_Verdana.Print ( int ( EntityScreen[0] ), int ( EntityScreen[1] + 15 ), g_Vars.ESP.FontColor[0], g_Vars.ESP.FontColor[1], g_Vars.ESP.FontColor[2], 255, g_Vars.ESP.FontOutLine ?  FL_CENTER | FL_OUTLINE : FL_CENTER, name );\
 }
 
 #define INIREAD_INT( var, section, key ) var = g_File.ReadInt ( ( char* )Path.c_str ( ), section, key, "0" )
@@ -681,10 +745,18 @@
 }
 
 #define rcmd( cmd_name, one, two ) {\
-	g_Engine.pfnAddCommand ( g_Util.PrefHack ( "+", g_Util.Prefix, cmd_name ), one ); \
-	g_Engine.pfnAddCommand ( g_Util.PrefHack ( "-", g_Util.Prefix, cmd_name ), two );}
+	g_Engine.pfnAddCommand ( g_Util.PrefHack ( "+", g_Util.Prefix, cmd_name ), one );\
+	g_Engine.pfnAddCommand ( g_Util.PrefHack ( "-", g_Util.Prefix, cmd_name ), two );\
+}
 
 #define acmd( cvar_name, cmd ) g_Engine.pfnAddCommand ( g_Util.PrefHack ( "", g_Util.Prefix, cvar_name ), cmd )
+
+#define DELETE_KEY_CMD( key ){\
+	if ( KeyCommand == key )\
+	{\
+		key = 0;\
+	}\
+}
 
 #define PRINT_IS( cmd_name, var ){\
 	g_Util.ConsolePrintColor ( 100, 255, 200, "[Hpp] " );\
@@ -835,6 +907,39 @@
 	g_Util.ConsolePrintColor ( 200, 255, 200, "\"\n" );\
 }
 
+#define PRINT_IS_MWHEEL( cmd_name, var ){\
+	g_Util.ConsolePrintColor ( 100, 255, 200, "[Hpp] " );\
+	g_Util.ConsolePrintColor ( 200, 255, 200, "\"" );\
+	g_Util.ConsolePrintColor ( 200, 255, 200, g_Util.Prefix );\
+	g_Util.ConsolePrintColor ( 200, 255, 200, cmd_name );\
+	g_Util.ConsolePrintColor ( 200, 255, 200, "\" is \"" );\
+	if ( var != 1000 )\
+	{\
+		g_Util.ConsolePrintColor ( 200, 255, 200, "up\"\n" );\
+	}\
+	else if ( var != 1001 )\
+	{\
+		g_Util.ConsolePrintColor ( 200, 255, 200, "down\"\n" );\
+	}\
+}
+
+#define PRINT_ATOI_MWHEEL( cmd_name, var ){\
+	var = Files::g_File.StringToKey ( g_Engine.Cmd_Argv ( 1 ) ); \
+	g_Util.ConsolePrintColor ( 100, 255, 200, "[Hpp] " ); \
+	g_Util.ConsolePrintColor ( 200, 255, 200, "\"" ); \
+	g_Util.ConsolePrintColor ( 200, 255, 200, g_Util.Prefix ); \
+	g_Util.ConsolePrintColor ( 200, 255, 200, cmd_name ); \
+	g_Util.ConsolePrintColor ( 200, 255, 200, "\" changed to \"" ); \
+	if ( var != 1000 )\
+	{\
+		g_Util.ConsolePrintColor ( 200, 255, 200, "up\"\n" ); \
+	}\
+	else if ( var != 1001 )\
+	{\
+		g_Util.ConsolePrintColor ( 200, 255, 200, "down\"\n" ); \
+	}\
+}
+
 #define PRINT_IS_2( cmd_name, var1, var2 ){\
 	g_Util.ConsolePrintColor ( 100, 255, 200, "[Hpp] " );\
 	g_Util.ConsolePrintColor ( 200, 255, 200, "\"" );\
@@ -848,6 +953,17 @@
 }
 
 #define PARSE_CMD( cmd_name, ret ){\
-	if ( !lstrcmpi ( Command, g_Util.PrefHack ( "+", g_Util.Prefix, cmd_name ) ) ) {\
+	if ( !lstrcmpi ( CommandName, g_Util.PrefHack ( "+", g_Util.Prefix, cmd_name ) ) ) {\
 	return ret;}\
+}
+
+#define PARSE_CMD2( cmd_name, ret ){\
+	if ( !lstrcmpi ( CommandName, g_Util.PrefHack ( "", g_Util.Prefix, cmd_name ) ) ) {\
+	return ret;}\
+}
+
+#define VectorMul( vec, num, res ){\
+	( res )[0] = ( vec )[0] * ( num );\
+	( res )[1] = ( vec )[1] * ( num );\
+	( res )[2] = ( vec )[2] * ( num );\
 }

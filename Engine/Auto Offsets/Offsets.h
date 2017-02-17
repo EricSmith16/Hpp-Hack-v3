@@ -35,6 +35,8 @@ namespace Engine
 
 		int HLType;
 
+		DWORD SpeedPtr;
+
 		DWORD _fastcall FindEngineTable ( );
 		DWORD _fastcall FindStudioTable ( );
 		DWORD _fastcall FindSVCMessages ( );

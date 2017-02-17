@@ -11,7 +11,7 @@ namespace Engine
 
 	void UserMsg::AtRoundStart ( )
 	{
-		Information::g_Local.Bomb.isPlanted = false;
+		Info::g_Local.Bomb.isPlanted = false;
 	}
 
 	int UserMsg::ResetHUD ( const char *pszName, int iSize, void *pbuf )
@@ -38,11 +38,11 @@ namespace Engine
 		{
 			if ( !lstrcmpi ( Message, "#Bomb_Planted" ) )
 			{
-				Information::g_Local.Bomb.isPlanted = true;
+				Info::g_Local.Bomb.isPlanted = true;
 			}
 			else if ( !lstrcmpi ( Message, "#Target_Bombed" ) || !lstrcmp ( Message, "#Bomb_Defused" ) )
 			{
-				Information::g_Local.Bomb.isPlanted = false;
+				Info::g_Local.Bomb.isPlanted = false;
 			}
 		}
 
@@ -61,29 +61,29 @@ namespace Engine
 
 		if ( !lstrcmpi ( Team, TERRORIST_UMSG ) )
 		{
-			Information::g_Player[Index].Team = TERRORIST;
+			Info::g_Player[Index].Team = TERRORIST;
 
 			if ( Index == Entity->index )
 			{
-				Information::g_Local.Team = TERRORIST;
+				Info::g_Local.Player.Team = TERRORIST;
 			}
 		}
 		else if ( !lstrcmpi ( Team, CT_UMSG ) )
 		{
-			Information::g_Player[Index].Team = CT;
+			Info::g_Player[Index].Team = CT;
 
 			if ( Index == Entity->index )
 			{
-				Information::g_Local.Team = CT;
+				Info::g_Local.Player.Team = CT;
 			}
 		}
 		else
 		{
-			Information::g_Player[Index].Team = SPECTATOR;
+			Info::g_Player[Index].Team = SPECTATOR;
 
 			if ( Index == Entity->index )
 			{
-				Information::g_Local.Team = SPECTATOR;
+				Info::g_Local.Player.Team = SPECTATOR;
 			}
 		}
 

@@ -1,4 +1,5 @@
 #include "Utils.h"
+#include <ctime>
 
 #pragma warning (disable: 4996)
 
@@ -237,7 +238,7 @@ bool _fastcall Util::CalcScreen ( float *pflOrigin, float *pflVecScreen )
 
 bool _fastcall Util::PathFree ( Vector Input )
 {
-	pmtrace_t *Trace = Engine::g_Engine.PM_TraceLine ( Information::g_Local.ViewOrg, Input, 0, 2, -1 );
+	pmtrace_t *Trace = Engine::g_Engine.PM_TraceLine ( Info::g_Local.Player.ViewOrg, Input, 0, 2, -1 );
 
 	return ( Trace->fraction >= 1.0f );
 }
@@ -252,6 +253,7 @@ void _fastcall Util::Parse ( BYTE MaxArray, char *String, float Number[] )
 	{
 		Number[i] = atoi ( Parsing );
 		Parsing = strtok ( 0, "," );
+
 		++i;
 	}
 }
@@ -266,6 +268,7 @@ void _fastcall Util::Parse ( BYTE MaxArray, char *String, BYTE Number[] )
 	{
 		Number[i] = atoi ( Parsing );
 		Parsing = strtok ( 0, "," );
+
 		++i;
 	}
 }
@@ -286,7 +289,7 @@ int _fastcall Util::native_strcmp ( char const* _Str1, char const* _Str2, size_t
 	return *( BYTE * )_Str1 - *( BYTE * )_Str2;
 }
 
-char* _fastcall Util::native_strstr ( char *in, char *str )
+char* _fastcall Util::NativeStrStr ( char *in, char *str )
 {
 	char c = *str++;
 
@@ -478,8 +481,6 @@ void _fastcall Util::RotateInvisible ( float FixedYaw, float FixedPitch, usercmd
 
 void _fastcall Util::SlowHorizontalVelocity ( float to, float frametime, usercmd_s *cmd )
 {
-	Information::g_Local.SlowDown = true;
-
 	float Velocity = ( ( Engine::g_pPlayerMove->velocity.Length ( ) + 
 		Engine::g_pPlayerMove->velocity.Length ( ) * frametime ) - to ) / ( frametime * 100 );
 
@@ -510,6 +511,62 @@ void _fastcall Util::SlowHorizontalVelocity ( float to, float frametime, usercmd
 	cmd->sidemove = 0;
 
 	RotateInvisible ( -( AnglesSpeed[1] - cmd->viewangles[1] ), 0, cmd );
+}
+
+void _fastcall Util::RunScript ( char *ScriptName )
+{
+	char *o = new char[256];
+
+	strcpy ( o, "" );
+	strcat ( o, "Configs/" );
+	strcat ( o, ScriptName );
+
+	FILE *File = fopen ( Files::g_File.DirFile ( o ).c_str ( ), "r" );
+
+	if ( File != 0 )
+	{
+		char Script[1024];
+
+		while ( fgets ( Script, sizeof ( Script ), File ) != 0 )
+		{
+			g_Util.StrReplace ( Script, "%prefix%", g_Util.Prefix );
+
+			Engine::g_Engine.pfnClientCmd ( Script );
+		}
+
+		fclose ( File );
+
+		if ( !lstrcmpi ( o, "AutoRun.cfg" ) )
+		{
+			g_Util.ConsolePrintColor ( 100, 255, 200, HPP );
+			g_Util.ConsolePrintColor ( 200, 255, 200, g_Vars.Main.Launguage ? FILE_LOADED_ENG : FILE_LOADED_RUS );
+		}
+	}
+	else
+	{
+		g_Util.ConsolePrintColor ( 100, 255, 200, HPP );
+		g_Util.ConsolePrintColor ( 255, 80, 80, EXEC_CONFIG_ERROR ); //"Error #0018. Couldn't find file "
+		g_Util.ConsolePrintColor ( 255, 80, 80, o );
+		g_Util.ConsolePrintColor ( 255, 80, 80, "\".\n" );
+	}
+}
+
+void _fastcall Util::HookCommand ( char *CmdName, xcommand_t *CmdPointer, void ( *Function )( void ) )
+{
+	pcmd_t pCmd = Engine::g_Engine.pfnGetCmdList ( );
+
+	while ( pCmd )
+	{
+		if ( !strcmp ( pCmd->name, CmdName ) )
+		{
+			*CmdPointer = pCmd->function;
+			pCmd->function = ( xcommand_t )( ( void * )Function );
+
+			break;
+		}
+
+		pCmd = pCmd->next;
+	}
 }
 
 Util g_Util;

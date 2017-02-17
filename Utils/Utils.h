@@ -13,7 +13,7 @@ public:
 
 	char* _fastcall ConvertTypeToRenderString ( BYTE Type );
 	char* _fastcall PrefHack ( char *sz1, char *sz2, char *sz3 );
-	char* _fastcall native_strstr ( char *in, char *str );
+	char* _fastcall NativeStrStr ( char *in, char *str );
 
 	float _fastcall Interp ( float s1, float s2, float s3, float f1, float f3 );
 	float _fastcall EndSpeed ( float StartSpeed, float Gravity, float FrameTime, float Distance );
@@ -41,6 +41,10 @@ public:
 	void _fastcall MyVectorAngles ( const float *Forward, float *Angles );
 	void _fastcall RotateInvisible ( float FixedYaw, float FixedPitch, usercmd_s *cmd );
 	void _fastcall SlowHorizontalVelocity ( float to, float frametime, usercmd_s *cmd );
+
+	void _fastcall RunScript ( char *ScriptName );
+
+	void _fastcall HookCommand ( char *CmdName, xcommand_t *CmdPointer, void ( *Function )( void ) );
 };
 
 extern Util g_Util;
